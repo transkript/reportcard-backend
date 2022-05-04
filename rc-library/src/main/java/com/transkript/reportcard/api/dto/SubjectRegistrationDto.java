@@ -9,4 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectRegistrationDto {
+    private Long id;
 }

@@ -9,4 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClassLevelDto {
+    private Long id;
+
 }

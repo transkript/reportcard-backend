@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AcademicYearDto {
+    private Long id;
 }
