@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "classlevelsub")
+@Table(name = "class_level_sub")
 public class ClassLevelSub {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +21,9 @@ public class ClassLevelSub {
 
 	@Column(nullable = false, name = "sub_name")
 	private String name;
+
+	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@JoinColumn(name = "class_level_id", nullable = false)
+	private ClassLevel classLevel;
+
 }
