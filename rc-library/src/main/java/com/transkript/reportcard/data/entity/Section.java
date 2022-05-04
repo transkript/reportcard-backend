@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,4 +26,15 @@ public class Section {
 
 	@Column(name = "category", nullable = false)
 	private String category;
+
+    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClassLevel> classLevels = new ArrayList<>();
+
+	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@JoinColumn(name = "school_id", nullable = false)
+	private School school;
+
+	@OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Subject> subjects = new ArrayList<>();
+
 }
