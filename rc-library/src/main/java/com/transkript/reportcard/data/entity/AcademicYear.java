@@ -18,6 +18,8 @@ public class AcademicYear {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(nullable = false, name = "year_name")
 	private String name;
 
 }

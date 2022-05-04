@@ -18,5 +18,7 @@ public class ClassLevelSub {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(nullable = false, name = "sub_name")
 	private String name;
 }
