@@ -32,6 +32,6 @@ public class Student {
 	@Column(name = "pob", nullable = false)
 	private String pob;
 
-	@Column(name = "reg_num", nullable = false)
+	@Column(name = "reg_num", nullable = false, unique = true)
 	private String regNum;
 }
