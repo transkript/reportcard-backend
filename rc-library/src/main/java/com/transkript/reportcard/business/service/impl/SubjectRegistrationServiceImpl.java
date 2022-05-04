@@ -1,6 +1,8 @@
 package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.business.service.SubjectRegistrationService;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
