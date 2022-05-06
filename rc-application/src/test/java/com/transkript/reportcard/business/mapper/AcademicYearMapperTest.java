@@ -27,17 +27,18 @@ class AcademicYearMapperTest {
 
     @BeforeEach
     void setup() {
-        testacademicYear = AcademicYear.builder().id(1L).name("2022").terms(Set.of()).build();
+
         testacademicYearDto = AcademicYearDto.builder().id(2L).name("2022").build();
     }
 
     @Test
     void mapAcademicYearToDto() {
         AcademicYearDto expectedDto = this.academicYearMapper.mapAcademicYearToDto(testacademicYear);
-
         Assertions.assertEquals(expectedDto.getId(), testacademicYear.getId());
     }
     @Test
     void mapDtoToAcademicYear() {
+        AcademicYear expectedyear = this.academicYearMapper.mapDtoToAcademicYear(testacademicYearDto);
+        Assertions.assertEquals(expectedyear.getId(), testacademicYearDto.getId());
     }
 }
