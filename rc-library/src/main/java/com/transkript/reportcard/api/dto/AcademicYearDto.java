@@ -1,15 +1,21 @@
 package com.transkript.reportcard.api.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Getter
+@Builder
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AcademicYearDto {
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("name")
+    private String name;
+
+    //from relations
+    private Integer numberOfTerms;
 }
