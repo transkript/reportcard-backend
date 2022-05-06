@@ -1,13 +1,18 @@
 package com.transkript.reportcard.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class SchoolDto {
+    @JsonProperty(namespace = "id")
     private Long id;
+    @JsonProperty(namespace = "name")
+    private String name;
+
+    // From relations
+    private Integer numberOfSections;
 }
