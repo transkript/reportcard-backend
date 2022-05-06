@@ -1,10 +1,7 @@
 package com.transkript.reportcard.data.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +16,7 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "sequence")
 public class Sequence {
 	@Id
