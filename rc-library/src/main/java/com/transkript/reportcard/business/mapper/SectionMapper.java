@@ -10,7 +10,6 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", implementationPackage="<PACKAGE_NAME>.impl")
 public interface SectionMapper {
-
 	@Mappings({
 			@Mapping(
 					target = "numberOfClassLevels",
