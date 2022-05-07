@@ -24,8 +24,8 @@ class SectionMapperTest {
         this.sectionMapper = sectionMapper;
     }
 
-    @BeforeEach
-    void setUp() {
+    @Test
+    void mapSectionToDto() {
         testSchool = School.builder()
                 .id(1L)
                 .name("DBA")
@@ -41,25 +41,27 @@ class SectionMapperTest {
                 .subjects(List.of())
                 .build();
 
+        SectionDto expectedDto = this.sectionMapper.mapSectionToDto(testSection);
+
+        Assertions.assertEquals(expectedDto.getId(), testSection.getId());
+        Assertions.assertEquals(expectedDto.getName(), testSection.getName());
+        Assertions.assertEquals(expectedDto.getCategory(), testSection.getCategory());
+        Assertions.assertEquals(expectedDto.getNumberOfClassLevels(), testSection.getClassLevels().size());
+        Assertions.assertEquals(expectedDto.getSchoolId(), testSection.getSchool().getId());
+        Assertions.assertEquals(expectedDto.getNumberOfSubjects(), testSection.getSubjects().size());
+    }
+
+    @Test
+    void mapDtoToSection() {
         testSectionDto = SectionDto.builder()
                 .id(2L)
                 .name("French")
                 .category("Technical")
                 .build();
-    }
-
-    @Test
-    void mapSectionToDto() {
-        SectionDto expectedDto = this.sectionMapper.mapSectionToDto(testSection);
-
-        Assertions.assertEquals(expectedDto.getId(), testSection.getId());
-        Assertions.assertEquals(expectedDto.getSchoolName(), testSection.getSchool().getName());
-    }
-
-    @Test
-    void mapDtoToSection() {
         Section expectedSection = this.sectionMapper.mapDtoToSection(testSectionDto);
 
         Assertions.assertEquals(expectedSection.getId(), testSectionDto.getId());
+        Assertions.assertEquals(expectedSection.getName(), testSectionDto.getName());
+        Assertions.assertEquals(expectedSection.getCategory(), testSectionDto.getCategory());
     }
 }

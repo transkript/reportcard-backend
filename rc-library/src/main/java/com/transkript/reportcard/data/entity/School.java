@@ -1,10 +1,13 @@
 package com.transkript.reportcard.data.entity;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

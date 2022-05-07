@@ -16,8 +16,8 @@ public interface SectionMapper {
 					expression = "java(section.getClassLevels().size())"
 			),
 			@Mapping(
-					target = "schoolName",
-					expression = "java(section.getSchool().getName())"
+					target = "schoolId",
+					expression = "java(section.getSchool().getId())"
 			),
 			@Mapping(
 					target = "numberOfSubjects",
