@@ -1,7 +1,11 @@
 package com.transkript.reportcard.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -14,6 +18,6 @@ public class SequenceDto {
     @JsonProperty(namespace = "name")
     private String name;
 
-    @JsonProperty(namespace = "term_name")
-    private String termName;
+    @JsonProperty(namespace = "term_id")
+    private Long termId;
 }

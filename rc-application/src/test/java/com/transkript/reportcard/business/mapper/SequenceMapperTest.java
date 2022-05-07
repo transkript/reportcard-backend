@@ -25,10 +25,10 @@ class SequenceMapperTest {
         this.sequenceMapper = sequenceMapper;
     }
 
-    @BeforeEach
-    void setup() {
+    @Test
+    void mapSequenceToDto() {
         testTerm = new Term();
-        testTerm.setName("First");
+        testTerm.setId(4L);
 
         testSequence = Sequence.builder()
                 .id(1L)
@@ -36,23 +36,23 @@ class SequenceMapperTest {
                 .term(testTerm)
                 .build();
 
-        testSequenceDto = SequenceDto.builder()
-                .id(2L)
-                .name("Second")
-                .build();
-    }
-
-    @Test
-    void mapSequenceToDto() {
         SequenceDto expectedDto = this.sequenceMapper.mapSequenceToDto(testSequence);
 
         Assertions.assertEquals(expectedDto.getId(), testSequence.getId());
+        Assertions.assertEquals(expectedDto.getName(), testSequence.getName());
+        Assertions.assertEquals(expectedDto.getTermId(), testSequence.getTerm().getId());
     }
 
     @Test
     void mapDtoToSequence() {
+        testSequenceDto = SequenceDto.builder()
+                .id(2L)
+                .name("Second")
+                .build();
+
         Sequence expectedSequence = this.sequenceMapper.mapDtoToSequence(testSequenceDto);
 
         Assertions.assertEquals(expectedSequence.getId(), testSequenceDto.getId());
+        Assertions.assertEquals(expectedSequence.getName(), testSequenceDto.getName());
     }
 }

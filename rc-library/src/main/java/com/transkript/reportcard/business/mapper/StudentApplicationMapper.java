@@ -13,7 +13,7 @@ public interface StudentApplicationMapper {
 	@Mappings({
 			@Mapping(
 					target = "studentName",
-					expression = "java(studentapplication.getStudent().getName())"
+					expression = "java(studentapplication.getStudent().getId())"
 			),
 			@Mapping(
 					target = "academicYearName",

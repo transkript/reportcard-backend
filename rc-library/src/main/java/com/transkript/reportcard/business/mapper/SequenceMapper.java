@@ -12,8 +12,8 @@ import org.mapstruct.Mappings;
 public interface SequenceMapper {
 	@Mappings({
 			@Mapping(
-					target = "termName",
-					expression = "java(sequence.getTerm().getName())"
+					target = "termId",
+					expression = "java(sequence.getTerm().getId())"
 			)
 	})
 	SequenceDto mapSequenceToDto(Sequence sequence);
