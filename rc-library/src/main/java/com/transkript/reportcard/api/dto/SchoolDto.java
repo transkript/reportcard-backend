@@ -14,5 +14,6 @@ public class SchoolDto {
     private String name;
 
     // From relations
+    @JsonProperty(namespace = "number_of_sections")
     private Integer numberOfSections;
 }

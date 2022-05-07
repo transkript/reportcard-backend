@@ -22,30 +22,28 @@ class SchoolMapperTest {
         this.schoolMapper = schoolMapper;
     }
 
-    @BeforeEach
-    void setUp() {
+    @Test
+    void mapSchoolToDto() {
         testSchool = School.builder()
                 .id(1L)
                 .name("DBA")
                 .sections(List.of())
                 .build();
-
-        testSchoolDto = SchoolDto.builder()
-                .id(2L)
-                .name("ABC").build();
-    }
-
-    @Test
-    void mapSchoolToDto() {
         SchoolDto expectedDto = this.schoolMapper.mapSchoolToDto(testSchool);
 
         Assertions.assertEquals(expectedDto.getId(), testSchool.getId());
+        Assertions.assertEquals(expectedDto.getName(), testSchool.getName());
+        Assertions.assertEquals(expectedDto.getNumberOfSections(), testSchool.getSections().size());
     }
 
     @Test
     void mapDtoToSchool() {
+        testSchoolDto = SchoolDto.builder()
+                .id(2L)
+                .name("ABC").build();
         School expected = this.schoolMapper.mapDtoToSchool(testSchoolDto);
 
         Assertions.assertEquals(expected.getId(), testSchoolDto.getId());
+        Assertions.assertEquals(expected.getName(), testSchoolDto.getName());
     }
 }
