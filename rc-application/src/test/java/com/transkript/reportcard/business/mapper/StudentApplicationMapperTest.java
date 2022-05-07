@@ -27,11 +27,11 @@ class StudentApplicationMapperTest {
         this.studentApplicationMapper = studentApplicationMapper;
     }
 
-    @BeforeEach
-    void setUp(){
-        testStudent = Student.builder().name("name").build();
+    @Test
+    void mapStudentApplicationToDto() {
+        testStudent = Student.builder().id(2L).build();
         testAcademicYear = new AcademicYear();
-        testAcademicYear.setName("2020");
+        testAcademicYear.setId(4L);
         testStudentApplication = StudentApplication.builder()
                 .id(1L)
                 .createdAt(LocalDateTime.now())
@@ -40,25 +40,27 @@ class StudentApplicationMapperTest {
                 .subjectRegistrations(List.of())
                 .build();
 
-        testStudentApplicationDto = StudentApplicationDto.builder()
-                .id(2L)
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
-
-    @Test
-    void mapStudentApplicationToDto() {
         StudentApplicationDto expectedDto = studentApplicationMapper
                 .mapStudentApplicationToDto(testStudentApplication);
 
         Assertions.assertEquals(expectedDto.getId(), testStudentApplication.getId());
+        Assertions.assertEquals(expectedDto.getCreatedAt(), testStudentApplication.getCreatedAt());
+        Assertions.assertEquals(expectedDto.getStudentId(), testStudentApplication.getStudent().getId());
+        Assertions.assertEquals(expectedDto.getAcademicYearId(), testStudentApplication.getAcademicYear().getId());
+        Assertions.assertEquals(expectedDto.getNumberOfSubjects(), testStudentApplication.getSubjectRegistrations().size());
     }
 
     @Test
     void mapDtoToStudentApplication() {
+        testStudentApplicationDto = StudentApplicationDto.builder()
+                .id(2L)
+                .createdAt(LocalDateTime.now())
+                .build();
+
         StudentApplication expectedSApp = studentApplicationMapper
                 .mapDtoToStudentApplication(testStudentApplicationDto);
 
         Assertions.assertEquals(expectedSApp.getId(), testStudentApplicationDto.getId());
+        Assertions.assertEquals(expectedSApp.getCreatedAt(), testStudentApplicationDto.getCreatedAt());
     }
 }

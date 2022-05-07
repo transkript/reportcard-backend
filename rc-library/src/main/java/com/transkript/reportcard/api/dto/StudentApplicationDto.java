@@ -1,7 +1,11 @@
 package com.transkript.reportcard.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
@@ -18,10 +22,10 @@ public class StudentApplicationDto {
 
     // From relation
     @JsonProperty(namespace = "student_id")
-    private Long studentName;
+    private Long studentId;
 
-    @JsonProperty(namespace = "academic_year_name")
-    private String academicYearName;
+    @JsonProperty(namespace = "academic_year_id")
+    private Long academicYearId;
 
     @JsonProperty(namespace = "number_of_subjects")
     private Integer numberOfSubjects;

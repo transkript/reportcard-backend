@@ -1,6 +1,5 @@
 package com.transkript.reportcard.business.mapper;
 
-
 import com.transkript.reportcard.api.dto.StudentApplicationDto;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import org.mapstruct.InheritInverseConfiguration;
@@ -12,12 +11,12 @@ import org.mapstruct.Mappings;
 public interface StudentApplicationMapper {
 	@Mappings({
 			@Mapping(
-					target = "studentName",
+					target = "studentId",
 					expression = "java(studentapplication.getStudent().getId())"
 			),
 			@Mapping(
-					target = "academicYearName",
-					expression = "java(studentapplication.getAcademicYear().getName())"
+					target = "academicYearId",
+					expression = "java(studentapplication.getAcademicYear().getId())"
 			),
 			@Mapping(
 					target = "numberOfSubjects",
