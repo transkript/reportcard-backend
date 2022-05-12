@@ -2,7 +2,6 @@ package com.transkript.reportcard.data.entity;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,11 +22,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "subject_registration")

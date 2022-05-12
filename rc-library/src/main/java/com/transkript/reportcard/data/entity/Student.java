@@ -47,6 +47,6 @@ public class Student {
 
 
 	@OneToMany(mappedBy = "student", orphanRemoval = true)
-	private List<StudentApplication> studentApplications;
+	private List<StudentApplication> studentApplications = new ArrayList<>();
 
 }
