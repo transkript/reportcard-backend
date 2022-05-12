@@ -2,7 +2,6 @@ package com.transkript.reportcard.data.entity;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,12 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "term")
@@ -40,6 +39,6 @@ public class Term {
 	private AcademicYear academicYear;
 
 	@OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Sequence> sequences;
+	private Set<Sequence> sequences = new LinkedHashSet<>();
 
 }
