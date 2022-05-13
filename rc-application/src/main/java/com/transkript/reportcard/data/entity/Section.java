@@ -30,6 +30,7 @@ public class Section {
 	private String category;
 
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
     private List<ClassLevel> classLevels = new ArrayList<>();
 
 	@ManyToOne(cascade = CascadeType.ALL, optional = false)
@@ -37,6 +38,7 @@ public class Section {
 	private School school;
 
 	@OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
 	private List<Subject> subjects = new ArrayList<>();
 
 }

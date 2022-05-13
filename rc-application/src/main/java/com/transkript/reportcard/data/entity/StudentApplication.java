@@ -34,6 +34,7 @@ public class StudentApplication {
 	private Long id;
 
 	@Column(name = "created_at", nullable = false, updatable = false)
+	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@ManyToOne(cascade = CascadeType.ALL, optional = false)
@@ -45,6 +46,7 @@ public class StudentApplication {
 	private AcademicYear academicYear;
 
 	@OneToMany(mappedBy = "studentApplication", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
 	private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
 
 }

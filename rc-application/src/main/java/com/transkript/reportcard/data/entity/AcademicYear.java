@@ -32,9 +32,11 @@ public class AcademicYear {
 
 	// one to many term
 	@OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Builder.Default
 	private Set<Term> terms = new LinkedHashSet<>();
 
 	@OneToMany(mappedBy = "academicYear", orphanRemoval = true)
+	@Builder.Default
 	private List<StudentApplication> studentApplications = new ArrayList<>();
 
 }

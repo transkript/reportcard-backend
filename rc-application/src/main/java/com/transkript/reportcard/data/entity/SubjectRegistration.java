@@ -37,6 +37,7 @@ public class SubjectRegistration {
 	private Long id;
 
 	@Column(name = "created_at", nullable = false)
+	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 
