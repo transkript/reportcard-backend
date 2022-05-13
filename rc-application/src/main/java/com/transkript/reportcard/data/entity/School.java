@@ -29,5 +29,4 @@ public class School {
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
     private List<Section> sections = new ArrayList<>();
-
 }
