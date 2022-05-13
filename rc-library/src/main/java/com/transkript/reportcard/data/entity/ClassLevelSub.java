@@ -1,6 +1,5 @@
 package com.transkript.reportcard.data.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

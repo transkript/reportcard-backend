@@ -27,7 +27,7 @@ public class Grade {
 	private GradeId id;
 
 	@Column(nullable = false, name = "grade_score")
-	private float score = 0;
+	private Float score = 0F;
 
 	@Column(nullable = false, name = "grade_desc")
 	private String description;

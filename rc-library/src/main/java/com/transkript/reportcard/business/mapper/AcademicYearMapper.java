@@ -15,13 +15,9 @@ import java.util.Set;
 public interface AcademicYearMapper {
 
 	@Mappings({
-			@Mapping(target = "numberOfTerms", expression = "java(mapNumberOfTerms(academicyear.getTerms()))")
+			@Mapping(target = "numberOfTerms", expression = "java(academicYear.getTerms().size())")
 	})
-	AcademicYearDto mapAcademicYearToDto(AcademicYear academicyear);
-
-	default Integer mapNumberOfTerms(Set<Term> terms){
-		return terms.size();
-	}
+	AcademicYearDto mapAcademicYearToDto(AcademicYear academicYear);
 
 	@Mappings({
 			@Mapping(target = "terms", ignore = true),
