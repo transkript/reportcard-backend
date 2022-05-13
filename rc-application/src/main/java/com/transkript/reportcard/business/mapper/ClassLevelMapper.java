@@ -12,9 +12,9 @@ import org.mapstruct.Mappings;
 public interface ClassLevelMapper {
 
 	@Mappings({
-			@Mapping(target = "sectionId", expression = "java(classLevelDto.getSection().getId())"),
+			@Mapping(target = "sectionId", expression = "java(classLevel.getSection().getId())"),
 	})
-	ClassLevelDto mapClassLevelToDto(ClassLevel classlevel);
+	ClassLevelDto mapClassLevelToDto(ClassLevel classLevel);
 
 	@Mappings({
 			@Mapping(target = "section", ignore = true),

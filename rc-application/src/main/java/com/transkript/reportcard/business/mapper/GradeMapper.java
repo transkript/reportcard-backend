@@ -12,14 +12,16 @@ import org.mapstruct.Mappings;
 public interface GradeMapper {
 
 	@Mappings({
-			@Mapping(target = "subjectRegistrationId", expression = "java(grade.getSubjectRegistration().getId())"),
-			@Mapping(target = "sequenceId", expression = "java(grade.getSequence().getId())")
+			@Mapping(target = "subjectRegistrationId", expression = "java(grade.getId().getRegistrationId())"),
+			@Mapping(target = "sequenceId", expression = "java(grade.getId().getSequenceId())"),
+			@Mapping(target = "id", ignore = true)
 	})
 	GradeDto mapGradeToDto(Grade grade);
 
 	@Mappings({
 			@Mapping(target = "subjectRegistration", ignore = true),
-			@Mapping(target = "sequence", ignore = true)
+			@Mapping(target = "sequence", ignore = true),
+			@Mapping(target = "id", ignore = true)
 	})
 	@InheritInverseConfiguration
 	Grade mapDtoToGrade(GradeDto gradeDto);
