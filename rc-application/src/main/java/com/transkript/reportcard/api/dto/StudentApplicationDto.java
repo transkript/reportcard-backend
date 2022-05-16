@@ -14,19 +14,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class StudentApplicationDto {
-    @JsonProperty(namespace = "id")
+    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(namespace = "created_at")
+    @JsonProperty(value = "created_at")
     private LocalDateTime createdAt;
 
     // From relation
-    @JsonProperty(namespace = "student_id")
+    @JsonProperty(value = "student_id")
     private Long studentId;
 
-    @JsonProperty(namespace = "academic_year_id")
+    @JsonProperty(value = "academic_year_id")
     private Long academicYearId;
 
-    @JsonProperty(namespace = "number_of_subjects")
+    @JsonProperty(value = "number_of_subjects")
     private Integer numberOfSubjects;
 }

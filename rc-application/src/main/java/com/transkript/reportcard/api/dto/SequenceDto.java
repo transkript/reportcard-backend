@@ -12,12 +12,12 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 public class SequenceDto {
-    @JsonProperty(namespace = "id")
+    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(namespace = "name")
+    @JsonProperty(value = "name")
     private String name;
 
-    @JsonProperty(namespace = "term_id")
+    @JsonProperty(value = "term_id")
     private Long termId;
 }
