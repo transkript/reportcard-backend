@@ -6,12 +6,14 @@ import com.transkript.reportcard.business.service.SectionService;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.repository.SectionRepository;
+import com.transkript.reportcard.exception.EntityException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter @Setter
@@ -38,5 +40,13 @@ public class SectionServiceImpl implements SectionService {
         return sectionRepository.findAll().stream()
                 .map(sectionMapper::mapSectionToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SectionDto getSection(Long id) {
+        Optional<Section> sectionOptional = sectionRepository.findById(id);
+        return sectionMapper.mapSectionToDto(sectionOptional.orElseThrow(()->{
+            throw new RuntimeException();
+        }));
     }
 }

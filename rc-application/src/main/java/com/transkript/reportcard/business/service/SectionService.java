@@ -10,4 +10,6 @@ public interface SectionService {
     String addSection(SectionDto sectionDto);
 
     List<SectionDto> getSections();
+
+    SectionDto getSection(Long id);
 }
