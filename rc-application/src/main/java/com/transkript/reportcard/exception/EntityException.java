@@ -2,8 +2,11 @@ package com.transkript.reportcard.exception;
 
 public class EntityException {
     public static class EntityNotFoundException extends RuntimeException {
-        public EntityNotFoundException(String name ){
+        public EntityNotFoundException(String name){
             super("Entity of type " + name + " not found");
+        }
+        public EntityNotFoundException(String name, Long id) {
+            super("Entity of type " + name + " with id " + id + " not found");
         }
     }
 
