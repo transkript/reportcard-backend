@@ -14,5 +14,8 @@ public class EntityException {
         public EntityAlreadyExistsException(String name, Long id){
             super("Entity of type " + name + " with id " + id + " already exists");
         }
+        public EntityAlreadyExistsException(String name, String id) {
+            super("Entity of type " + name + " with identifier " + id + " already exists");
+        }
     }
 }
