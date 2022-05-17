@@ -17,5 +17,6 @@ public class AcademicYearDto {
     private String name;
 
     //from relations
+    @JsonProperty("number_of_terms")
     private Integer numberOfTerms;
 }
