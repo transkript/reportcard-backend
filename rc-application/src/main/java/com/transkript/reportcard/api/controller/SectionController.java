@@ -37,6 +37,12 @@ public class SectionController {
 
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateSection(@PathVariable("id") Long id, @RequestBody SectionDto sectionDto){
+        log.info("Updating Section with ID: " + id);
+        return ResponseEntity.ok(sectionService.updateSection(id, sectionDto));
+    }
+
 
 
 }

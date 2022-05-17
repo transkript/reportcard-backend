@@ -12,4 +12,6 @@ public interface SectionService {
     List<SectionDto> getSections();
 
     SectionDto getSection(Long id);
+
+    String updateSection(Long id, SectionDto sectionDto);
 }

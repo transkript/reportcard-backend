@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,5 +49,16 @@ public class SectionServiceImpl implements SectionService {
         return sectionMapper.mapSectionToDto(sectionOptional.orElseThrow(()->{
             throw new RuntimeException();
         }));
+    }
+
+    @Override
+    public String updateSection(Long id, SectionDto sectionDto) {
+        if(id != null && sectionRepository.existsById(id)){
+            Section section =  sectionMapper.mapDtoToSection(sectionDto);
+            section.setId(id);
+            sectionRepository.save(section);
+            return "Section with Id: "+ id + "Successfully Updated";
+        }
+        throw new EntityNotFoundException("section");
     }
 }
