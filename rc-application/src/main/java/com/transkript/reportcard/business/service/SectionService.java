@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface SectionService {
     String addSection(SectionDto sectionDto);
+
+    List<SectionDto> getSections();
 }

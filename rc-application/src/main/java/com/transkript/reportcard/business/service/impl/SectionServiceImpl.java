@@ -11,6 +11,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter @Setter
 @AllArgsConstructor
 @Service
@@ -28,5 +31,12 @@ public class SectionServiceImpl implements SectionService {
         sectionRepository.save(section);
         return "Section with name "+ section.getName() + "Successfully Added";
 
+    }
+
+    @Override
+    public List<SectionDto> getSections() {
+        return sectionRepository.findAll().stream()
+                .map(sectionMapper::mapSectionToDto)
+                .collect(Collectors.toList());
     }
 }
