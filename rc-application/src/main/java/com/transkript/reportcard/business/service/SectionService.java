@@ -14,4 +14,6 @@ public interface SectionService {
     SectionDto getSection(Long id);
 
     String updateSection(Long id, SectionDto sectionDto);
+
+    String deleteSection(Long id);
 }

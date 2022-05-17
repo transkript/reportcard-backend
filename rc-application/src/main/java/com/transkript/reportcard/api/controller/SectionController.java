@@ -43,6 +43,11 @@ public class SectionController {
         return ResponseEntity.ok(sectionService.updateSection(id, sectionDto));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteSection(@PathVariable("id") Long id){
+        log.info("Deleting Section with Id: "+ id);
+        return ResponseEntity.ok(sectionService.deleteSection(id));
 
+    }
 
 }

@@ -61,4 +61,13 @@ public class SectionServiceImpl implements SectionService {
         }
         throw new EntityNotFoundException("section");
     }
+
+    @Override
+    public String deleteSection(Long id) {
+        if(id != null && sectionRepository.existsById(id)){
+            sectionRepository.deleteById(id);
+            return "Section with ID: " + id + "Successfully Deleted";
+        }
+        throw new EntityException.EntityNotFoundException("section");
+    }
 }
