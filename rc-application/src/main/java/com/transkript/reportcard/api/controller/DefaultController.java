@@ -2,9 +2,11 @@ package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.business.service.SchoolService;
 import com.transkript.reportcard.business.service.SectionService;
+import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Subject;
+import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.data.repository.SchoolRepository;
 import com.transkript.reportcard.data.repository.SectionRepository;
 import com.transkript.reportcard.data.repository.SubjectRepository;
@@ -25,6 +27,8 @@ public class DefaultController {
     private final SectionRepository sectionRepository;
     private final SubjectRepository subjectRepository;
 
+    private final AcademicYearRepository academicYearRepository;
+
     private School defaultSchool = School.builder().id(null).name("Default School").build();
     private final Section[] sections = new Section[] {
             Section.builder().id(null).name("Default Section 1").category("Category").classLevels(List.of()).subjects(List.of()).build(),
@@ -36,6 +40,7 @@ public class DefaultController {
             Subject.builder().id(null).name("French").code("FRE").section(null).build(),
     };
 
+    private final AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
     @PostMapping(value = "create")
     public String createDefaults() {
         defaultSchool = schoolRepository.save(defaultSchool);
@@ -51,7 +56,7 @@ public class DefaultController {
             subjects[subjects.length - 1].setSection(sections[1]);
             subjectRepository.save(subjects[subjects.length - 1]);
         }
-
+        academicYearRepository.save(academicYear);
         return "Success";
     }
 }
