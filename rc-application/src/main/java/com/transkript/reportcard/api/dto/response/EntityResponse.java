@@ -21,6 +21,9 @@ public class EntityResponse {
     @JsonProperty(value = "message")
     private String message;
 
+    @JsonProperty(value = "entity_name")
+    private String entityName;
+
     @Builder.Default
     @JsonProperty(value = "date")
     private Date date = new Date();

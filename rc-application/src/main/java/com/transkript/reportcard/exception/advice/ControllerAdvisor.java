@@ -1,6 +1,7 @@
 package com.transkript.reportcard.exception.advice;
 
 import com.transkript.reportcard.exception.EntityException;
+import com.transkript.reportcard.exception.ReportCardException;
 import com.transkript.reportcard.exception.body.ExceptionBody;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+    // Override methods
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
@@ -32,6 +34,14 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
+
+    // ReportCard Exception handlers
+    @ExceptionHandler(value = {ReportCardException.IllegalArgumentException.class, ReportCardException.IllegalStateException.class})
+    protected ResponseEntity<ExceptionBody> handleIllegalArgument(ReportCardException ex, WebRequest request) {
+        return getExceptionEntity(ex, request, ex.getStatus(), Map.of("message", ex.getMessage()));
+    }
+
+    // Sub Exception handlers
 
     @ExceptionHandler(value = {EntityException.EntityNotFoundException.class})
     protected ResponseEntity<ExceptionBody> handleEntityNotFound(EntityException.EntityNotFoundException ex, WebRequest request) {
