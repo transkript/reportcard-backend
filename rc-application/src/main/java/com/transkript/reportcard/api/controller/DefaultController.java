@@ -1,14 +1,17 @@
 package com.transkript.reportcard.api.controller;
 
-import com.transkript.reportcard.business.service.SchoolService;
-import com.transkript.reportcard.business.service.SectionService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
+import com.transkript.reportcard.data.entity.Student;
+import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
+import com.transkript.reportcard.data.enums.Gender;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.data.repository.SchoolRepository;
 import com.transkript.reportcard.data.repository.SectionRepository;
+import com.transkript.reportcard.data.repository.StudentApplicationRepository;
+import com.transkript.reportcard.data.repository.StudentRepository;
 import com.transkript.reportcard.data.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -26,8 +30,9 @@ public class DefaultController {
     private final SchoolRepository schoolRepository;
     private final SectionRepository sectionRepository;
     private final SubjectRepository subjectRepository;
-
     private final AcademicYearRepository academicYearRepository;
+    private final StudentApplicationRepository studentApplicationRepository;
+    private final StudentRepository studentRepository;
 
     private School defaultSchool = School.builder().id(null).name("Default School").build();
     private final Section[] sections = new Section[] {
@@ -39,11 +44,18 @@ public class DefaultController {
             Subject.builder().id(null).name("English").code("ENG").section(null).build(),
             Subject.builder().id(null).name("French").code("FRE").section(null).build(),
     };
+    private AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
+    private Student student = Student.builder()
+            .id(null).name("John Bae").dob(LocalDateTime.now())
+            .pob("Cameroon").regNum("123456789").gender(Gender.MALE).build();
+    private final StudentApplication studentApplication = StudentApplication.builder().id(null).student(null)
+            .createdAt(LocalDateTime.now()).build();
 
-    private final AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
     @PostMapping(value = "create")
     public String createDefaults() {
         defaultSchool = schoolRepository.save(defaultSchool);
+        student = studentRepository.save(student);
+        academicYear = academicYearRepository.save(academicYear);
         for(int i = 0; i < sections.length; i++) {
             sections[i].setSchool(defaultSchool);
             sections[i] = sectionRepository.save(sections[i]);
@@ -56,7 +68,11 @@ public class DefaultController {
             subjects[subjects.length - 1].setSection(sections[1]);
             subjectRepository.save(subjects[subjects.length - 1]);
         }
-        academicYearRepository.save(academicYear);
+        {
+            studentApplication.setStudent(student);
+            studentApplication.setAcademicYear(academicYear);
+            studentApplicationRepository.save(studentApplication);
+        }
         return "Success";
     }
 }
