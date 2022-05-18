@@ -57,6 +57,15 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     }
 
     @Override
+    public ClassLevel getClassLevelById(Long id) {
+        return classLevelRepository.findById(id).orElseThrow(
+                ()->{
+                    throw new EntityException.EntityNotFoundException("Class level with id: " + id);
+                }
+        );
+    }
+
+    @Override
     public String updateClassLevel(Long id, ClassLevelDto classLevelDto) {
         if (id != null && classLevelRepository.existsById(id)) {
             ClassLevel classLevel = classLevelMapper.mapDtoToClassLevel(classLevelDto);
