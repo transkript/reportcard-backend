@@ -2,6 +2,7 @@ package com.transkript.reportcard.business.service;
 
 
 import com.transkript.reportcard.api.dto.AcademicYearDto;
+import com.transkript.reportcard.data.entity.AcademicYear;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ public interface AcademicYearService {
     List<AcademicYearDto> getAcademicYears();
 
     AcademicYearDto getAcademicYear(Long id);
+
+    AcademicYear getAcademicYearById(Long id);
 
     String updateAcademicYear(Long id, AcademicYearDto academicYearDto);
 
