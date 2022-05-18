@@ -2,6 +2,7 @@ package com.transkript.reportcard.business.mapper;
 
 import com.transkript.reportcard.api.dto.StudentDto;
 import com.transkript.reportcard.data.entity.Student;
+import com.transkript.reportcard.data.enums.Gender;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ class StudentMapperTest {
     void mapStudentToDto() {
         Student actualStudent = Student.builder().id(1L).name("test student")
                 .pob("test pob").regNum("REGNO")
-                .gender("M").dob(LocalDateTime.now())
+                .gender(Gender.MALE).dob(LocalDateTime.now())
                 .studentApplications(List.of()).build();
         StudentDto expectedDto = this.studentMapper.mapStudentToDto(actualStudent);
 
