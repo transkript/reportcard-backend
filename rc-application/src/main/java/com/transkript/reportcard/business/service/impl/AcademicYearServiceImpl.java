@@ -2,17 +2,13 @@ package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.AcademicYearDto;
 import com.transkript.reportcard.business.mapper.AcademicYearMapper;
-
 import com.transkript.reportcard.business.service.AcademicYearService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.exception.EntityException;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.expression.ExpressionException;
-import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +34,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
     @Override
     public List<AcademicYearDto> getAcademicYears() {
         return academicYearRepository.findAll().stream()
-                .map(academicYear -> academicYearMapper.mapAcademicYearToDto(academicYear))
+                .map(academicYearMapper::mapAcademicYearToDto)
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +75,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
         }
         throw new EntityException.EntityNotFoundException("Academic year with id: " + id);
     }
-    private final AcademicYearRepository academicYearRepository;
+
     @Override
     public AcademicYear getAcademicYearEntity(Long academicYearId) {
         return academicYearRepository.findById(academicYearId)
