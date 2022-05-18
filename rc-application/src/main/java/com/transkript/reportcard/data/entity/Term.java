@@ -1,6 +1,5 @@
 package com.transkript.reportcard.data.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,5 +40,4 @@ public class Term {
 
 	@OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Sequence> sequences;
-
 }
