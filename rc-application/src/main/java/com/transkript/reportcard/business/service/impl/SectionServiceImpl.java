@@ -55,6 +55,13 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
+    public Section getSectionById(Long id) {
+        return sectionRepository.findById(id).orElseThrow(
+                ()->new EntityException.EntityNotFoundException("Section with id: " + id)
+        );
+    }
+
+    @Override
     public String updateSection(Long id, SectionDto sectionDto) {
         if (id != null && sectionRepository.existsById(id)) {
             School school = schoolService.getSchoolById(sectionDto.getSchoolId());
