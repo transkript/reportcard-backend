@@ -28,6 +28,7 @@ public class ExceptionBody {
     @JsonProperty("code")
     private Integer code;
 
+    @Builder.Default
     @JsonProperty("timestamp")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp = LocalDateTime.now();

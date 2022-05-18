@@ -19,6 +19,7 @@ public class StudentApplicationDto {
     @JsonProperty(value = "id")
     private Long id;
 
+    @Builder.Default
     @JsonProperty(value = "created_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime createdAt = LocalDateTime.now();

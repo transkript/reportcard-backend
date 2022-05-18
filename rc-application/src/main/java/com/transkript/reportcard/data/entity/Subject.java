@@ -1,6 +1,7 @@
 package com.transkript.reportcard.data.entity;
 
 
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -38,8 +42,12 @@ public class Subject {
 	@Column(name = "subject_code", nullable = false, unique = true)
 	private String code;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "section_id", nullable = false)
 	private Section section;
+
+	@Builder.Default
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+	private Set<SubjectRegistration> subjectRegistrations = new LinkedHashSet<>();
 
 }

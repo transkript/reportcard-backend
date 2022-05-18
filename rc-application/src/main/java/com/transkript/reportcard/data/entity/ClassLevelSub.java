@@ -21,7 +21,7 @@ public class ClassLevelSub {
 	@Column(nullable = false, name = "sub_name")
 	private String name;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "class_level_id", nullable = false)
 	private ClassLevel classLevel;
 

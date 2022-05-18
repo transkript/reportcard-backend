@@ -40,6 +40,7 @@ public class Student {
 	@Column(name = "gender", nullable = false)
 	private Gender gender;
 
+	@Builder.Default
 	@Column(name = "dob", nullable = false)
 	private LocalDateTime dob = LocalDateTime.now();
 

@@ -14,7 +14,10 @@ public interface SubjectMapper {
 	@Mappings({@Mapping(target = "sectionId", expression = "java(subject.getSection().getId())")})
 	SubjectDto mapSubjectToDto(Subject subject);
 
-	@Mappings({ @Mapping(target = "section", ignore = true)})
+	@Mappings({
+			@Mapping(target = "section", ignore = true),
+			@Mapping(target = "subjectRegistrations", ignore = true)
+	})
 	@InheritInverseConfiguration
 	Subject mapDtoToSubject(SubjectDto subjectDto);
 

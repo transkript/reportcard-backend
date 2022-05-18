@@ -1,6 +1,5 @@
 package com.transkript.reportcard.data.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,11 +34,10 @@ public class Term {
 	private String name;
 
 	// many to one year
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "academic_year_id", nullable = false)
 	private AcademicYear academicYear;
 
 	@OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Sequence> sequences;
-
 }
