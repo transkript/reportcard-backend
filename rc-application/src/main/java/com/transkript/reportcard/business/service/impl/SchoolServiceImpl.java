@@ -66,7 +66,7 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.save(school);
             return "school with id: "+ id + "successfully updated";
         }
-        throw new EntityNotFoundException("School");
+        throw new EntityException.EntityNotFoundException("School");
     }
 
     @Override

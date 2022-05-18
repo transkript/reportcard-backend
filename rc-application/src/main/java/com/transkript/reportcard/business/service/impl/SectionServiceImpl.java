@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,13 +54,23 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public String updateSection(Long id, SectionDto sectionDto) {
-        if(id != null && sectionRepository.existsById(id)){
-            Section section =  sectionMapper.mapDtoToSection(sectionDto);
-            section.setId(id);
+        if(id != null && sectionRepository.existsById(id) && id.equals(sectionDto.getId())){
+            Section section = sectionRepository.getById(id);
+            if(sectionDto.getName() != null && !Objects.equals(sectionDto.getName(), section.getName())){
+                section.setName(sectionDto.getName());
+            }
+            if(sectionDto.getCategory() != null & !Objects.equals(sectionDto.getCategory(), section.getCategory())){
+                section.setCategory(sectionDto.getCategory());
+            }
+
+            if(sectionDto.getSchoolId() != null && !Objects.equals(sectionDto.getSchoolId(), section.getSchool().getId())){
+                School school  = schoolService.getSchoolEntity(sectionDto.getSchoolId());
+                section.setSchool(school);
+            }
             sectionRepository.save(section);
             return "Section with Id: "+ id + "Successfully Updated";
         }
-        throw new EntityNotFoundException("section");
+        throw new EntityException.EntityNotFoundException("section");
     }
 
     @Override
