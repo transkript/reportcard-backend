@@ -15,6 +15,7 @@ import com.transkript.reportcard.data.repository.StudentRepository;
 import com.transkript.reportcard.data.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,9 +41,9 @@ public class DefaultController {
             Section.builder().id(null).name("Default Section 2").category("Category").classLevels(List.of()).subjects(List.of()).build(),
     };
     private final Subject[] subjects = new Subject[] {
-            Subject.builder().id(null).name("Maths").code("MAT").section(null).build(),
-            Subject.builder().id(null).name("English").code("ENG").section(null).build(),
-            Subject.builder().id(null).name("French").code("FRE").section(null).build(),
+            Subject.builder().id(null).name("Maths").coefficient(2).code("MAT").section(null).build(),
+            Subject.builder().id(null).name("English").coefficient(2).code("ENG").section(null).build(),
+            Subject.builder().id(null).name("French").coefficient(2).code("FRE").section(null).build(),
     };
     private AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
     private Student student = Student.builder()
@@ -51,7 +52,7 @@ public class DefaultController {
     private final StudentApplication studentApplication = StudentApplication.builder().id(null).student(null)
             .createdAt(LocalDateTime.now()).build();
 
-    @PostMapping(value = "create")
+    @PostMapping(value = "/create")
     public String createDefaults() {
         defaultSchool = schoolRepository.save(defaultSchool);
         student = studentRepository.save(student);
@@ -73,6 +74,11 @@ public class DefaultController {
             studentApplication.setAcademicYear(academicYear);
             studentApplicationRepository.save(studentApplication);
         }
+        return "Success";
+    }
+
+    @DeleteMapping(value = "/delete")
+    public String deleteDefaults() {
         return "Success";
     }
 }
