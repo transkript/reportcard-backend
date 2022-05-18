@@ -1,5 +1,4 @@
 package com.transkript.reportcard.business.service.impl;
-import com.sun.xml.bind.v2.TODO;
 import com.transkript.reportcard.api.dto.SchoolDto;
 import com.transkript.reportcard.business.mapper.SchoolMapper;
 import com.transkript.reportcard.business.service.SchoolService;
@@ -56,6 +55,13 @@ public class SchoolServiceImpl implements SchoolService {
             throw new RuntimeException();
         }));
 
+    }
+
+    @Override
+    public School getSchoolById(Long id) {
+        return schoolRepository.findById(id).orElseThrow(() -> {
+            throw new EntityException.EntityNotFoundException("school");
+        });
     }
 
     @Override

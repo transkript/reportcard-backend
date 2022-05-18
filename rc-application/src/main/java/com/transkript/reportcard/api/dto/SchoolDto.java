@@ -12,13 +12,13 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 public class SchoolDto {
-    @JsonProperty(namespace = "id")
+    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(namespace = "name")
+    @JsonProperty(value = "name")
     private String name;
 
     // From relations
-    @JsonProperty(namespace = "number_of_sections")
+    @JsonProperty(value = "number_of_sections")
     private Integer numberOfSections;
 }
