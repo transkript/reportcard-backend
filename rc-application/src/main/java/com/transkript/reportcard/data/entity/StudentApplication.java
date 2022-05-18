@@ -38,11 +38,11 @@ public class StudentApplication {
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "student_id", nullable = false)
 	private Student student;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "academic_year_id", nullable = false)
 	private AcademicYear academicYear;
 

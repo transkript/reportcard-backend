@@ -33,7 +33,7 @@ public class Section {
 	@Builder.Default
     private List<ClassLevel> classLevels = new ArrayList<>();
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "school_id", nullable = false)
 	private School school;
 

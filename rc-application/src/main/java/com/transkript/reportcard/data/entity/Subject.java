@@ -39,7 +39,7 @@ public class Subject {
 	@Column(name = "subject_code", nullable = false, unique = true)
 	private String code;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "section_id", nullable = false)
 	private Section section;
 

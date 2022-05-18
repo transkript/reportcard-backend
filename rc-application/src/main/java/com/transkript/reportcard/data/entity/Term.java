@@ -34,7 +34,7 @@ public class Term {
 	private String name;
 
 	// many to one year
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "academic_year_id", nullable = false)
 	private AcademicYear academicYear;
 

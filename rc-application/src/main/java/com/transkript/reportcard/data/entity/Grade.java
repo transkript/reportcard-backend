@@ -34,12 +34,12 @@ public class Grade {
 	@Column(nullable = false, name = "grade_desc")
 	private String description;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@MapsId("sequenceId")
 	@JoinColumn(name = "sequence_id", nullable = false)
 	private Sequence sequence;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumns({
 			@JoinColumn(name = "subject_registration_application_id", referencedColumnName = "application_id", nullable = false),
 			@JoinColumn(name = "subject_registration_subject_id", referencedColumnName = "subject_id", nullable = false)

@@ -45,12 +45,12 @@ public class SubjectRegistration {
 	private SubjectRegistrationKey subjectRegistrationKey;
 
 	@MapsId(value = "studentApplicationId")
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "application_id", nullable = false)
 	private StudentApplication studentApplication;
 
 	@MapsId(value = "subjectId")
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "subject_id", nullable = false)
 	private Subject subject;
 

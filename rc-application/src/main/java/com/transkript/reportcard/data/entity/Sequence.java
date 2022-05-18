@@ -31,8 +31,7 @@ public class Sequence {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "term_id", nullable = false)
 	private Term term;
-
 }
