@@ -10,8 +10,8 @@ public class EntityException {
         public EntityNotFoundException(String name, Long id) {
             super("Entity of type " + name + " with id " + id + " not found");
         }
-        public EntityNotFoundException(String name, Long[] ...ids){
-            super("Entity of type " + name + " with ids " + Arrays.deepToString(ids) + " not found");
+        public EntityNotFoundException(String name, Long ...ids){
+            super("Entity of type " + name + " with ids " + Arrays.toString(ids) + " not found");
         }
     }
 

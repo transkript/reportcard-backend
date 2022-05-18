@@ -97,7 +97,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
                 .subjectId(subjectId).studentApplicationId(applicationId).build();
         subjectRegistrationRepository.findById(subjectRegistrationKey)
                 .ifPresentOrElse(subjectRegistrationRepository::delete, () -> {
-                    throw new EntityException.EntityNotFoundException("subjectRegistration", new Long[]{subjectId, applicationId});
+                    throw new EntityException.EntityNotFoundException("subjectRegistration", subjectId, applicationId);
                 });
     }
 }
