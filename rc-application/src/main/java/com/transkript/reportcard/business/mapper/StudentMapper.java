@@ -20,8 +20,8 @@ public interface StudentMapper {
 
 	default String mapGender(Gender gender) {
 		return switch(gender) {
-			case MALE -> "F";
-			case FEMALE -> "M";
+			case MALE -> "M";
+			case FEMALE -> "F";
 			default -> "O";
 		};
 	}

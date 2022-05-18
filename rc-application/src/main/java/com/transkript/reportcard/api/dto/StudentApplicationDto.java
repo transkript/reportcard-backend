@@ -1,5 +1,6 @@
 package com.transkript.reportcard.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -14,19 +16,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class StudentApplicationDto {
-    @JsonProperty(namespace = "id")
+    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(namespace = "created_at")
-    private LocalDateTime createdAt;
+    @JsonProperty(value = "created_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     // From relation
-    @JsonProperty(namespace = "student_id")
+    @JsonProperty(value = "student_id")
+    @NotNull
     private Long studentId;
 
-    @JsonProperty(namespace = "academic_year_id")
+    @JsonProperty(value = "academic_year_id")
+    @NotNull
     private Long academicYearId;
 
-    @JsonProperty(namespace = "number_of_subjects")
+    @JsonProperty(value = "number_of_subjects")
     private Integer numberOfSubjects;
 }
