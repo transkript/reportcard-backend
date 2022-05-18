@@ -27,6 +27,14 @@ public class SectionServiceImpl implements SectionService {
     private final SchoolService schoolService;
 
     @Override
+    public Section getSectionEntity(Long id) {
+        return sectionRepository.findById(id).orElseThrow(()->{
+            throw new EntityException.EntityNotFoundException("section");
+        });
+
+    }
+
+    @Override
     public String addSection(SectionDto sectionDto) {
         Section section = sectionMapper.mapDtoToSection(sectionDto);
         School school = schoolService.getSchoolEntity(sectionDto.getSchoolId());
@@ -48,7 +56,7 @@ public class SectionServiceImpl implements SectionService {
     public SectionDto getSection(Long id) {
         Optional<Section> sectionOptional = sectionRepository.findById(id);
         return sectionMapper.mapSectionToDto(sectionOptional.orElseThrow(()->{
-            throw new RuntimeException();
+            throw new EntityException.EntityNotFoundException("section");
         }));
     }
 

@@ -32,7 +32,7 @@ public class Subject {
 	@Column(name = "subject_name", nullable = false)
 	private String name;
 
-	@Column(name = "subject_coef", nullable = false)
+	@Column(name = "subject_coefficient", nullable = false)
 	private Integer coefficient;
 
 	@Column(name = "subject_code", nullable = false, unique = true)
