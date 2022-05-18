@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +41,9 @@ public class SubjectRegistration {
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
+	@Column(name = "updated_at", nullable = false)
+	@Builder.Default
+	private LocalDateTime updatedAt = LocalDateTime.now();
 
 	@ManyToOne(cascade = CascadeType.ALL, optional = false)
 	@JoinColumn(name = "student_application_id", nullable = false)
@@ -50,6 +54,7 @@ public class SubjectRegistration {
 	private Subject subject;
 
 	@OneToMany(mappedBy = "subjectRegistration")
-	private List<Grade> grades;
+	@Builder.Default
+	private List<Grade> grades = new ArrayList<>();
 
 }
