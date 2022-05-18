@@ -2,6 +2,7 @@ package com.transkript.reportcard.data.entity;
 
 
 import com.transkript.reportcard.data.entity.composite.GradeId;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -33,13 +35,15 @@ public class Grade {
 	private String description;
 
 	@ManyToOne(cascade = CascadeType.ALL, optional = false)
-	@MapsId("registrationId")
-	@JoinColumn(name = "registrationId", nullable = false)
-	private SubjectRegistration subjectRegistration;
-
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
 	@MapsId("sequenceId")
 	@JoinColumn(name = "sequence_id", nullable = false)
 	private Sequence sequence;
+
+	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@JoinColumns({
+			@JoinColumn(name = "subject_registration_application_id", referencedColumnName = "application_id", nullable = false),
+			@JoinColumn(name = "subject_registration_subject_id", referencedColumnName = "subject_id", nullable = false)
+	})
+	private SubjectRegistration subjectRegistration;
 
 }
