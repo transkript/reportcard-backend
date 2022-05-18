@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -46,10 +47,10 @@ public class SubjectRegistrationController {
         return new ResponseEntity<>(subjectRegistrationService.getSubjectionRegistrations(applicationId), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{subjectRegistrationId}")
-    public ResponseEntity<Void> deleteSubjectRegistration(@NotNull @PathVariable Long subjectRegistrationId) {
-        log.info("Delete subject registration {}", subjectRegistrationId);
-        subjectRegistrationService.deleteSubjectRegistration(subjectRegistrationId);
+    @DeleteMapping(value = "")
+    public ResponseEntity<Void> deleteSubjectRegistration(@NotNull @RequestParam Long subjectId, @NotNull @RequestParam Long applicationId) {
+        log.info("Delete subject registration {} for application {}", subjectId, applicationId);
+        subjectRegistrationService.deleteSubjectRegistration(subjectId, applicationId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

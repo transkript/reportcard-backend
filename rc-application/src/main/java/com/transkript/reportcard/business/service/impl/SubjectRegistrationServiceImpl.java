@@ -7,7 +7,8 @@ import com.transkript.reportcard.business.service.StudentApplicationService;
 import com.transkript.reportcard.business.service.SubjectRegistrationService;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.repository.SubjectRegistrationRepository;
 import com.transkript.reportcard.data.repository.SubjectRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -15,8 +16,8 @@ import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,11 +37,13 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         SubjectRegistration subjectRegistration = subjectRegistrationMapper.mapDtoToSubjectRegistration(subjectRegistrationDto);
         subjectRegistration.setCreatedAt(LocalDateTime.now());
         subjectRegistration.setUpdatedAt(LocalDateTime.now());
+        subjectRegistration.setSubjectRegistrationKey(new SubjectRegistrationKey());
         if(subjectRegistrationDto.getApplicationId() == null) {
             throw new ReportCardException.IllegalArgumentException("Application Id is required");
         } else {
             StudentApplication studentApplication = studentApplicationService.getStudentApplicationEntity(subjectRegistrationDto.getApplicationId());
             subjectRegistration.setStudentApplication(studentApplication);
+            subjectRegistration.getSubjectRegistrationKey().setStudentApplicationId(studentApplication.getId());
         }
         if(subjectRegistrationDto.getSubjectId() == null) {
             throw new ReportCardException.IllegalArgumentException("Subject Id is required");
@@ -51,9 +54,10 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
                 throw new ReportCardException.IllegalStateException("Subject already registered: " + subject.getName(), HttpStatus.CONFLICT);
             }
             subjectRegistration.setSubject(subject);
+            subjectRegistration.getSubjectRegistrationKey().setSubjectId(subject.getId());
         }
         return EntityResponse.builder()
-                .id(subjectRegistrationRepository.save(subjectRegistration).getId())
+                .id(subjectRegistrationRepository.save(subjectRegistration).getSubjectRegistrationKey().getStudentApplicationId())
                 .entityName("subjectRegistration")
                 .message("Subject Registration added successfully")
                 .build();
@@ -82,12 +86,18 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
 
     @Override
     @Transactional
-    public void deleteSubjectRegistration(Long subjectRegistrationId) {
-        if(subjectRegistrationId == null) {
+    public void deleteSubjectRegistration(Long subjectId, Long applicationId) {
+        if(subjectId == null) {
             throw new ReportCardException.IllegalArgumentException("Subject Registration Id is required");
         }
-        SubjectRegistration subjectRegistration = subjectRegistrationRepository.findById(subjectRegistrationId)
-                .orElseThrow(() -> new EntityException.EntityNotFoundException("subjectRegistration", subjectRegistrationId));
-        subjectRegistrationRepository.deleteById(subjectRegistrationId);
+        if(applicationId == null) {
+            throw new ReportCardException.IllegalArgumentException("Application Id is required");
+        }
+        SubjectRegistrationKey subjectRegistrationKey = SubjectRegistrationKey.builder()
+                .subjectId(subjectId).studentApplicationId(applicationId).build();
+        subjectRegistrationRepository.findById(subjectRegistrationKey)
+                .ifPresentOrElse(subjectRegistrationRepository::delete, () -> {
+                    throw new EntityException.EntityNotFoundException("subjectRegistration", new Long[]{subjectId, applicationId});
+                });
     }
 }

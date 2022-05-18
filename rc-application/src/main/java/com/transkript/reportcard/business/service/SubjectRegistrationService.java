@@ -13,5 +13,5 @@ public interface SubjectRegistrationService {
 
     List<SubjectRegistrationDto> getSubjectionRegistrations(Long applicationId);
 
-    void deleteSubjectRegistration(Long subjectRegistrationId);
+    void deleteSubjectRegistration(Long subjectId, Long applicationId);
 }
