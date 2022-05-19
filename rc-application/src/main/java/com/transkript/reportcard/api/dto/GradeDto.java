@@ -2,26 +2,28 @@ package com.transkript.reportcard.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter
+@Setter
+@Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class GradeDto {
-    @JsonProperty("id")
-    private Long id;
-
-    @JsonProperty("score")
+    @JsonProperty(value = "score")
     private Float score;
 
-    @JsonProperty("description")
+    @JsonProperty(value = "description")
     private String description;
 
-    @JsonProperty("subject_reg_id")
-    private Long subjectRegistrationId;
+    @JsonProperty(value = "registration_id")
+    private Long registrationId;
 
-    @JsonProperty("sequence_id")
+    @JsonProperty(value = "sequence_id")
     private Long sequenceId;
 }
