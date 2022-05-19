@@ -1,12 +1,11 @@
 package com.transkript.reportcard.business.service.impl;
+
 import com.transkript.reportcard.api.dto.SequenceDto;
 import com.transkript.reportcard.business.mapper.SequenceMapper;
 import com.transkript.reportcard.business.service.SequenceService;
 import com.transkript.reportcard.business.service.TermService;
-import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.Term;
-import com.transkript.reportcard.data.repository.SectionRepository;
 import com.transkript.reportcard.data.repository.SequenceRepository;
 import com.transkript.reportcard.exception.EntityException;
 import lombok.AllArgsConstructor;
@@ -72,5 +71,12 @@ public class SequenceServiceImpl implements SequenceService {
             return "Successfully deleted Sequence with id: " + id;
         }
         throw new EntityException.EntityNotFoundException("Sequence with id " + id);
+    }
+
+    @Override
+    public Sequence getSequenceEntity(Long sequenceId) {
+       return sequenceRepository.findById(sequenceId).orElseThrow(
+               () -> new EntityException.EntityNotFoundException("sequence", sequenceId)
+       );
     }
 }

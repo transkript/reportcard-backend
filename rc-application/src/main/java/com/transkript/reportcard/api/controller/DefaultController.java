@@ -3,16 +3,20 @@ package com.transkript.reportcard.api.controller;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
+import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
+import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.enums.Gender;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.data.repository.SchoolRepository;
 import com.transkript.reportcard.data.repository.SectionRepository;
+import com.transkript.reportcard.data.repository.SequenceRepository;
 import com.transkript.reportcard.data.repository.StudentApplicationRepository;
 import com.transkript.reportcard.data.repository.StudentRepository;
 import com.transkript.reportcard.data.repository.SubjectRepository;
+import com.transkript.reportcard.data.repository.TermRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +38,8 @@ public class DefaultController {
     private final AcademicYearRepository academicYearRepository;
     private final StudentApplicationRepository studentApplicationRepository;
     private final StudentRepository studentRepository;
+    private final TermRepository termRepository;
+    private final SequenceRepository sequenceRepository;
 
     private School defaultSchool = School.builder().id(null).name("Default School").build();
     private final Section[] sections = new Section[] {
@@ -44,6 +50,19 @@ public class DefaultController {
             Subject.builder().id(null).name("Maths").coefficient(2).code("MAT").section(null).build(),
             Subject.builder().id(null).name("English").coefficient(2).code("ENG").section(null).build(),
             Subject.builder().id(null).name("French").coefficient(2).code("FRE").section(null).build(),
+    };
+    private final Term[] terms = new Term[] {
+            Term.builder().id(null).name("First Term").build(),
+            Term.builder().id(null).name("Second Term").build(),
+            Term.builder().id(null).name("Third Term").build(),
+    };
+    private final Sequence[] sequences = new Sequence[] {
+            Sequence.builder().id(null).name("First Sequence").build(),
+            Sequence.builder().id(null).name("Second Sequence").build(),
+            Sequence.builder().id(null).name("Third Sequence").build(),
+            Sequence.builder().id(null).name("Fourth Sequence").build(),
+            Sequence.builder().id(null).name("Fifth Sequence").build(),
+            Sequence.builder().id(null).name("Sixth Sequence").build(),
     };
     private AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
     private Student student = Student.builder()
@@ -73,6 +92,17 @@ public class DefaultController {
             studentApplication.setStudent(student);
             studentApplication.setAcademicYear(academicYear);
             studentApplicationRepository.save(studentApplication);
+        }
+        for(int i = 0, j = 0; i < terms.length; i++, j = j+2) {
+            terms[i].setAcademicYear(academicYear);
+            terms[i] = termRepository.save(terms[i]);
+
+            {
+                sequences[j].setTerm(terms[i]);
+                sequences[j] = sequenceRepository.save(sequences[j]);
+                sequences[j+1].setTerm(terms[i]);
+                sequences[j+1] = sequenceRepository.save(sequences[j+1]);
+            }
         }
         return "Success";
     }

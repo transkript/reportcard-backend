@@ -16,7 +16,6 @@ public interface SubjectMapper {
 
 	@Mappings({
 			@Mapping(target = "section", ignore = true),
-			@Mapping(target = "subjectRegistrations", ignore = true)
 	})
 	@InheritInverseConfiguration
 	Subject mapDtoToSubject(SubjectDto subjectDto);

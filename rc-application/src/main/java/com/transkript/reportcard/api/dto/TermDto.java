@@ -20,7 +20,4 @@ public class TermDto {
 
     @JsonProperty("academic_year_id")
     private Long academicYearId;
-
-    @JsonProperty("num_of_sequences")
-    private Integer numOfSequences;
 }

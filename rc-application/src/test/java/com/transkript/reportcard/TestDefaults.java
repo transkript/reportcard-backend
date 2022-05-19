@@ -22,9 +22,9 @@ public class TestDefaults {
     public static SubjectDto SUBJECT_DTO = SubjectDto.builder().id(1L).name("Math DTO").code("MATHCODEDTO").build();
 
     public static SubjectRegistration SUBJECT_REGISTRATION = SubjectRegistration.builder()
-            .subjectRegistrationKey(SubjectRegistrationKey.builder().build())
+            .id(1L)
             .createdAt(LocalDateTime.now())
-            .studentApplication(null).subject(SUBJECT).grades(Set.of()).build();
+            .studentApplication(null).subject(SUBJECT).grades(List.of()).build();
     public static SubjectRegistrationDto SUBJECT_REGISTRATION_DTO = SubjectRegistrationDto.builder()
             .createdAt(LocalDateTime.now())
             .applicationId(1L).subjectId(1L).build();

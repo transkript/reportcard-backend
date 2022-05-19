@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -17,6 +18,9 @@ import java.util.Date;
 public class EntityResponse {
     @JsonProperty(value = "id")
     private Long id;
+
+    @JsonProperty(value = "ids")
+    private Map<String, Object> ids;
 
     @JsonProperty(value = "message")
     private String message;
