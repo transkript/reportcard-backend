@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import com.transkript.reportcard.data.entity.AcademicYear;
+
 public interface AcademicYearService {
     String addAcademicYear(AcademicYearDto academicYearDto);
 
@@ -20,4 +22,5 @@ public interface AcademicYearService {
     String updateAcademicYear(Long id, AcademicYearDto academicYearDto);
 
     String deleteAcademicYear(Long id);
+    AcademicYear getAcademicYearEntity(Long academicYearId);
 }

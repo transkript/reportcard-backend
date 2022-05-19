@@ -12,15 +12,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectDto {
-    @JsonProperty("id")
+    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty("name")
+    @JsonProperty(value = "name")
     private String name;
 
-    @JsonProperty("code")
+    @JsonProperty(value = "code")
     private String code;
 
-    @JsonProperty("section_id")
+    @JsonProperty(value = "coefficient")
+    private Integer coefficient;
+
+    @JsonProperty(value = "section_id")
     private Long sectionId;
 }

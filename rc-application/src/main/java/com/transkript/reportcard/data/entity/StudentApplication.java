@@ -1,6 +1,7 @@
 package com.transkript.reportcard.data.entity;
 
 
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,16 +38,16 @@ public class StudentApplication {
 	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "student_id", nullable = false)
 	private Student student;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "academic_year_id", nullable = false)
 	private AcademicYear academicYear;
 
-	@OneToMany(mappedBy = "studentApplication", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
+	@OneToMany(mappedBy = "studentApplication", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
 
 }

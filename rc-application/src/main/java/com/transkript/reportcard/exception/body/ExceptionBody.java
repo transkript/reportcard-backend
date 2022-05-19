@@ -10,9 +10,8 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.WebRequest;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -29,18 +28,19 @@ public class ExceptionBody {
     @JsonProperty("code")
     private Integer code;
 
+    @Builder.Default
     @JsonProperty("timestamp")
-    @JsonFormat(pattern = "yy-mm-dd hh:mm:ss")
-    private LocalDateTime timestamp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     @JsonProperty("errors")
-    private List<String> errors;
+    private Map<String, String> errors;
 
     @JsonProperty("path")
     private String path;
 
-    public static ExceptionBody buildExceptionBody(RuntimeException exception, WebRequest webRequest, HttpStatus httpStatus, List<String> errors) {
-        return ExceptionBody.builder().message(exception.getMessage()).timestamp(LocalDateTime.now())
+    public static ExceptionBody buildExceptionBody(String message, WebRequest webRequest, HttpStatus httpStatus, Map<String, String> errors) {
+        return ExceptionBody.builder().message(message).timestamp(LocalDateTime.now())
                 .status(httpStatus).code(httpStatus.value()).errors(errors).path(webRequest.getContextPath())
                 .build();
     }

@@ -35,7 +35,7 @@ public class AcademicYear {
 	@Builder.Default
 	private Set<Term> terms = new LinkedHashSet<>();
 
-	@OneToMany(mappedBy = "academicYear", orphanRemoval = true)
+	@OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private List<StudentApplication> studentApplications = new ArrayList<>();
 

@@ -18,7 +18,7 @@
     <name>reportcard</name>
     <description>reportcard</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>
     </properties>

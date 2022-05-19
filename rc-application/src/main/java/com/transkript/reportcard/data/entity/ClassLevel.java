@@ -36,7 +36,7 @@ public class ClassLevel {
     @OneToMany(mappedBy = "classLevel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClassLevelSub> classLevelSubs = new ArrayList<>();
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "section_id", nullable = false)
 	private Section section;
 }

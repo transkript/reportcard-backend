@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface SchoolService {
+
+    School getSchoolEntity(Long id);
+
     String addSchool(SchoolDto schoolDto);
 
     List<SchoolDto> getSchools();

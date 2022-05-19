@@ -4,13 +4,11 @@ import com.transkript.reportcard.TestDefaults;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class SubjectRegistrationMapperTest {
@@ -32,7 +30,6 @@ class SubjectRegistrationMapperTest {
         actualSubjectRegistration.setStudentApplication(studentApplication);
         SubjectRegistrationDto expectedSubjectRegistrationDto = this.subjectRegistrationMapper.mapSubjectRegistrationToDto(actualSubjectRegistration);
 
-        Assertions.assertEquals(expectedSubjectRegistrationDto.getId(), actualSubjectRegistration.getId());
         Assertions.assertEquals(expectedSubjectRegistrationDto.getCreatedAt(), actualSubjectRegistration.getCreatedAt());
         Assertions.assertEquals(expectedSubjectRegistrationDto.getApplicationId(), actualSubjectRegistration.getStudentApplication().getId());
         Assertions.assertEquals(expectedSubjectRegistrationDto.getSubjectId(), actualSubjectRegistration.getSubject().getId());
@@ -44,7 +41,6 @@ class SubjectRegistrationMapperTest {
         SubjectRegistrationDto actualSubjectRegistrationDto = TestDefaults.SUBJECT_REGISTRATION_DTO;
         SubjectRegistration expectedSubjectRegistration = this.subjectRegistrationMapper.mapDtoToSubjectRegistration(actualSubjectRegistrationDto);
 
-        Assertions.assertEquals(expectedSubjectRegistration.getId(), actualSubjectRegistrationDto.getId());
         Assertions.assertEquals(expectedSubjectRegistration.getCreatedAt(), actualSubjectRegistrationDto.getCreatedAt());
 
     }

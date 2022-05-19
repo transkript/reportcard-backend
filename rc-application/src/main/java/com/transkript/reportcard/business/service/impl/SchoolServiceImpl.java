@@ -24,6 +24,13 @@ public class SchoolServiceImpl implements SchoolService {
     private final SchoolMapper schoolMapper;
 
     @Override
+    public School getSchoolEntity(Long id) {
+        return schoolRepository.findById(id).orElseThrow(()->{
+            throw new EntityException.EntityNotFoundException("school", id);
+        });
+    }
+
+    @Override
     public String addSchool(SchoolDto schoolDto) {
         School school = schoolMapper.mapDtoToSchool(schoolDto);
         school.setId(null);
@@ -65,7 +72,7 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.save(school);
             return "school with id: "+ id + "successfully updated";
         }
-        throw new EntityNotFoundException("School");
+        throw new EntityException.EntityNotFoundException("School");
     }
 
     @Override

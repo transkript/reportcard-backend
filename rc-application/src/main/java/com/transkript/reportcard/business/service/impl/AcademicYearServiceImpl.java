@@ -6,10 +6,9 @@ import com.transkript.reportcard.business.service.AcademicYearService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.exception.EntityException;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +16,8 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class AcademicYearServiceImpl implements AcademicYearService {
 
     private final AcademicYearRepository academicYearRepository;
@@ -75,5 +74,11 @@ public class AcademicYearServiceImpl implements AcademicYearService {
             return "Successfully deleted academic  year with ID: " + id;
         }
         throw new EntityException.EntityNotFoundException("Academic year with id: " + id);
+    }
+
+    @Override
+    public AcademicYear getAcademicYearEntity(Long academicYearId) {
+        return academicYearRepository.findById(academicYearId)
+                .orElseThrow(() -> new EntityException.EntityNotFoundException("academic year", academicYearId));
     }
 }
