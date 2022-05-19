@@ -37,7 +37,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     @Override
     public List<ClassLevelSubDto> getClassLevelSubs() {
         return classLevelSubRepository.findAll().stream()
-                .map(classLevelSub -> getClassLevelSubMapper().mapClassLevelSubToDto(classLevelSub))
+                .map(classLevelSubMapper::mapClassLevelSubToDto)
                 .collect(Collectors.toList());
     }
 

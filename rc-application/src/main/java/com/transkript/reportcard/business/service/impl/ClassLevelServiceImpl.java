@@ -40,7 +40,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     @Override
     public List<ClassLevelDto> getClassLevels() {
         return classLevelRepository.findAll().stream()
-                .map(classLevel->classLevelMapper.mapClassLevelToDto(classLevel))
+                .map(classLevelMapper::mapClassLevelToDto)
                 .collect(Collectors.toList());
     }
 
@@ -49,8 +49,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
         return classLevelMapper.mapClassLevelToDto(
                 classLevelRepository.findById(id).orElseThrow(
                         ()->{
-                            //TODO: Handle this exception
-                            throw new RuntimeException();
+                            throw new EntityException.EntityNotFoundException("Class level with id " + id);
                         }
                 )
         );

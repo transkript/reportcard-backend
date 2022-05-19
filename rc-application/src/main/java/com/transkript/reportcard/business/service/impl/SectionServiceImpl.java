@@ -40,7 +40,7 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public List<SectionDto> getSections() {
         return sectionRepository.findAll().stream()
-                .map(section -> sectionMapper.mapSectionToDto(section))
+                .map(sectionMapper::mapSectionToDto)
                 .collect(Collectors.toList());
     }
 
@@ -49,8 +49,7 @@ public class SectionServiceImpl implements SectionService {
         Optional<Section> sectionOptional = sectionRepository.findById(id);
         return sectionMapper.mapSectionToDto(sectionOptional.orElseThrow(()->{
 
-            //TODO: Handle this exception
-            throw new RuntimeException();
+            throw new EntityException.EntityNotFoundException("Section with id: " + id);
         }));
     }
 

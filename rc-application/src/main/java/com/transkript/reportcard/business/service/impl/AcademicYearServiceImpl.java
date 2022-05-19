@@ -35,7 +35,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
     @Override
     public List<AcademicYearDto> getAcademicYears() {
         return academicYearRepository.findAll().stream()
-                .map(academicYear -> academicYearMapper.mapAcademicYearToDto(academicYear))
+                .map(academicYearMapper::mapAcademicYearToDto)
                 .collect(Collectors.toList());
     }
 
