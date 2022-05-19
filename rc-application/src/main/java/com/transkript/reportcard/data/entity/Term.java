@@ -26,18 +26,18 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "term")
 public class Term {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	// many to one year
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "academic_year_id", nullable = false)
-	private AcademicYear academicYear;
+    // many to one year
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "academic_year_id", nullable = false)
+    private AcademicYear academicYear;
 
-	@OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Sequence> sequences;
+    @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sequence> sequences;
 }

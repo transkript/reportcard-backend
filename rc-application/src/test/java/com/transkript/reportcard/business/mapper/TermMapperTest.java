@@ -21,7 +21,8 @@ class TermMapperTest {
     @Test
     void mapTermToDto() {
         Term actualTerm = TestDefaults.TERM;
-        AcademicYear academicYear = new AcademicYear(); academicYear.setId(1L);
+        AcademicYear academicYear = new AcademicYear();
+        academicYear.setId(1L);
         actualTerm.setAcademicYear(academicYear);
         TermDto expectedTermDto = termMapper.mapTermToDto(actualTerm);
 

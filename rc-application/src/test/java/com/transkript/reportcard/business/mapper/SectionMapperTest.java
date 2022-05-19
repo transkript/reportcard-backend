@@ -4,7 +4,6 @@ import com.transkript.reportcard.api.dto.SectionDto;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,11 +12,10 @@ import java.util.List;
 
 @SpringBootTest
 class SectionMapperTest {
+    private final SectionMapper sectionMapper;
     Section testSection;
     School testSchool;
     SectionDto testSectionDto;
-
-    private final SectionMapper sectionMapper;
 
     @Autowired
     SectionMapperTest(SectionMapper sectionMapper) {

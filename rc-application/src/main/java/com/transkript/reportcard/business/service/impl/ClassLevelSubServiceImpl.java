@@ -1,4 +1,5 @@
 package com.transkript.reportcard.business.service.impl;
+
 import com.transkript.reportcard.api.dto.ClassLevelSubDto;
 import com.transkript.reportcard.business.mapper.ClassLevelSubMapper;
 import com.transkript.reportcard.business.service.ClassLevelService;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @Service
 public class ClassLevelSubServiceImpl implements ClassLevelSubService {
@@ -45,7 +47,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     public ClassLevelSubDto getClassLevelSub(Long id) {
         return classLevelSubMapper.mapClassLevelSubToDto(
                 classLevelSubRepository.findById(id).orElseThrow(
-                        ()-> {
+                        () -> {
                             throw new EntityException.EntityNotFoundException("Class level sub with id: " + id);
                         }
                 )

@@ -40,23 +40,21 @@ public class DefaultController {
     private final StudentRepository studentRepository;
     private final TermRepository termRepository;
     private final SequenceRepository sequenceRepository;
-
-    private School defaultSchool = School.builder().id(null).name("Default School").build();
-    private final Section[] sections = new Section[] {
+    private final Section[] sections = new Section[]{
             Section.builder().id(null).name("Default Section 1").category("Category").classLevels(List.of()).subjects(List.of()).build(),
             Section.builder().id(null).name("Default Section 2").category("Category").classLevels(List.of()).subjects(List.of()).build(),
     };
-    private final Subject[] subjects = new Subject[] {
+    private final Subject[] subjects = new Subject[]{
             Subject.builder().id(null).name("Maths").coefficient(2).code("MAT").section(null).build(),
             Subject.builder().id(null).name("English").coefficient(2).code("ENG").section(null).build(),
             Subject.builder().id(null).name("French").coefficient(2).code("FRE").section(null).build(),
     };
-    private final Term[] terms = new Term[] {
+    private final Term[] terms = new Term[]{
             Term.builder().id(null).name("First Term").build(),
             Term.builder().id(null).name("Second Term").build(),
             Term.builder().id(null).name("Third Term").build(),
     };
-    private final Sequence[] sequences = new Sequence[] {
+    private final Sequence[] sequences = new Sequence[]{
             Sequence.builder().id(null).name("First Sequence").build(),
             Sequence.builder().id(null).name("Second Sequence").build(),
             Sequence.builder().id(null).name("Third Sequence").build(),
@@ -64,23 +62,24 @@ public class DefaultController {
             Sequence.builder().id(null).name("Fifth Sequence").build(),
             Sequence.builder().id(null).name("Sixth Sequence").build(),
     };
+    private final StudentApplication studentApplication = StudentApplication.builder().id(null).student(null)
+            .createdAt(LocalDateTime.now()).build();
+    private School defaultSchool = School.builder().id(null).name("Default School").build();
     private AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
     private Student student = Student.builder()
             .id(null).name("John Bae").dob(LocalDateTime.now())
             .pob("Cameroon").regNum("123456789").gender(Gender.MALE).build();
-    private final StudentApplication studentApplication = StudentApplication.builder().id(null).student(null)
-            .createdAt(LocalDateTime.now()).build();
 
     @PostMapping(value = "/create")
     public String createDefaults() {
         defaultSchool = schoolRepository.save(defaultSchool);
         student = studentRepository.save(student);
         academicYear = academicYearRepository.save(academicYear);
-        for(int i = 0; i < sections.length; i++) {
+        for (int i = 0; i < sections.length; i++) {
             sections[i].setSchool(defaultSchool);
             sections[i] = sectionRepository.save(sections[i]);
         }
-        for(int i = 0; i < subjects.length - 1; i++) {
+        for (int i = 0; i < subjects.length - 1; i++) {
             subjects[i].setSection(sections[0]);
             subjectRepository.save(subjects[i]);
         }
@@ -93,15 +92,15 @@ public class DefaultController {
             studentApplication.setAcademicYear(academicYear);
             studentApplicationRepository.save(studentApplication);
         }
-        for(int i = 0, j = 0; i < terms.length; i++, j = j+2) {
+        for (int i = 0, j = 0; i < terms.length; i++, j = j + 2) {
             terms[i].setAcademicYear(academicYear);
             terms[i] = termRepository.save(terms[i]);
 
             {
                 sequences[j].setTerm(terms[i]);
                 sequences[j] = sequenceRepository.save(sequences[j]);
-                sequences[j+1].setTerm(terms[i]);
-                sequences[j+1] = sequenceRepository.save(sequences[j+1]);
+                sequences[j + 1].setTerm(terms[i]);
+                sequences[j + 1] = sequenceRepository.save(sequences[j + 1]);
             }
         }
         return "Success";

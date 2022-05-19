@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 
 @Builder
 @ToString
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentDto {

@@ -22,7 +22,8 @@ class SubjectMapperTest {
     void mapSubjectToDto() {
         Subject actualSubject = TestDefaults.SUBJECT;
         // TODO load from test defaults
-        Section section = new Section(); section.setId(1L);
+        Section section = new Section();
+        section.setId(1L);
         actualSubject.setSection(section);
         SubjectDto expectedDto = subjectMapper.mapSubjectToDto(actualSubject);
 

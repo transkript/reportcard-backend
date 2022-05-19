@@ -3,7 +3,6 @@ package com.transkript.reportcard.business.mapper;
 import com.transkript.reportcard.api.dto.SchoolDto;
 import com.transkript.reportcard.data.entity.School;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,10 +11,9 @@ import java.util.List;
 
 @SpringBootTest
 class SchoolMapperTest {
+    private final SchoolMapper schoolMapper;
     School testSchool;
     SchoolDto testSchoolDto;
-
-    private final SchoolMapper schoolMapper;
 
     @Autowired
     SchoolMapperTest(SchoolMapper schoolMapper) {

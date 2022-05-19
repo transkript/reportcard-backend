@@ -27,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
         Long[] id = new Long[1];
         Student student = studentMapper.mapDtoToStudent(studentDto);
         student.setId(null);
-        if(student.getDob() == null) {
+        if (student.getDob() == null) {
             student.setDob(LocalDateTime.now());
         }
         studentRepository.findByRegNum(student.getRegNum()).ifPresentOrElse(

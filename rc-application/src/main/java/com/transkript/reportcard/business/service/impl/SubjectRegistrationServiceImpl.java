@@ -36,17 +36,17 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         subjectRegistration.setCreatedAt(LocalDateTime.now());
         subjectRegistration.setUpdatedAt(LocalDateTime.now());
         subjectRegistration.setId(null);
-        if(subjectRegistrationDto.getApplicationId() == null) {
+        if (subjectRegistrationDto.getApplicationId() == null) {
             throw new ReportCardException.IllegalArgumentException("Application Id is required");
         } else {
             StudentApplication studentApplication = studentApplicationService.getStudentApplicationEntity(subjectRegistrationDto.getApplicationId());
             subjectRegistration.setStudentApplication(studentApplication);
         }
-        if(subjectRegistrationDto.getSubjectId() == null) {
+        if (subjectRegistrationDto.getSubjectId() == null) {
             throw new ReportCardException.IllegalArgumentException("Subject Id is required");
         } else {
             Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.getSubjectId());
-            if(subjectRegistrationRepository.findBySubject(subject).isPresent()) {
+            if (subjectRegistrationRepository.findBySubject(subject).isPresent()) {
                 throw new ReportCardException.IllegalStateException("Subject already registered: " + subject.getName(), HttpStatus.CONFLICT);
             }
             subjectRegistration.setSubject(subject);
@@ -60,7 +60,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
 
     @Override
     public List<EntityResponse> addSubjectRegistrations(Long applicationId, List<SubjectRegistrationDto> subjectRegistrationDtoList) {
-        if(applicationId == null ) {
+        if (applicationId == null) {
             throw new ReportCardException.IllegalArgumentException("Application Id is required");
         }
         return subjectRegistrationDtoList.stream()
@@ -78,7 +78,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     @Override
     @Transactional
     public void deleteSubjectRegistration(Long registrationId) {
-        if(registrationId == null) {
+        if (registrationId == null) {
             throw new ReportCardException.IllegalArgumentException("Subject registration Id is required");
         }
         subjectRegistrationRepository.findById(registrationId)
@@ -90,21 +90,21 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     @Override
     @Transactional(readOnly = true)
     public SubjectRegistration getSubjectRegistrationEntity(Long registrationId) {
-       return subjectRegistrationRepository.findById(registrationId)
-               .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", registrationId));
+        return subjectRegistrationRepository.findById(registrationId)
+                .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", registrationId));
     }
 
     /**
-     * @param applicationId 
+     * @param applicationId
      * @return
      */
     @Override
     @Transactional(readOnly = true)
     public List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long applicationId) {
-        if(applicationId == null) {
+        if (applicationId == null) {
             throw new ReportCardException.IllegalArgumentException("Application Id is required");
         }
-        StudentApplication application  = studentApplicationService.getStudentApplicationEntity(applicationId);
+        StudentApplication application = studentApplicationService.getStudentApplicationEntity(applicationId);
         return subjectRegistrationRepository.findAllByStudentApplication(application);
     }
 }

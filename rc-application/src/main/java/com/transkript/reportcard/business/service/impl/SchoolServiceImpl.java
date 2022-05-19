@@ -1,4 +1,5 @@
 package com.transkript.reportcard.business.service.impl;
+
 import com.transkript.reportcard.api.dto.SchoolDto;
 import com.transkript.reportcard.business.mapper.SchoolMapper;
 import com.transkript.reportcard.business.service.SchoolService;
@@ -10,12 +11,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @Service
 public class SchoolServiceImpl implements SchoolService {
@@ -25,7 +25,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School getSchoolEntity(Long id) {
-        return schoolRepository.findById(id).orElseThrow(()->{
+        return schoolRepository.findById(id).orElseThrow(() -> {
             throw new EntityException.EntityNotFoundException("school", id);
         });
     }
@@ -52,18 +52,18 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public String updateSchool(Long id, SchoolDto schoolDto) {
-        if(id != null && schoolRepository.existsById(id)){
+        if (id != null && schoolRepository.existsById(id)) {
             School school = schoolMapper.mapDtoToSchool(schoolDto);
             school.setId(id);
             schoolRepository.save(school);
-            return "school with id: "+ id + "successfully updated";
+            return "school with id: " + id + "successfully updated";
         }
         throw new EntityException.EntityNotFoundException("school", schoolDto.getId());
     }
 
     @Override
     public String deleteSchool(Long id) {
-        if(id != null && schoolRepository.existsById(id)){
+        if (id != null && schoolRepository.existsById(id)) {
             schoolRepository.deleteById(id);
             return "School with ID: " + id + "successfully deleted";
         }

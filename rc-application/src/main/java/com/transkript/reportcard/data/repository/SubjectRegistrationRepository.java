@@ -3,7 +3,6 @@ package com.transkript.reportcard.data.repository;
 
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
 import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

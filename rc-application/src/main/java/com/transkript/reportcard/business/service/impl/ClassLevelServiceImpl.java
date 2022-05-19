@@ -1,4 +1,5 @@
 package com.transkript.reportcard.business.service.impl;
+
 import com.transkript.reportcard.api.dto.ClassLevelDto;
 import com.transkript.reportcard.business.mapper.ClassLevelMapper;
 import com.transkript.reportcard.business.service.ClassLevelService;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @Service
 public class ClassLevelServiceImpl implements ClassLevelService {
@@ -28,7 +30,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     public String addClassLevel(ClassLevelDto classLevelDto) {
         ClassLevel classLevel = classLevelMapper.mapDtoToClassLevel(classLevelDto);
         Section section = sectionRepository.findById(classLevelDto.getSectionId()).orElseThrow(
-                ()->new EntityException.EntityNotFoundException("section with id: " +
+                () -> new EntityException.EntityNotFoundException("section with id: " +
                         classLevelDto.getSectionId())
         );
         classLevel.setId(null);
@@ -61,7 +63,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
         if (id != null && classLevelRepository.existsById(id)) {
             ClassLevel classLevel = classLevelMapper.mapDtoToClassLevel(classLevelDto);
             Section section = sectionRepository.findById(classLevelDto.getSectionId()).orElseThrow(
-                    ()->new EntityException.EntityNotFoundException("section with id: " +
+                    () -> new EntityException.EntityNotFoundException("section with id: " +
                             classLevelDto.getSectionId())
             );
             classLevel.setId(null);

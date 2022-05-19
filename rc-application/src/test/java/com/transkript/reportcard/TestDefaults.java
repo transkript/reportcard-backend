@@ -6,13 +6,11 @@ import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.TermDto;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.entity.Term;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 public class TestDefaults {
     /**

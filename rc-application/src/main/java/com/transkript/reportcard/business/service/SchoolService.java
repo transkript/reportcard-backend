@@ -3,7 +3,6 @@ package com.transkript.reportcard.business.service;
 
 import com.transkript.reportcard.api.dto.SchoolDto;
 import com.transkript.reportcard.data.entity.School;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

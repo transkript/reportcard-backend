@@ -5,7 +5,6 @@ import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,12 +14,11 @@ import java.util.List;
 
 @SpringBootTest
 class StudentApplicationMapperTest {
+    private final StudentApplicationMapper studentApplicationMapper;
     StudentApplication testStudentApplication;
     StudentApplicationDto testStudentApplicationDto;
     Student testStudent;
     AcademicYear testAcademicYear;
-
-    private final StudentApplicationMapper studentApplicationMapper;
 
     @Autowired
     StudentApplicationMapperTest(StudentApplicationMapper studentApplicationMapper) {

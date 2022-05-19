@@ -1,4 +1,5 @@
 package com.transkript.reportcard.business.service.impl;
+
 import com.transkript.reportcard.api.dto.GradeDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.GradeMapper;
@@ -30,7 +31,7 @@ public class GradeServiceImpl implements GradeService {
     private final StudentApplicationService studentApplicationService;
 
     /**
-     * @param gradeDto 
+     * @param gradeDto
      * @return
      */
     @Override
@@ -66,7 +67,7 @@ public class GradeServiceImpl implements GradeService {
      */
     @Override
     public List<List<GradeDto>> getGradesByApplicationId(Long applicationId) {
-        if(applicationId == null) {
+        if (applicationId == null) {
             throw new ReportCardException.IllegalArgumentException("Application id is required");
         }
         return subjectRegistrationService.getSubjectRegistrationEntitiesByApplication(applicationId)

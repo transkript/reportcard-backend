@@ -29,29 +29,29 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "student")
 public class Student {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", nullable = false)
-	private Gender gender;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
 
-	@Builder.Default
-	@Column(name = "dob", nullable = false)
-	private LocalDateTime dob = LocalDateTime.now();
+    @Builder.Default
+    @Column(name = "dob", nullable = false)
+    private LocalDateTime dob = LocalDateTime.now();
 
-	@Column(name = "pob", nullable = false)
-	private String pob;
+    @Column(name = "pob", nullable = false)
+    private String pob;
 
-	@Column(name = "reg_num", nullable = false, unique = true)
-	private String regNum;
+    @Column(name = "reg_num", nullable = false, unique = true)
+    private String regNum;
 
-	@Builder.Default
-	@OneToMany(mappedBy = "student", orphanRemoval = true)
-	private List<StudentApplication> studentApplications = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    private List<StudentApplication> studentApplications = new ArrayList<>();
 
 }

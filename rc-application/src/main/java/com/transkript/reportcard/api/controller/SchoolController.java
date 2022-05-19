@@ -6,7 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -20,32 +27,32 @@ public class SchoolController {
 
 
     @PostMapping
-    public ResponseEntity<String> addSchool(@RequestBody SchoolDto schoolDto){
-        log.info("Adding school with name "+ schoolDto.getName());
-        return new ResponseEntity<String>(schoolService.addSchool(schoolDto), HttpStatus.CREATED);
+    public ResponseEntity<String> addSchool(@RequestBody SchoolDto schoolDto) {
+        log.info("Adding school with name " + schoolDto.getName());
+        return new ResponseEntity<>(schoolService.addSchool(schoolDto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<SchoolDto>> getSchools(){
+    public ResponseEntity<List<SchoolDto>> getSchools() {
         log.info("Getting all schools");
         return ResponseEntity.ok(schoolService.getSchools());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SchoolDto> getSchool(@PathVariable("id") Long id){
+    public ResponseEntity<SchoolDto> getSchool(@PathVariable("id") Long id) {
         log.info("Getting school with Id: " + id);
         return ResponseEntity.ok(schoolService.getSchool(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateSchool( @PathVariable("id") Long id, @RequestBody SchoolDto schoolDto){
-        log.info("Updating school with ID: "+ id);
+    public ResponseEntity<String> updateSchool(@PathVariable("id") Long id, @RequestBody SchoolDto schoolDto) {
+        log.info("Updating school with ID: " + id);
         return ResponseEntity.ok(schoolService.updateSchool(id, schoolDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSchool(@PathVariable("id") Long id){
-        log.info("Deleting School with ID: "+id);
+    public ResponseEntity<String> deleteSchool(@PathVariable("id") Long id) {
+        log.info("Deleting School with ID: " + id);
         return ResponseEntity.ok(schoolService.deleteSchool(id));
     }
 }

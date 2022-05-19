@@ -11,24 +11,24 @@ import org.mapstruct.Mappings;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", implementationPackage="<PACKAGE_NAME>.impl")
+@Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
 public interface SchoolMapper {
-	@Mappings({
-			@Mapping(
-					target = "numberOfSections",
-					expression = "java(mapNumberOfSections(school.getSections()))"
-			)
-	})
-	SchoolDto mapSchoolToDto(School school);
+    @Mappings({
+            @Mapping(
+                    target = "numberOfSections",
+                    expression = "java(mapNumberOfSections(school.getSections()))"
+            )
+    })
+    SchoolDto mapSchoolToDto(School school);
 
-	default Integer mapNumberOfSections(List<Section> sections) {
-		return sections.size();
-	}
+    default Integer mapNumberOfSections(List<Section> sections) {
+        return sections.size();
+    }
 
-	@Mappings({
-			@Mapping(target = "sections", ignore = true)
-	})
-	@InheritInverseConfiguration
-	School mapDtoToSchool(SchoolDto schoolDto);
+    @Mappings({
+            @Mapping(target = "sections", ignore = true)
+    })
+    @InheritInverseConfiguration
+    School mapDtoToSchool(SchoolDto schoolDto);
 
 }

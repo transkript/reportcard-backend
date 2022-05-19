@@ -46,7 +46,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
             Student student = studentService.getStudentEntity(studentApplicationDto.getStudentId());
             studentApplication.setStudent(student);
         }
-        if(studentApplicationDto.getAcademicYearId() == null) {
+        if (studentApplicationDto.getAcademicYearId() == null) {
             throw new ReportCardException.IllegalArgumentException("Academic year id is required");
         } else {
             AcademicYear academicYear = academicYearService.getAcademicYearEntity(studentApplicationDto.getAcademicYearId());

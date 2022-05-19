@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @Service
 public class TermServiceImpl implements TermService {
@@ -56,7 +57,7 @@ public class TermServiceImpl implements TermService {
     @Override
     public Term getTermById(Long id) {
         return termRepository.findById(id).orElseThrow(
-                ()->{
+                () -> {
                     throw new EntityException.EntityNotFoundException("Term with id: " + id);
                 }
         );

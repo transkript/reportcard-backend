@@ -26,17 +26,17 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "class_level")
 public class ClassLevel {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(nullable = false)
+    private String name;
 
     @OneToMany(mappedBy = "classLevel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClassLevelSub> classLevelSubs = new ArrayList<>();
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "section_id", nullable = false)
-	private Section section;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "section_id", nullable = false)
+    private Section section;
 }

@@ -3,7 +3,6 @@ package com.transkript.reportcard.business.service;
 
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
-import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,5 +19,6 @@ public interface SubjectRegistrationService {
     void deleteSubjectRegistration(Long registrationId);
 
     SubjectRegistration getSubjectRegistrationEntity(Long registrationId);
+
     List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long applicationId);
 }

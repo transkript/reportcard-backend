@@ -1,24 +1,19 @@
 package com.transkript.reportcard.business.mapper;
 
-import com.transkript.reportcard.api.dto.SectionDto;
 import com.transkript.reportcard.api.dto.SequenceDto;
-import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.Term;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class SequenceMapperTest {
+    private final SequenceMapper sequenceMapper;
     Sequence testSequence;
     SequenceDto testSequenceDto;
     Term testTerm;
-
-    private final SequenceMapper sequenceMapper;
 
     @Autowired
     SequenceMapperTest(SequenceMapper sequenceMapper) {

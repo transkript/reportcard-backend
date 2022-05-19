@@ -18,13 +18,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 public class SubjectServiceImpl implements SubjectService {
 
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
     private final SectionService sectionService;
+
     @Override
     public List<SubjectDto> getSubjects() {
 
@@ -45,28 +47,28 @@ public class SubjectServiceImpl implements SubjectService {
         subject.setId(null);
         subject.setSection(section);
         subjectRepository.save(subject);
-        return "Subject with name "+ subject.getName() + "Successfully Added";
+        return "Subject with name " + subject.getName() + "Successfully Added";
     }
 
     @Override
     public String updateSubject(Long id, SubjectDto subjectDto) {
-        if(id != null && subjectRepository.existsById(id) && id.equals(subjectDto.getId())){
+        if (id != null && subjectRepository.existsById(id) && id.equals(subjectDto.getId())) {
             Subject subject = subjectRepository.getById(id);
-            if(subjectDto.getName() != null & !Objects.equals(subjectDto.getName(), subject.getName())){
+            if (subjectDto.getName() != null & !Objects.equals(subjectDto.getName(), subject.getName())) {
                 subject.setName(subjectDto.getName());
             }
-            if(subjectDto.getCode() != null & !Objects.equals(subjectDto.getCode(), subject.getCode())) {
+            if (subjectDto.getCode() != null & !Objects.equals(subjectDto.getCode(), subject.getCode())) {
                 subject.setCode(subjectDto.getCode());
             }
-            if(subjectDto.getCoefficient() != null && !Objects.equals(subjectDto.getCoefficient(), subject.getCoefficient())){
+            if (subjectDto.getCoefficient() != null && !Objects.equals(subjectDto.getCoefficient(), subject.getCoefficient())) {
                 subject.setCoefficient(subjectDto.getCoefficient());
             }
-            if(subjectDto.getSectionId() != null && !Objects.equals(subjectDto.getSectionId(), subject.getSection().getId())){
-                Section section  = sectionService.getSectionEntity(subjectDto.getSectionId());
+            if (subjectDto.getSectionId() != null && !Objects.equals(subjectDto.getSectionId(), subject.getSection().getId())) {
+                Section section = sectionService.getSectionEntity(subjectDto.getSectionId());
                 subject.setSection(section);
             }
             subjectRepository.save(subject);
-            return "Subject with ID: "+ id + " Successfully updated";
+            return "Subject with ID: " + id + " Successfully updated";
 
         }
         throw new EntityException.EntityNotFoundException("subject");
@@ -74,7 +76,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public String deleteSubject(Long id) {
-        if(id != null && subjectRepository.existsById(id)){
+        if (id != null && subjectRepository.existsById(id)) {
             subjectRepository.deleteById(id);
             return "Subject with ID: " + id + "Successfully Deleted";
         }

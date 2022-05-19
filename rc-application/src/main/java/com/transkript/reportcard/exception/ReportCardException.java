@@ -21,6 +21,7 @@ public class ReportCardException extends RuntimeException {
         public IllegalArgumentException(String message) {
             super(message);
         }
+
         public IllegalArgumentException(String message, HttpStatus status) {
             super(message, status);
         }
@@ -30,6 +31,7 @@ public class ReportCardException extends RuntimeException {
         public IllegalStateException(String message) {
             super(message);
         }
+
         public IllegalStateException(String message, HttpStatus status) {
             super(message, status);
         }

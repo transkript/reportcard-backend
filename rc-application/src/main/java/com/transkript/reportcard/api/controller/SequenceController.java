@@ -6,7 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,11 +28,11 @@ public class SequenceController {
     @PostMapping
     public ResponseEntity<String> addSequence(@RequestBody SequenceDto sequenceDto) {
         log.info("Adding section with name " + sequenceDto.getName());
-        return new ResponseEntity<String>(sequenceService.addSequence(sequenceDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(sequenceService.addSequence(sequenceDto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<SequenceDto>> getSequences(){
+    public ResponseEntity<List<SequenceDto>> getSequences() {
         log.info("Getting all sections");
         return ResponseEntity.ok(sequenceService.getSequences());
     }
@@ -33,7 +40,7 @@ public class SequenceController {
     @GetMapping("/{id}")
     public ResponseEntity<SequenceDto> getSequence(
             @PathVariable Long id
-    ){
+    ) {
         log.info("Getting the Sequence with id " + id);
         return ResponseEntity.ok(sequenceService.getSequence(id));
     }

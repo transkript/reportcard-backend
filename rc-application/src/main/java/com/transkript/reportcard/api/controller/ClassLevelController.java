@@ -2,12 +2,18 @@ package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.ClassLevelDto;
 import com.transkript.reportcard.business.service.ClassLevelService;
-import com.transkript.reportcard.data.entity.ClassLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,9 +27,9 @@ public class ClassLevelController {
 
     @PostMapping
     public ResponseEntity<String> addClassLevel(
-            @RequestBody ClassLevelDto classLevelDto){
+            @RequestBody ClassLevelDto classLevelDto) {
         log.info("Adding class level with name " + classLevelDto.getName());
-        return new ResponseEntity<String>(classLevelService.addClassLevel(classLevelDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(classLevelService.addClassLevel(classLevelDto), HttpStatus.CREATED);
     }
 
     @GetMapping

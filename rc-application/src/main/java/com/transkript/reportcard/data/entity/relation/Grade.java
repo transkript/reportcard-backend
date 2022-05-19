@@ -27,25 +27,25 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Table(name = "grade")
 public class Grade {
-	@EmbeddedId
-	private GradeKey gradeKey;
+    @EmbeddedId
+    private GradeKey gradeKey;
 
-	@Column(nullable = false, name = "grade_score")
-	@Builder.Default
-	private Float score = 0F;
+    @Column(nullable = false, name = "grade_score")
+    @Builder.Default
+    private Float score = 0F;
 
-	@Column(nullable = false, name = "grade_desc")
-	private String description;
+    @Column(nullable = false, name = "grade_desc")
+    private String description;
 
-	@ManyToOne(optional = false)
-	@MapsId("sequenceId")
-	@JoinColumn(name = "sequence_id", nullable = false)
-	private Sequence sequence;
+    @ManyToOne(optional = false)
+    @MapsId("sequenceId")
+    @JoinColumn(name = "sequence_id", nullable = false)
+    private Sequence sequence;
 
-	@MapsId("registrationId")
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "subject_registration_ID", nullable = false)
-	private SubjectRegistration subjectRegistration;
+    @MapsId("registrationId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "subject_registration_ID", nullable = false)
+    private SubjectRegistration subjectRegistration;
 
 
 }

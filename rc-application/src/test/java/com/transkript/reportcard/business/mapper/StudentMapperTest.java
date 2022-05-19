@@ -3,13 +3,11 @@ package com.transkript.reportcard.business.mapper;
 import com.transkript.reportcard.api.dto.StudentDto;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.enums.Gender;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.time.LocalDateTime;
 import java.util.List;
 

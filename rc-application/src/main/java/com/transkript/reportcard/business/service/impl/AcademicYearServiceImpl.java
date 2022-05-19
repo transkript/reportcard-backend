@@ -41,16 +41,16 @@ public class AcademicYearServiceImpl implements AcademicYearService {
     @Override
     public AcademicYearDto getAcademicYear(Long id) {
         return academicYearMapper.mapAcademicYearToDto(academicYearRepository.findById(id).orElseThrow(
-            ()->{
-                throw new EntityException.EntityNotFoundException("Academic year with id " + id);
-            }
+                () -> {
+                    throw new EntityException.EntityNotFoundException("Academic year with id " + id);
+                }
         ));
     }
 
     @Override
     public AcademicYear getAcademicYearById(Long id) {
         return academicYearRepository.findById(id).orElseThrow(
-                ()->{
+                () -> {
                     throw new EntityException.EntityNotFoundException("Academic year with id " + id);
                 }
         );

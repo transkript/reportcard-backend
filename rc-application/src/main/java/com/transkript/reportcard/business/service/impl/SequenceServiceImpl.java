@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @Service
 public class SequenceServiceImpl implements SequenceService {
@@ -75,8 +76,8 @@ public class SequenceServiceImpl implements SequenceService {
 
     @Override
     public Sequence getSequenceEntity(Long sequenceId) {
-       return sequenceRepository.findById(sequenceId).orElseThrow(
-               () -> new EntityException.EntityNotFoundException("sequence", sequenceId)
-       );
+        return sequenceRepository.findById(sequenceId).orElseThrow(
+                () -> new EntityException.EntityNotFoundException("sequence", sequenceId)
+        );
     }
 }

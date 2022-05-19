@@ -1,12 +1,11 @@
 package com.transkript.reportcard.data.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Builder;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,14 +23,14 @@ import javax.persistence.Table;
 @Builder
 @Table(name = "sequence")
 public class Sequence {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "term_id", nullable = false)
-	private Term term;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "term_id", nullable = false)
+    private Term term;
 }

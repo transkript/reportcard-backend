@@ -3,10 +3,10 @@ package com.transkript.reportcard.data.entity;
 
 import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Builder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,24 +30,24 @@ import java.util.List;
 @Builder
 @Table(name = "student_application")
 public class StudentApplication {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "created_at", nullable = false, updatable = false)
-	@Builder.Default
-	private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "student_id", nullable = false)
-	private Student student;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "academic_year_id", nullable = false)
-	private AcademicYear academicYear;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "academic_year_id", nullable = false)
+    private AcademicYear academicYear;
 
-	@Builder.Default
-	@OneToMany(mappedBy = "studentApplication", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "studentApplication", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
 
 }
