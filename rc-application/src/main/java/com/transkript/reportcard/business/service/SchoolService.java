@@ -17,8 +17,6 @@ public interface SchoolService {
 
     SchoolDto getSchool(Long id);
 
-    School getSchoolById(Long id);
-
     String updateSchool(Long id, SchoolDto schoolDto);
 
     String deleteSchool(Long id);

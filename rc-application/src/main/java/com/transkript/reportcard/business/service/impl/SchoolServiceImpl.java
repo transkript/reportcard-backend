@@ -47,21 +47,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public SchoolDto getSchool(Long id) {
-        Optional<School> schoolOptional = schoolRepository.findById(id);
-
-        return schoolMapper.mapSchoolToDto(schoolOptional.orElseThrow(()->{
-
-            //TODO: Handle this exception
-            throw new RuntimeException();
-        }));
-
-    }
-
-    @Override
-    public School getSchoolById(Long id) {
-        return schoolRepository.findById(id).orElseThrow(() -> {
-            throw new EntityException.EntityNotFoundException("school");
-        });
+        return schoolMapper.mapSchoolToDto(getSchoolEntity(id));
     }
 
     @Override
@@ -72,7 +58,7 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.save(school);
             return "school with id: "+ id + "successfully updated";
         }
-        throw new EntityException.EntityNotFoundException("School");
+        throw new EntityException.EntityNotFoundException("school", schoolDto.getId());
     }
 
     @Override
@@ -81,6 +67,6 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.deleteById(id);
             return "School with ID: " + id + "successfully deleted";
         }
-        throw  new EntityException.EntityNotFoundException("school");
+        throw new EntityException.EntityNotFoundException("school");
     }
 }

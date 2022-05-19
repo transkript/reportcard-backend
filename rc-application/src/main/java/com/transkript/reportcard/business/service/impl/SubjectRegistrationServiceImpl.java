@@ -5,12 +5,12 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
 import com.transkript.reportcard.business.service.StudentApplicationService;
 import com.transkript.reportcard.business.service.SubjectRegistrationService;
+import com.transkript.reportcard.business.service.SubjectService;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
 import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.repository.SubjectRegistrationRepository;
-import com.transkript.reportcard.data.repository.SubjectRepository;
 import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +28,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     private final SubjectRegistrationRepository subjectRegistrationRepository;
     private final SubjectRegistrationMapper subjectRegistrationMapper;
     private final StudentApplicationService studentApplicationService;
-    // TODO change this to the service instead
-    private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
 
 
     @Override
@@ -48,8 +47,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         if(subjectRegistrationDto.getSubjectId() == null) {
             throw new ReportCardException.IllegalArgumentException("Subject Id is required");
         } else {
-            Subject subject = subjectRepository.findById(subjectRegistrationDto.getSubjectId())
-                    .orElseThrow(() -> new EntityException.EntityNotFoundException("subject", subjectRegistrationDto.getSubjectId()));
+            Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.getSubjectId());
             if(subjectRegistrationRepository.findBySubject(subject).isPresent()) {
                 throw new ReportCardException.IllegalStateException("Subject already registered: " + subject.getName(), HttpStatus.CONFLICT);
             }

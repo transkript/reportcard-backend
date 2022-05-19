@@ -40,29 +40,20 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     @Override
     public List<ClassLevelDto> getClassLevels() {
         return classLevelRepository.findAll().stream()
-                .map(classLevel->classLevelMapper.mapClassLevelToDto(classLevel))
+                .map(classLevelMapper::mapClassLevelToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ClassLevelDto getClassLevel(Long id) {
-        return classLevelMapper.mapClassLevelToDto(
-                classLevelRepository.findById(id).orElseThrow(
-                        ()->{
-                            //TODO: Handle this exception
-                            throw new RuntimeException();
-                        }
-                )
-        );
+        return classLevelMapper.mapClassLevelToDto(getClassLevelEntity(id));
     }
 
     @Override
-    public ClassLevel getClassLevelById(Long id) {
-        return classLevelRepository.findById(id).orElseThrow(
-                ()->{
-                    throw new EntityException.EntityNotFoundException("Class level with id: " + id);
-                }
-        );
+    public ClassLevel getClassLevelEntity(Long id) {
+        return classLevelRepository.findById(id).orElseThrow(() -> {
+            throw new EntityException.EntityNotFoundException("Class level with id: " + id);
+        });
     }
 
     @Override

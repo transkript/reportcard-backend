@@ -27,7 +27,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     @Override
     public String addClassLevelSub(ClassLevelSubDto classLevelSubDto) {
         ClassLevelSub classLevelSub = classLevelSubMapper.mapDtoToClassLevelSub(classLevelSubDto);
-        ClassLevel classLevel = classLevelService.getClassLevelById(classLevelSubDto.getClassLevelId());
+        ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
         classLevelSub.setId(null);
         classLevelSub.setClassLevel(classLevel);
         classLevelSubRepository.save(classLevelSub);
@@ -56,7 +56,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     public String updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto) {
         if (id != null && classLevelSubRepository.existsById(id)) {
             ClassLevelSub classLevelSub = classLevelSubMapper.mapDtoToClassLevelSub(classLevelSubDto);
-            ClassLevel classLevel = classLevelService.getClassLevelById(classLevelSubDto.getClassLevelId());
+            ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
             classLevelSub.setId(id);
             classLevelSub.setClassLevel(classLevel);
             classLevelSubRepository.save(classLevelSub);

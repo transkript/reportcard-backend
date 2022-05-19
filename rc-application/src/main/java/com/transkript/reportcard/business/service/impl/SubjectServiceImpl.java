@@ -1,4 +1,5 @@
 package com.transkript.reportcard.business.service.impl;
+
 import com.transkript.reportcard.api.dto.SubjectDto;
 import com.transkript.reportcard.business.mapper.SubjectMapper;
 import com.transkript.reportcard.business.service.SectionService;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +35,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectDto getSubject(Long id) {
-        Optional<Subject> subjectOptional = subjectRepository.findById(id);
-        return subjectMapper.mapSubjectToDto(subjectOptional.orElseThrow(()->{
-            throw new EntityException.EntityNotFoundException("subject");
-        }));
+        return subjectMapper.mapSubjectToDto(getSubjectEntity(id));
     }
 
     @Override
@@ -84,5 +81,10 @@ public class SubjectServiceImpl implements SubjectService {
         throw new EntityException.EntityNotFoundException("subject");
     }
 
-
+    @Override
+    public Subject getSubjectEntity(Long subjectId) {
+        return subjectRepository.findById(subjectId).orElseThrow(
+                () -> new EntityException.EntityNotFoundException("subject", subjectId)
+        );
+    }
 }
