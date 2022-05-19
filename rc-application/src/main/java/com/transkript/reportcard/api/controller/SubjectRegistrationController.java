@@ -47,10 +47,10 @@ public class SubjectRegistrationController {
         return new ResponseEntity<>(subjectRegistrationService.getSubjectionRegistrations(applicationId), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "")
-    public ResponseEntity<Void> deleteSubjectRegistration(@NotNull @RequestParam Long subjectId, @NotNull @RequestParam Long applicationId) {
-        log.info("Delete subject registration {} for application {}", subjectId, applicationId);
-        subjectRegistrationService.deleteSubjectRegistration(subjectId, applicationId);
+    @DeleteMapping(value = "/{registrationId}")
+    public ResponseEntity<Void> deleteSubjectRegistration(@NotNull @PathVariable Long registrationId) {
+        log.info("Delete subject registration {} ", registrationId);
+        subjectRegistrationService.deleteSubjectRegistration(registrationId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -11,25 +11,29 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Builder
-@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectRegistrationDto {
-    @JsonProperty("created_at")
+    @JsonProperty(value = "id")
+    private Long id;
+
+    @JsonProperty(value = "created_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime createdAt;
 
-    @JsonProperty("updated_at")
+    @JsonProperty(value = "updated_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime updatedAt;
 
     // from relations
-    @JsonProperty("application_id")
+    @JsonProperty(value = "application_id")
     @NotNull
     private Long applicationId;
 
-    @JsonProperty("subject_id")
+    @JsonProperty(value = "subject_id")
     @NotNull
     private Long subjectId;
 }
