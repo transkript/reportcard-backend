@@ -18,7 +18,7 @@ public interface AcademicYearMapper {
 
     @Mappings({
             @Mapping(target = "terms", ignore = true),
-            @Mapping(target = "studentApplications", ignore = true)
+            @Mapping(target = "studentApplications", ignore = true),
     })
     @InheritInverseConfiguration
     AcademicYear mapDtoToAcademicYear(AcademicYearDto academicyearDto);
