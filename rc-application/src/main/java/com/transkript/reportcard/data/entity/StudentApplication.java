@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,9 +35,14 @@ public class StudentApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
     @Builder.Default
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Builder.Default
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false, updatable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", nullable = false)

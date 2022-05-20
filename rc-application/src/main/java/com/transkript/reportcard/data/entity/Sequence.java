@@ -1,5 +1,6 @@
 package com.transkript.reportcard.data.entity;
 
+import com.transkript.reportcard.data.entity.abstracts.AcademicInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,4 +35,7 @@ public class Sequence {
     @ManyToOne(optional = false)
     @JoinColumn(name = "term_id", nullable = false)
     private Term term;
+
+    @Embedded
+    private AcademicInfo academicInfo;
 }

@@ -21,4 +21,7 @@ public class TermDto {
 
     @JsonProperty("academic_year_id")
     private Long academicYearId;
+
+    @JsonProperty("academic_info")
+    private AcademicInfoDto academicInfo;
 }

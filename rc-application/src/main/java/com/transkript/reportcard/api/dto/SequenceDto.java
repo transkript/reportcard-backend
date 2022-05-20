@@ -21,4 +21,7 @@ public class SequenceDto {
 
     @JsonProperty(value = "term_id")
     private Long termId;
+
+    @JsonProperty("academic_info")
+    private AcademicInfoDto academicInfo;
 }
