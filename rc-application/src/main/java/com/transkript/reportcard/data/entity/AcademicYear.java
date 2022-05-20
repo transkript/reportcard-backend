@@ -1,6 +1,7 @@
 package com.transkript.reportcard.data.entity;
 
 
+import com.transkript.reportcard.data.entity.abstracts.AcademicInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,4 +46,6 @@ public class AcademicYear {
     @Builder.Default
     private List<StudentApplication> studentApplications = new ArrayList<>();
 
+    @Embedded
+    private AcademicInfo academicInfo;
 }

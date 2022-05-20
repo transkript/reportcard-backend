@@ -1,6 +1,5 @@
 package com.transkript.reportcard.api.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -11,26 +10,17 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Builder
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AcademicYearDto {
-    @JsonProperty("id")
-    private Long id;
-
-    @JsonProperty("name")
-    private String name;
-
-    //from relations
-    @JsonProperty("number_of_terms")
-    private Integer numberOfTerms;
-
+public class AcademicInfoDto {
     @JsonProperty(value = "start_date")
-    @JsonFormat( pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime startDate;
 
-    @JsonProperty("academic_info")
-    private AcademicInfoDto academicInfo;
+    @JsonProperty(value = "end_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private LocalDateTime endDate;
 }
