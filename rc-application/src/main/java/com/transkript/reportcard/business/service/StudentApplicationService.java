@@ -10,7 +10,7 @@ import java.util.List;
 public interface StudentApplicationService {
     StudentApplication getStudentApplicationEntity(Long id);
 
-    EntityResponse addStudentApplication(StudentApplicationDto studentApplicationDto);
+    EntityResponse addStudentApplication(StudentApplicationDto applicationDto);
 
     List<StudentApplicationDto> getStudentApplications();
 

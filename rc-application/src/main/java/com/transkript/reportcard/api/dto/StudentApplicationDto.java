@@ -36,4 +36,12 @@ public class StudentApplicationDto {
 
     @JsonProperty(value = "number_of_subjects")
     private Integer numberOfSubjects;
+
+    @JsonProperty(value = "class_level_id")
+    @NotNull
+    private Long classLevelId;
+
+    @JsonProperty(value = "class_level_id")
+    @NotNull
+    private Long classLevelSubId;
 }

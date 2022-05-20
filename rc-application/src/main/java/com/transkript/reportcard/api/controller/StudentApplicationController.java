@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -23,7 +24,7 @@ public class StudentApplicationController {
     private final StudentApplicationService studentApplicationService;
 
     @PostMapping(value = "")
-    public ResponseEntity<EntityResponse> addStudentApplication(@RequestBody StudentApplicationDto studentApplicationDto) {
+    public ResponseEntity<EntityResponse> addStudentApplication(@Valid @RequestBody StudentApplicationDto studentApplicationDto) {
         log.info("Adding student application: {}", studentApplicationDto);
         return ResponseEntity.ok(studentApplicationService.addStudentApplication(studentApplicationDto));
     }
