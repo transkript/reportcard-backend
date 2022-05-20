@@ -2,6 +2,7 @@ package com.transkript.reportcard.data.entity;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "class_level")
@@ -33,10 +35,11 @@ public class ClassLevel {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "classLevel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClassLevelSub> classLevelSubs = new ArrayList<>();
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "classLevel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClassLevelSub> classLevelSubs = new ArrayList<>();
 }

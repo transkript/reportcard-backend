@@ -1,6 +1,8 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.data.entity.AcademicYear;
+import com.transkript.reportcard.data.entity.ClassLevel;
+import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Sequence;
@@ -10,6 +12,8 @@ import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.enums.Gender;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
+import com.transkript.reportcard.data.repository.ClassLevelRepository;
+import com.transkript.reportcard.data.repository.ClassLevelSubRepository;
 import com.transkript.reportcard.data.repository.SchoolRepository;
 import com.transkript.reportcard.data.repository.SectionRepository;
 import com.transkript.reportcard.data.repository.SequenceRepository;
@@ -25,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,10 +43,8 @@ public class DefaultController {
     private final StudentRepository studentRepository;
     private final TermRepository termRepository;
     private final SequenceRepository sequenceRepository;
-    private final Section[] sections = new Section[]{
-            Section.builder().id(null).name("Default Section 1").category("Category").classLevels(List.of()).subjects(List.of()).build(),
-            Section.builder().id(null).name("Default Section 2").category("Category").classLevels(List.of()).subjects(List.of()).build(),
-    };
+    private final ClassLevelRepository classLevelRepository;
+    private final ClassLevelSubRepository classLevelSubRepository;
     private final Subject[] subjects = new Subject[]{
             Subject.builder().id(null).name("Maths").coefficient(2).code("MAT").section(null).build(),
             Subject.builder().id(null).name("English").coefficient(2).code("ENG").section(null).build(),
@@ -65,6 +66,18 @@ public class DefaultController {
     private final StudentApplication studentApplication = StudentApplication.builder().id(null).student(null)
             .createdAt(LocalDateTime.now()).build();
     private School defaultSchool = School.builder().id(null).name("Default School").build();
+    private final Section[] sections = {
+            Section.builder().id(null).name("Secondary School").category("TECHNICAL").build(),
+            Section.builder().id(null).name("High School").category("TECHNICAL").build()
+    };
+    private final ClassLevel[] classLevels = {
+            ClassLevel.builder().id(null).name("Form 1").build(),
+            ClassLevel.builder().id(null).name("Form 2").build(),
+            ClassLevel.builder().id(null).name("Form 3").build(),
+            ClassLevel.builder().id(null).name("Form 4").build(),
+            ClassLevel.builder().id(null).name("Form 5").build(),
+    };
+
     private AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
     private Student student = Student.builder()
             .id(null).name("John Bae").dob(LocalDateTime.now())
@@ -73,11 +86,24 @@ public class DefaultController {
     @PostMapping(value = "/create")
     public String createDefaults() {
         defaultSchool = schoolRepository.save(defaultSchool);
+
+
         student = studentRepository.save(student);
         academicYear = academicYearRepository.save(academicYear);
         for (int i = 0; i < sections.length; i++) {
             sections[i].setSchool(defaultSchool);
             sections[i] = sectionRepository.save(sections[i]);
+        }
+        for (int i = 0; i < classLevels.length; i++) {
+            classLevels[i].setSection(sections[0]);
+            classLevels[i] = classLevelRepository.save(classLevels[i]);
+
+            classLevels[i].getClassLevelSubs().add(classLevelSubRepository.save(
+                    ClassLevelSub.builder().id(null).name("A").classLevel(classLevels[i]).build())
+            );
+            classLevels[i].getClassLevelSubs().add(classLevelSubRepository.save(
+                    ClassLevelSub.builder().id(null).name("B").classLevel(classLevels[i]).build())
+            );
         }
         for (int i = 0; i < subjects.length - 1; i++) {
             subjects[i].setSection(sections[0]);
@@ -90,6 +116,8 @@ public class DefaultController {
         {
             studentApplication.setStudent(student);
             studentApplication.setAcademicYear(academicYear);
+            studentApplication.setClassLevel(classLevels[0]);
+            studentApplication.setClassLevelSub(classLevels[0].getClassLevelSubs().stream().findFirst().orElseThrow());
             studentApplicationRepository.save(studentApplication);
         }
         for (int i = 0, j = 0; i < terms.length; i++, j = j + 2) {
