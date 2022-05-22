@@ -15,10 +15,14 @@ public class CorsConfig implements WebMvcConfigurer {
             "http://localhost:4200",
             "http://localhost:3000"
     };
+    private static final String[] ALLOWED_METHODS = new String[] {
+            "GET", "POST", "PUT", "DELETE"
+    };
 
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**")
+                .allowedMethods(ALLOWED_METHODS)
                 .allowedOrigins(ALLOWED_ORIGINS);
     }
 }

@@ -1,6 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.SubjectDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.SubjectService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +39,13 @@ public class SubjectController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addSubject(@RequestBody SubjectDto subjectDto) {
+    public ResponseEntity<EntityResponse> addSubject(@RequestBody SubjectDto subjectDto) {
         log.info("Adding New Subject with ID: " + subjectDto.getId());
         return new ResponseEntity<>(subjectService.addSubject(subjectDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateSubject(@PathVariable("id") Long id, @RequestBody SubjectDto subjectDto) {
+    public ResponseEntity<EntityResponse> updateSubject(@PathVariable("id") Long id, @RequestBody SubjectDto subjectDto) {
         log.info("Updating Subject with ID: " + id);
         return ResponseEntity.ok(subjectService.updateSubject(id, subjectDto));
     }

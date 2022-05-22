@@ -34,7 +34,7 @@ public class StudentDto {
     private String gender;
 
     @JsonProperty("date_of_birth")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     private LocalDateTime dob;
 
     @JsonProperty("place_of_birth")

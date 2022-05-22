@@ -7,12 +7,15 @@ import com.transkript.reportcard.business.service.StudentService;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.repository.StudentRepository;
 import com.transkript.reportcard.exception.EntityException;
+import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -70,5 +73,37 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentEntity(Long id) {
         return studentRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("student", id));
+    }
+
+    @Override
+    public EntityResponse updateStudent(Long id, StudentDto studentDto) {
+        Student student = studentMapper.mapDtoToStudent(studentDto);
+        Student existingStudent = getStudentEntity(id);
+        {
+            if(student.getId() == null) {
+                throw new ReportCardException.IllegalArgumentException("Student id cannot be null");
+            } else {
+                existingStudent.setId(id);
+            }
+        }
+        {
+            if(student.getRegNum() != null || !Objects.equals(student.getRegNum(), existingStudent.getRegNum())) {
+                existingStudent.setRegNum(student.getRegNum());
+            }
+            if(student.getDob() != null || student.getDob() != existingStudent.getDob()) {
+                existingStudent.setDob(student.getDob());
+            }
+            if(student.getGender() != null || student.getGender() != existingStudent.getGender()) {
+                existingStudent.setGender(student.getGender());
+            }
+            if(student.getName() != null || !Objects.equals(student.getName(), existingStudent.getName())) {
+                existingStudent.setName(student.getName());
+            }
+            if(student.getPob() != null || !Objects.equals(student.getPob(), existingStudent.getPob())) {
+                existingStudent.setPob(student.getPob());
+            }
+        }
+        return EntityResponse.builder().entityName("student").id(studentRepository.save(existingStudent).getId())
+                .date(new Date()).build();
     }
 }

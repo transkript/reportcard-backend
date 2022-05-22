@@ -18,4 +18,5 @@ public interface StudentService {
 
     Student getStudentEntity(Long id);
 
+    EntityResponse updateStudent(Long id, StudentDto studentDto);
 }

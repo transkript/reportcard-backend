@@ -1,6 +1,7 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.SubjectDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SubjectMapper;
 import com.transkript.reportcard.business.service.SectionService;
 import com.transkript.reportcard.business.service.SubjectService;
@@ -13,6 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -41,17 +43,17 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public String addSubject(SubjectDto subjectDto) {
+    public EntityResponse addSubject(SubjectDto subjectDto) {
         Subject subject = subjectMapper.mapDtoToSubject(subjectDto);
         Section section = sectionService.getSectionEntity(subjectDto.getSectionId());
         subject.setId(null);
         subject.setSection(section);
-        subjectRepository.save(subject);
-        return "Subject with name " + subject.getName() + "Successfully Added";
+        return EntityResponse.builder().id(subjectRepository.save(subject).getId())
+                .entityName("subject").message("subject added successfully").build();
     }
 
     @Override
-    public String updateSubject(Long id, SubjectDto subjectDto) {
+    public EntityResponse updateSubject(Long id, SubjectDto subjectDto) {
         if (id != null && subjectRepository.existsById(id) && id.equals(subjectDto.getId())) {
             Subject subject = subjectRepository.getById(id);
             if (subjectDto.getName() != null & !Objects.equals(subjectDto.getName(), subject.getName())) {
@@ -67,9 +69,8 @@ public class SubjectServiceImpl implements SubjectService {
                 Section section = sectionService.getSectionEntity(subjectDto.getSectionId());
                 subject.setSection(section);
             }
-            subjectRepository.save(subject);
-            return "Subject with ID: " + id + " Successfully updated";
-
+            return EntityResponse.builder().id(subjectRepository.save(subject).getId())
+                    .entityName("subject").message("subject updated successfully").date(new Date()).build();
         }
         throw new EntityException.EntityNotFoundException("subject");
     }
