@@ -104,6 +104,7 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return EntityResponse.builder().entityName("student").id(studentRepository.save(existingStudent).getId())
+                .message("Student updated successfully")
                 .date(new Date()).build();
     }
 }

@@ -36,6 +36,9 @@ public class Student {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "reg_num", nullable = false, unique = true)
+    private String regNum;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private Gender gender;
@@ -46,9 +49,6 @@ public class Student {
 
     @Column(name = "pob", nullable = false)
     private String pob;
-
-    @Column(name = "reg_num", nullable = false, unique = true)
-    private String regNum;
 
     @Builder.Default
     @OneToMany(mappedBy = "student", orphanRemoval = true)
