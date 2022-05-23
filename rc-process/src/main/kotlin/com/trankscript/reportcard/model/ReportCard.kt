@@ -1,6 +1,6 @@
 package com.trankscript.reportcard.model
 
-class ReportCard(val student: Student) {
+class ReportCard(private val student: Student) {
     var average: Double = 0.0
 
     init {
