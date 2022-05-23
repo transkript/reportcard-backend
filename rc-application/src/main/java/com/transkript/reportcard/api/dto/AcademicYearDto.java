@@ -28,7 +28,7 @@ public class AcademicYearDto {
     private Integer numberOfTerms;
 
     @JsonProperty(value = "start_date")
-    @JsonFormat( pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
 
     @JsonProperty("academic_info")
