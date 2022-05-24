@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/api/classlevel")
+@RequestMapping(value = "/api/class_level")
 public class ClassLevelController {
 
     private final ClassLevelService classLevelService;

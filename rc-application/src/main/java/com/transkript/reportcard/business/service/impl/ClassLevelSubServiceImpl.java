@@ -45,13 +45,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
 
     @Override
     public ClassLevelSubDto getClassLevelSub(Long id) {
-        return classLevelSubMapper.mapClassLevelSubToDto(
-                classLevelSubRepository.findById(id).orElseThrow(
-                        () -> {
-                            throw new EntityException.EntityNotFoundException("Class level sub with id: " + id);
-                        }
-                )
-        );
+        return classLevelSubMapper.mapClassLevelSubToDto(getClassLevelSubEntity(id));
     }
 
     @Override
@@ -64,7 +58,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
             classLevelSubRepository.save(classLevelSub);
             return "Successfully updated class level sub with id: " + id;
         }
-        throw new EntityException.EntityNotFoundException("Class level sub with id: " + id);
+        throw new EntityException.EntityNotFoundException("class level" + id);
     }
 
     @Override
@@ -73,6 +67,13 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
             classLevelSubRepository.deleteById(id);
             return "Successfully deleted class level sub with id: " + id;
         }
-        throw new EntityException.EntityNotFoundException("Class level sub with id: " + id);
+        throw new EntityException.EntityNotFoundException("class level" + id);
+    }
+
+    @Override
+    public ClassLevelSub getClassLevelSubEntity(Long id) {
+        return classLevelSubRepository.findById(id).orElseThrow(() -> {
+            throw new EntityException.EntityNotFoundException("class level" + id);
+        });
     }
 }
