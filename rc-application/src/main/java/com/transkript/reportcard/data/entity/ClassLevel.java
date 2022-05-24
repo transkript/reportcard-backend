@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "class_level")
@@ -41,5 +43,6 @@ public class ClassLevel {
 
     @Builder.Default
     @OneToMany(mappedBy = "classLevel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<ClassLevelSub> classLevelSubs = new ArrayList<>();
 }

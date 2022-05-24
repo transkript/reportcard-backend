@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "class_level_sub")
@@ -33,5 +35,4 @@ public class ClassLevelSub {
     @ManyToOne(optional = false)
     @JoinColumn(name = "class_level_id", nullable = false)
     private ClassLevel classLevel;
-
 }

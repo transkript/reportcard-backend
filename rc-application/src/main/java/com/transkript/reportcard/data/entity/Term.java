@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "term")
@@ -41,6 +43,7 @@ public class Term {
     private AcademicYear academicYear;
 
     @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Sequence> sequences;
 
     @Embedded

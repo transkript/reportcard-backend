@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -20,9 +21,10 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
+@Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "sequence")
 public class Sequence {
     @Id

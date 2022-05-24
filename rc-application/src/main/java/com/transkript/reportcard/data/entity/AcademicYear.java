@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,9 +24,10 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Builder
 @Getter
 @Setter
+@Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "academic_year")
@@ -40,10 +42,12 @@ public class AcademicYear {
     // one to many term
     @OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private Set<Term> terms = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private List<StudentApplication> studentApplications = new ArrayList<>();
 
     @Embedded
