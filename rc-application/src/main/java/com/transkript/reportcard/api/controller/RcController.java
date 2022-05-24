@@ -18,8 +18,8 @@ import javax.validation.constraints.NotNull;
 public class RcController {
     private final RcService rcService;
 
-    @GetMapping(value = "/reportcard/{sequenceId}")
-    public void getReportCard(@NotNull @RequestParam Long studentId, @NotNull @RequestParam Long yearId, @NotNull @PathVariable Long sequenceId) {
-        rcService.getReportCard(studentId, yearId, sequenceId);
+    @GetMapping(value = "/reportcard/{termId}")
+    public void getReportCard(@NotNull @RequestParam Long studentId, @NotNull @RequestParam Long yearId, @NotNull @PathVariable Long termId) {
+        rcService.getReportCard(studentId, yearId, termId);
     }
 }
