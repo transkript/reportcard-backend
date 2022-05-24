@@ -57,27 +57,6 @@ public class RcServiceImpl implements RcService {
             });
         });
 
-        generateReportCard(student, sequence, classLevelSub, gradeList);
-    }
-
-    private void generateReportCard(Student student, Sequence sequence, ClassLevelSub classLevelSub, List<Grade> grades) {
-        RcClassLevel rcClassLevel = new RcClassLevel(classLevelSub.getClassLevel().getName(), classLevelSub.getName());
-        List<RcSubject> rcSubjects = new ArrayList<>();
-        grades.forEach((grade) -> {
-            RcGrade rcGrade = new RcGrade(grade.getScore(), grade.getDescription(),
-                    sequence.getTerm().getAcademicYear().getName(),
-                    sequence.getTerm().getName(), sequence.getName()
-            );
-
-            Subject subject = grade.getSubjectRegistration().getSubject();
-            RcSubject rcSubject = new RcSubject(subject.getName(), subject.getCoefficient(), subject.getCode(), rcGrade);
-            rcSubjects.add(rcSubject);
-        });
-
-        RcStudent rcStudent = new RcStudent(student.getName(), student.getRegNum(), student.getGender().name(),
-                student.getDob(), student.getPob(), rcClassLevel, rcSubjects
-        );
-        ReportCard reportCard = new ReportCard(rcStudent);
-        System.out.println(reportCard.getAverage());
+        rcUtil.generateReportCard(student, term, classLevelSub, termGrades);
     }
 }
