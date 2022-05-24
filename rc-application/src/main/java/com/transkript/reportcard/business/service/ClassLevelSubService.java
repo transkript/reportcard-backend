@@ -11,6 +11,8 @@ public interface ClassLevelSubService {
 
     List<ClassLevelSubDto> getClassLevelSubs();
 
+    List<ClassLevelSubDto> getClassLevelSubsByClassLevel(Long levelId);
+
     ClassLevelSubDto getClassLevelSub(Long id);
 
     String updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto);
@@ -18,4 +20,5 @@ public interface ClassLevelSubService {
     String deleteClassLevelSub(Long id);
 
     ClassLevelSub getClassLevelSubEntity(Long id);
+
 }

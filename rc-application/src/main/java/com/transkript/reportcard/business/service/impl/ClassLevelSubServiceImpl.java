@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class ClassLevelSubServiceImpl implements ClassLevelSubService {
-
     ClassLevelSubRepository classLevelSubRepository;
     ClassLevelSubMapper classLevelSubMapper;
     ClassLevelService classLevelService;
@@ -41,6 +40,13 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
         return classLevelSubRepository.findAll().stream()
                 .map(classLevelSub -> getClassLevelSubMapper().mapClassLevelSubToDto(classLevelSub))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ClassLevelSubDto> getClassLevelSubsByClassLevel(Long levelId) {
+        ClassLevel classLevel = classLevelService.getClassLevelEntity(levelId);
+        return classLevelSubRepository.findAllByClassLevel(classLevel).stream()
+                .map(classLevelSubMapper::mapClassLevelSubToDto).toList();
     }
 
     @Override
