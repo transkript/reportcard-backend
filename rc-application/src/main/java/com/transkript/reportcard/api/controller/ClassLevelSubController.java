@@ -41,7 +41,7 @@ public class ClassLevelSubController {
 
     @GetMapping(value = "/level/{levelId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ClassLevelSubDto>> getClassLevelSubsByClassLevel(@NotNull @PathVariable("levelId") Long levelId) {
-        log.info("Getting class level sub with class level id: " + levelId);
+        log.info("Getting class level subs with class level id: " + levelId);
         return ResponseEntity.ok(classLevelSubService.getClassLevelSubsByClassLevel(levelId));
     }
 
