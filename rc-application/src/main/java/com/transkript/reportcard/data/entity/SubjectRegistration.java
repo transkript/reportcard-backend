@@ -1,8 +1,6 @@
-package com.transkript.reportcard.data.entity.relation;
+package com.transkript.reportcard.data.entity;
 
-
-import com.transkript.reportcard.data.entity.StudentApplication;
-import com.transkript.reportcard.data.entity.Subject;
+import com.transkript.reportcard.data.entity.relation.Grade;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,13 +15,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -37,10 +35,6 @@ public class SubjectRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "student_application_id", nullable = false)
-    private StudentApplication studentApplication;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "subject_id", nullable = false)
@@ -59,5 +53,19 @@ public class SubjectRegistration {
     @ToString.Exclude
     @OneToMany(mappedBy = "subjectRegistration", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades = new ArrayList<>();
+
+    @ManyToOne(optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "student_application_student_id", referencedColumnName = "student_id", nullable = false),
+            @JoinColumn(name = "student_application_academic_year_id", referencedColumnName = "academic_year_id", nullable = false)
+    })
+    private StudentApplication studentApplication;
+
+    /*
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "student_application_id", nullable = false)
+    private StudentApplication studentApplication;
+
+     */
 
 }

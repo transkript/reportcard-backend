@@ -8,7 +8,8 @@ import com.transkript.reportcard.business.service.SubjectRegistrationService;
 import com.transkript.reportcard.business.service.SubjectService;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import com.transkript.reportcard.data.repository.SubjectRegistrationRepository;
 import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.ReportCardException;
@@ -36,20 +37,28 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         subjectRegistration.setCreatedAt(LocalDateTime.now());
         subjectRegistration.setUpdatedAt(LocalDateTime.now());
         subjectRegistration.setId(null);
-        if (subjectRegistrationDto.getApplicationId() == null) {
-            throw new ReportCardException.IllegalArgumentException("Application Id is required");
-        } else {
-            StudentApplication studentApplication = studentApplicationService.getStudentApplicationEntity(subjectRegistrationDto.getApplicationId());
+        {
+            if(subjectRegistrationDto.getStudentId() == null) {
+                throw new ReportCardException.IllegalArgumentException("Student Id is required");
+            }
+            if(subjectRegistrationDto.getYearId() == null) {
+                throw new ReportCardException.IllegalArgumentException("Year Id is required");
+            }
+
+            ApplicationKey applicationKey = new ApplicationKey(subjectRegistrationDto.getStudentId(), subjectRegistrationDto.getYearId());
+            StudentApplication studentApplication = studentApplicationService.getStudentApplicationEntity(applicationKey);
             subjectRegistration.setStudentApplication(studentApplication);
         }
-        if (subjectRegistrationDto.getSubjectId() == null) {
-            throw new ReportCardException.IllegalArgumentException("Subject Id is required");
-        } else {
-            Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.getSubjectId());
-            if (subjectRegistrationRepository.findBySubject(subject).isPresent()) {
-                throw new ReportCardException.IllegalStateException("Subject already registered: " + subject.getName(), HttpStatus.CONFLICT);
+        {
+            if (subjectRegistrationDto.getSubjectId() == null) {
+                throw new ReportCardException.IllegalArgumentException("Subject Id is required");
+            } else {
+                Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.getSubjectId());
+                if (subjectRegistrationRepository.findBySubject(subject).isPresent()) {
+                    throw new ReportCardException.IllegalStateException("Subject already registered: " + subject.getName(), HttpStatus.CONFLICT);
+                }
+                subjectRegistration.setSubject(subject);
             }
-            subjectRegistration.setSubject(subject);
         }
         return EntityResponse.builder()
                 .id(subjectRegistrationRepository.save(subjectRegistration).getId())
@@ -59,19 +68,13 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     }
 
     @Override
-    public List<EntityResponse> addSubjectRegistrations(Long applicationId, List<SubjectRegistrationDto> subjectRegistrationDtoList) {
-        if (applicationId == null) {
-            throw new ReportCardException.IllegalArgumentException("Application Id is required");
-        }
-        return subjectRegistrationDtoList.stream()
-                .peek(subjectRegistrationDto -> subjectRegistrationDto.setApplicationId(applicationId))
-                .map(this::addSubjectRegistration)
-                .collect(Collectors.toList());
+    public List<EntityResponse> addSubjectRegistrations(List<SubjectRegistrationDto> subjectRegistrationDtoList) {
+        return subjectRegistrationDtoList.stream().map(this::addSubjectRegistration).collect(Collectors.toList());
     }
 
     @Override
-    public List<SubjectRegistrationDto> getSubjectionRegistrations(Long applicationId) {
-        return getSubjectRegistrationEntitiesByApplication(applicationId)
+    public List<SubjectRegistrationDto> getSubjectionRegistrations(Long studentId, Long yearId) {
+        return getSubjectRegistrationEntitiesByApplication(studentId, yearId)
                 .stream().map(subjectRegistrationMapper::mapSubjectRegistrationToDto).collect(Collectors.toList());
     }
 
@@ -100,11 +103,13 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
      */
     @Override
     @Transactional(readOnly = true)
-    public List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long applicationId) {
-        if (applicationId == null) {
-            throw new ReportCardException.IllegalArgumentException("Application Id is required");
+    public List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long studentId, Long yearId) {
+        if(studentId == null || yearId == null) {
+            throw new ReportCardException.IllegalArgumentException("Student Id and Year Id are required");
         }
-        StudentApplication application = studentApplicationService.getStudentApplicationEntity(applicationId);
+        StudentApplication application = studentApplicationService.getStudentApplicationEntity(
+                new ApplicationKey(studentId, yearId)
+        );
         return subjectRegistrationRepository.findAllByStudentApplication(application);
     }
 }

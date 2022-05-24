@@ -29,9 +29,12 @@ public class SubjectRegistrationDto {
     private LocalDateTime updatedAt;
 
     // from relations
-    @JsonProperty(value = "application_id")
+    @JsonProperty(value = "student_id")
     @NotNull
-    private Long applicationId;
+    private Long studentId;
+
+    @JsonProperty(value = "year_id")
+    private Long yearId;
 
     @JsonProperty(value = "subject_id")
     @NotNull
