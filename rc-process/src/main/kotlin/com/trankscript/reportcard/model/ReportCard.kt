@@ -1,6 +1,6 @@
 package com.trankscript.reportcard.model
 
-class ReportCard(private val student: Student) {
+class ReportCard(private val rcStudent: RcStudent) {
     var average: Double = 0.0
 
     init {
@@ -10,10 +10,14 @@ class ReportCard(private val student: Student) {
     private fun calculateAverage() {
         var sumOfCoeff = 0
         var coeffByGradeValue = 0.0
-        student.subjects.stream().peek{ subject: Subject ->
-            val subjectValue = (subject.grade.score * subject.coeff).toDouble()
+        rcStudent.rcSubjects.stream().peek{ rcSubject: RcSubject ->
+            val subjectValue = (rcSubject.rcGrade.score * rcSubject.coeff).toDouble()
             coeffByGradeValue += subjectValue
-        }.map(Subject::coeff).forEach { coeff: Int -> sumOfCoeff += coeff }
+        }.map(RcSubject::coeff).forEach { coeff: Int -> sumOfCoeff += coeff }
         average = coeffByGradeValue / sumOfCoeff
+    }
+
+    override fun toString(): String {
+        return "ReportCard(average=$average, rcStudent=$rcStudent)"
     }
 }
