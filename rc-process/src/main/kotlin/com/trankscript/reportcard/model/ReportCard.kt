@@ -10,7 +10,7 @@ class ReportCard(private val rcStudent: RcStudent) {
     private fun calculateAverage() {
         var sumOfCoeff = 0
         var coeffByGradeValue = 0.0
-        rcStudent.rcSubjects.stream().peek{ rcSubject: RcSubject ->
+        rcStudent.rcSubjects.stream().peek { rcSubject: RcSubject ->
             val subjectValue = (rcSubject.rcGrade.score * rcSubject.coeff).toDouble()
             coeffByGradeValue += subjectValue
         }.map(RcSubject::coeff).forEach { coeff: Int -> sumOfCoeff += coeff }

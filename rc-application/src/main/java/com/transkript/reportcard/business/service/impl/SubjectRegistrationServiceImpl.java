@@ -38,10 +38,10 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         subjectRegistration.setUpdatedAt(LocalDateTime.now());
         subjectRegistration.setId(null);
         {
-            if(subjectRegistrationDto.getStudentId() == null) {
+            if (subjectRegistrationDto.getStudentId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Student Id is required");
             }
-            if(subjectRegistrationDto.getYearId() == null) {
+            if (subjectRegistrationDto.getYearId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Year Id is required");
             }
 
@@ -104,7 +104,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     @Override
     @Transactional(readOnly = true)
     public List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long studentId, Long yearId) {
-        if(studentId == null || yearId == null) {
+        if (studentId == null || yearId == null) {
             throw new ReportCardException.IllegalArgumentException("Student Id and Year Id are required");
         }
         StudentApplication application = studentApplicationService.getStudentApplicationEntity(

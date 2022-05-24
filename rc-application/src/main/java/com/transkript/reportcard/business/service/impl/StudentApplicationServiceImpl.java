@@ -9,7 +9,6 @@ import com.transkript.reportcard.business.service.ClassLevelSubService;
 import com.transkript.reportcard.business.service.StudentApplicationService;
 import com.transkript.reportcard.business.service.StudentService;
 import com.transkript.reportcard.data.entity.AcademicYear;
-import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.StudentApplication;
@@ -24,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,15 +66,15 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
             }
         }
         {
-            if(applicationDto.getClassLevelSubId() == null) {
+            if (applicationDto.getClassLevelSubId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Class level and class level sub ids are required");
             } else {
-                ClassLevelSub classLevelSub =  classLevelSubService.getClassLevelSubEntity(applicationDto.getClassLevelSubId());
+                ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(applicationDto.getClassLevelSubId());
                 studentApplication.setClassLevelSub(classLevelSub);
             }
         }
         {
-            if(studentApplicationRepository.existsById(applicationKey)) {
+            if (studentApplicationRepository.existsById(applicationKey)) {
                 throw new EntityException.EntityAlreadyExistsException("student application", applicationKey.getStudentId(), applicationKey.getYearId());
             }
         }

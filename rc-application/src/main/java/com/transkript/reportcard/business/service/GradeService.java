@@ -18,5 +18,6 @@ public interface GradeService {
     GradeDto getGrade(Long registrationId, Long sequenceId);
 
     Grade getGradeEntity(GradeKey gradeKey);
+
     List<Grade> getGradeEntitiesBySubjectRegistration(Long registrationId);
 }

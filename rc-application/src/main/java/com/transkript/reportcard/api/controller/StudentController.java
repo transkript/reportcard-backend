@@ -26,6 +26,7 @@ import java.util.List;
 @RequestMapping(value = "/api/student")
 public class StudentController {
     private final StudentService studentService;
+
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EntityResponse> addStudent(@Valid @RequestBody StudentDto studentDto) {
         log.info("Adding student: {}", studentDto);

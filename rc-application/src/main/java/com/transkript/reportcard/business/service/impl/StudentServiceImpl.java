@@ -80,26 +80,26 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentMapper.mapDtoToStudent(studentDto);
         Student existingStudent = getStudentEntity(id);
         {
-            if(student.getId() == null) {
+            if (student.getId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Student id cannot be null");
             } else {
                 existingStudent.setId(id);
             }
         }
         {
-            if(student.getRegNum() != null || !Objects.equals(student.getRegNum(), existingStudent.getRegNum())) {
+            if (student.getRegNum() != null || !Objects.equals(student.getRegNum(), existingStudent.getRegNum())) {
                 existingStudent.setRegNum(student.getRegNum());
             }
-            if(student.getDob() != null || student.getDob() != existingStudent.getDob()) {
+            if (student.getDob() != null || student.getDob() != existingStudent.getDob()) {
                 existingStudent.setDob(student.getDob());
             }
-            if(student.getGender() != null || student.getGender() != existingStudent.getGender()) {
+            if (student.getGender() != null || student.getGender() != existingStudent.getGender()) {
                 existingStudent.setGender(student.getGender());
             }
-            if(student.getName() != null || !Objects.equals(student.getName(), existingStudent.getName())) {
+            if (student.getName() != null || !Objects.equals(student.getName(), existingStudent.getName())) {
                 existingStudent.setName(student.getName());
             }
-            if(student.getPob() != null || !Objects.equals(student.getPob(), existingStudent.getPob())) {
+            if (student.getPob() != null || !Objects.equals(student.getPob(), existingStudent.getPob())) {
                 existingStudent.setPob(student.getPob());
             }
         }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class ClassLevelSubController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateClassLevelSub(@PathVariable("id") Long id,
-            @RequestBody ClassLevelSubDto classLevelSubDto) {
+                                                      @RequestBody ClassLevelSubDto classLevelSubDto) {
         log.info("Updating class level sub with id: " + id);
         return ResponseEntity.ok(classLevelSubService.updateClassLevelSub(id, classLevelSubDto));
     }

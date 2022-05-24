@@ -6,8 +6,8 @@ import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.TermDto;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.Term;
 
 import java.time.LocalDateTime;
 import java.util.List;

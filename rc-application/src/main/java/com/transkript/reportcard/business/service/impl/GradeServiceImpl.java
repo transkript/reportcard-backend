@@ -8,10 +8,9 @@ import com.transkript.reportcard.business.service.SequenceService;
 import com.transkript.reportcard.business.service.StudentApplicationService;
 import com.transkript.reportcard.business.service.SubjectRegistrationService;
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.repository.GradeRepository;
 import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.ReportCardException;
@@ -68,7 +67,7 @@ public class GradeServiceImpl implements GradeService {
      */
     @Override
     public List<GradeDto> getGradesBySequence(Long sequenceId) {
-        if(sequenceId == null) {
+        if (sequenceId == null) {
             throw new ReportCardException.IllegalArgumentException("Sequence id is required");
         }
         Sequence sequence = sequenceService.getSequenceEntity(sequenceId);

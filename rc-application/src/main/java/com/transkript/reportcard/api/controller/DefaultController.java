@@ -66,7 +66,6 @@ public class DefaultController {
     };
     private final StudentApplication studentApplication = StudentApplication.builder().applicationKey(null).student(null)
             .createdAt(LocalDateTime.now()).build();
-    private School defaultSchool = School.builder().id(null).name("Default School").build();
     private final Section[] sections = {
             Section.builder().id(null).name("Secondary School").category("TECHNICAL").build(),
             Section.builder().id(null).name("High School").category("TECHNICAL").build()
@@ -78,7 +77,7 @@ public class DefaultController {
             ClassLevel.builder().id(null).name("Form 4").build(),
             ClassLevel.builder().id(null).name("Form 5").build(),
     };
-
+    private School defaultSchool = School.builder().id(null).name("Default School").build();
     private AcademicYear academicYear = AcademicYear.builder().id(null).name("2020/2021").build();
     private Student student = Student.builder()
             .id(null).name("John Bae").dob(LocalDateTime.now())
