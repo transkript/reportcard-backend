@@ -4,6 +4,7 @@ import com.transkript.reportcard.api.dto.StudentApplicationDto;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.StudentApplication;
+import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ class StudentApplicationMapperTest {
         testAcademicYear = new AcademicYear();
         testAcademicYear.setId(4L);
         testStudentApplication = StudentApplication.builder()
-                .id(1L)
+                .applicationKey(new ApplicationKey(12L, 11L))
                 .createdAt(LocalDateTime.now())
                 .student(testStudent)
                 .academicYear(testAcademicYear)
@@ -41,7 +42,8 @@ class StudentApplicationMapperTest {
         StudentApplicationDto expectedDto = studentApplicationMapper
                 .mapStudentApplicationToDto(testStudentApplication);
 
-        Assertions.assertEquals(expectedDto.getId(), testStudentApplication.getId());
+        Assertions.assertEquals(expectedDto.getStudentId(), testStudentApplication.getApplicationKey().getStudentId());
+        Assertions.assertEquals(expectedDto.getAcademicYearId(), testStudentApplication.getApplicationKey().getYearId());
         Assertions.assertEquals(expectedDto.getCreatedAt(), testStudentApplication.getCreatedAt());
         Assertions.assertEquals(expectedDto.getStudentId(), testStudentApplication.getStudent().getId());
         Assertions.assertEquals(expectedDto.getAcademicYearId(), testStudentApplication.getAcademicYear().getId());
@@ -51,14 +53,12 @@ class StudentApplicationMapperTest {
     @Test
     void mapDtoToStudentApplication() {
         testStudentApplicationDto = StudentApplicationDto.builder()
-                .id(2L)
                 .createdAt(LocalDateTime.now())
                 .build();
 
         StudentApplication expectedSApp = studentApplicationMapper
                 .mapDtoToStudentApplication(testStudentApplicationDto);
 
-        Assertions.assertEquals(expectedSApp.getId(), testStudentApplicationDto.getId());
         Assertions.assertEquals(expectedSApp.getCreatedAt(), testStudentApplicationDto.getCreatedAt());
     }
 }

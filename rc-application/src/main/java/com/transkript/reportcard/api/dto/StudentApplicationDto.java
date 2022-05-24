@@ -17,9 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class StudentApplicationDto {
-    @JsonProperty(value = "id")
-    private Long id;
-
     @Builder.Default
     @JsonProperty(value = "created_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -30,18 +27,14 @@ public class StudentApplicationDto {
     @NotNull
     private Long studentId;
 
-    @JsonProperty(value = "academic_year_id")
+    @JsonProperty(value = "year_id")
     @NotNull
     private Long academicYearId;
 
     @JsonProperty(value = "number_of_subjects")
     private Integer numberOfSubjects;
 
-    @JsonProperty(value = "class_level_id")
-    @NotNull
-    private Long classLevelId;
-
-    @JsonProperty(value = "class_level_id")
+    @JsonProperty(value = "class_sub_id")
     @NotNull
     private Long classLevelSubId;
 }
