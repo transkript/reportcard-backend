@@ -55,7 +55,7 @@ public class TermServiceImpl implements TermService {
     }
 
     @Override
-    public Term getTermById(Long id) {
+    public Term getTermEntity(Long id) {
         return termRepository.findById(id).orElseThrow(
                 () -> {
                     throw new EntityException.EntityNotFoundException("Term with id: " + id);

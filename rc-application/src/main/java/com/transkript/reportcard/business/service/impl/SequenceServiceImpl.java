@@ -30,7 +30,7 @@ public class SequenceServiceImpl implements SequenceService {
     public String addSequence(SequenceDto sequenceDto) {
         Sequence sequence = sequenceMapper.mapDtoToSequence(sequenceDto);
         sequence.setId(null);
-        sequence.setTerm(termService.getTermById(sequenceDto.getTermId()));
+        sequence.setTerm(termService.getTermEntity(sequenceDto.getTermId()));
         sequenceRepository.save(sequence);
         return "Sequence created successfully";
     }
@@ -58,7 +58,7 @@ public class SequenceServiceImpl implements SequenceService {
         if (id != null && sequenceRepository.existsById(id)) {
             Sequence sequence = sequenceMapper.mapDtoToSequence(sequenceDto);
             sequence.setId(id);
-            Term term = termService.getTermById(sequenceDto.getTermId());
+            Term term = termService.getTermEntity(sequenceDto.getTermId());
             sequence.setTerm(term);
             return "Successfully updated sequence with id: " + id;
         }

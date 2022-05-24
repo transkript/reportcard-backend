@@ -13,7 +13,7 @@ public interface TermService {
 
     TermDto getTerm(Long id);
 
-    Term getTermById(Long id);
+    Term getTermEntity(Long id);
 
     String updateTerm(Long id, TermDto termDto);
 
