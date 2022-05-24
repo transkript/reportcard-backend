@@ -4,7 +4,8 @@ import com.transkript.reportcard.TestDefaults;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,14 @@ class SubjectRegistrationMapperTest {
         // TODO load from TestDefaults
         SubjectRegistration actualSubjectRegistration = TestDefaults.SUBJECT_REGISTRATION;
         StudentApplication studentApplication = new StudentApplication();
-        studentApplication.setId(1L);
+        studentApplication.setApplicationKey(new ApplicationKey(2L, 3L));
         actualSubjectRegistration.setSubject(Subject.builder().id(1L).build());
         actualSubjectRegistration.setStudentApplication(studentApplication);
         SubjectRegistrationDto expectedSubjectRegistrationDto = this.subjectRegistrationMapper.mapSubjectRegistrationToDto(actualSubjectRegistration);
 
         Assertions.assertEquals(expectedSubjectRegistrationDto.getCreatedAt(), actualSubjectRegistration.getCreatedAt());
-        Assertions.assertEquals(expectedSubjectRegistrationDto.getApplicationId(), actualSubjectRegistration.getStudentApplication().getId());
+        Assertions.assertEquals(expectedSubjectRegistrationDto.getStudentId(), actualSubjectRegistration.getStudentApplication().getApplicationKey().getStudentId());
+        Assertions.assertEquals(expectedSubjectRegistrationDto.getYearId(), actualSubjectRegistration.getStudentApplication().getApplicationKey().getYearId());
         Assertions.assertEquals(expectedSubjectRegistrationDto.getSubjectId(), actualSubjectRegistration.getSubject().getId());
     }
 

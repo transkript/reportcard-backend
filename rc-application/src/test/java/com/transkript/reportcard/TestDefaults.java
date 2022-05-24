@@ -7,7 +7,7 @@ import com.transkript.reportcard.api.dto.TermDto;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.Term;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +25,7 @@ public class TestDefaults {
             .studentApplication(null).subject(SUBJECT).grades(List.of()).build();
     public static SubjectRegistrationDto SUBJECT_REGISTRATION_DTO = SubjectRegistrationDto.builder()
             .createdAt(LocalDateTime.now())
-            .applicationId(1L).subjectId(1L).build();
+            .studentId(1L).yearId(2L).subjectId(1L).build();
 
     public static Section SECTION = null;
     public static SectionDto SECTION_DTO = null;
