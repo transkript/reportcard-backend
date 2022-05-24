@@ -10,6 +10,7 @@ import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.Term;
+import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import com.transkript.reportcard.data.enums.Gender;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.data.repository.ClassLevelRepository;
@@ -63,7 +64,7 @@ public class DefaultController {
             Sequence.builder().id(null).name("Fifth Sequence").build(),
             Sequence.builder().id(null).name("Sixth Sequence").build(),
     };
-    private final StudentApplication studentApplication = StudentApplication.builder().id(null).student(null)
+    private final StudentApplication studentApplication = StudentApplication.builder().applicationKey(null).student(null)
             .createdAt(LocalDateTime.now()).build();
     private School defaultSchool = School.builder().id(null).name("Default School").build();
     private final Section[] sections = {
@@ -90,6 +91,8 @@ public class DefaultController {
 
         student = studentRepository.save(student);
         academicYear = academicYearRepository.save(academicYear);
+
+
         for (int i = 0; i < sections.length; i++) {
             sections[i].setSchool(defaultSchool);
             sections[i] = sectionRepository.save(sections[i]);
@@ -114,9 +117,11 @@ public class DefaultController {
             subjectRepository.save(subjects[subjects.length - 1]);
         }
         {
+            studentApplication.setApplicationKey(
+                    ApplicationKey.builder().studentId(student.getId()).yearId(academicYear.getId()).build()
+            );
             studentApplication.setStudent(student);
             studentApplication.setAcademicYear(academicYear);
-            studentApplication.setClassLevel(classLevels[0]);
             studentApplication.setClassLevelSub(classLevels[0].getClassLevelSubs().stream().findFirst().orElseThrow());
             studentApplicationRepository.save(studentApplication);
         }
