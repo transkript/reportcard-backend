@@ -25,5 +25,9 @@ public class EntityException {
         public EntityAlreadyExistsException(String name, String id) {
             super("Entity of type " + name + " with identifier " + id + " already exists");
         }
+
+        public EntityAlreadyExistsException(String name, Long... ids) {
+            super("Entity of type " + name + " with ids " + Arrays.toString(ids) + " already exists");
+        }
     }
 }
