@@ -32,9 +32,8 @@ import java.util.List;
 @Builder
 @Table(name = "student_application")
 public class StudentApplication {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private ApplicationKey applicationKey;
 
     @Builder.Default
     @Column(name = "created_at", nullable = false, updatable = false)
