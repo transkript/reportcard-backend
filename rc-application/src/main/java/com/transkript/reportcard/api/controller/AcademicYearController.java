@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/api/academicyear")
+@RequestMapping(value = "/api/academic_year")
 public class AcademicYearController {
 
     private final AcademicYearService academicYearService;
