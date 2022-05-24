@@ -2,6 +2,7 @@ package com.transkript.reportcard.data.entity.relation;
 
 
 import com.transkript.reportcard.data.entity.Sequence;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,8 +38,8 @@ public class Grade {
     @Column(nullable = false, name = "grade_desc")
     private String description;
 
-    @ManyToOne(optional = false)
     @MapsId("sequenceId")
+    @ManyToOne(optional = false)
     @JoinColumn(name = "sequence_id", nullable = false)
     private Sequence sequence;
 
@@ -46,6 +47,4 @@ public class Grade {
     @ManyToOne(optional = false)
     @JoinColumn(name = "subject_registration_ID", nullable = false)
     private SubjectRegistration subjectRegistration;
-
-
 }

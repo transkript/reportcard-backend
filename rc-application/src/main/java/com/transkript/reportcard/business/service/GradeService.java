@@ -11,11 +11,12 @@ import java.util.List;
 public interface GradeService {
     EntityResponse addGrade(GradeDto gradeDto);
 
-    List<List<GradeDto>> getGradesByApplicationId(Long applicationId);
+    List<GradeDto> getGradesBySequence(Long sequenceId);
 
-    List<GradeDto> getGradesByRegistrationId(Long registrationId);
+    List<GradeDto> getGradesByRegistration(Long registrationId);
 
     GradeDto getGrade(Long registrationId, Long sequenceId);
 
     Grade getGradeEntity(GradeKey gradeKey);
+    List<Grade> getGradeEntitiesBySubjectRegistration(Long registrationId);
 }

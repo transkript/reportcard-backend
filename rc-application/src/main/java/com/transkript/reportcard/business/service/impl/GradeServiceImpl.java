@@ -8,9 +8,10 @@ import com.transkript.reportcard.business.service.SequenceService;
 import com.transkript.reportcard.business.service.StudentApplicationService;
 import com.transkript.reportcard.business.service.SubjectRegistrationService;
 import com.transkript.reportcard.data.entity.Sequence;
+import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.repository.GradeRepository;
 import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.ReportCardException;
@@ -62,25 +63,24 @@ public class GradeServiceImpl implements GradeService {
     }
 
     /**
-     * @param applicationId
-     * @return
+     * @param sequenceId sequence id
+     * @return list of grades
      */
     @Override
-    public List<List<GradeDto>> getGradesByApplicationId(Long applicationId) {
-        if (applicationId == null) {
-            throw new ReportCardException.IllegalArgumentException("Application id is required");
+    public List<GradeDto> getGradesBySequence(Long sequenceId) {
+        if(sequenceId == null) {
+            throw new ReportCardException.IllegalArgumentException("Sequence id is required");
         }
-        return subjectRegistrationService.getSubjectRegistrationEntitiesByApplication(applicationId)
-                .stream().map(subjectRegistration -> getGradesByRegistrationId(subjectRegistration.getId()))
-                .toList();
+        Sequence sequence = sequenceService.getSequenceEntity(sequenceId);
+        return gradeRepository.findAllBySequence(sequence).stream().map(gradeMapper::mapGradeToDto).toList();
     }
 
     /**
-     * @param registrationId
-     * @return
+     * @param registrationId registration id
+     * @return list of grades
      */
     @Override
-    public List<GradeDto> getGradesByRegistrationId(Long registrationId) {
+    public List<GradeDto> getGradesByRegistration(Long registrationId) {
         SubjectRegistration registration = subjectRegistrationService.getSubjectRegistrationEntity(registrationId);
 
         System.out.println(registration);
@@ -111,5 +111,11 @@ public class GradeServiceImpl implements GradeService {
         return gradeRepository.findById(gradeKey).orElseThrow(() -> new EntityException.EntityNotFoundException("grade",
                 gradeKey.getRegistrationId(), gradeKey.getSequenceId())
         );
+    }
+
+    @Override
+    public List<Grade> getGradeEntitiesBySubjectRegistration(Long registrationId) {
+        SubjectRegistration subjectRegistration = subjectRegistrationService.getSubjectRegistrationEntity(registrationId);
+        return gradeRepository.findAllBySubjectRegistration(subjectRegistration);
     }
 }

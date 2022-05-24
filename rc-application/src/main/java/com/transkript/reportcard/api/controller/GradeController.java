@@ -33,15 +33,15 @@ public class GradeController {
         return new ResponseEntity<>(gradeService.addGrade(gradeDto), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{application}")
-    public ResponseEntity<List<List<GradeDto>>> getGradesByApplicationId(@NotNull @PathVariable Long application) {
-        log.info("Getting all grades of registrationId {}", application);
-        return ResponseEntity.ok(gradeService.getGradesByApplicationId(application));
+    @GetMapping(value = "/sequence/{sequenceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GradeDto>> getGradesBySequence(@NotNull @PathVariable Long sequenceId) {
+        log.info("Getting all grades of sequenceId {}", sequenceId);
+        return ResponseEntity.ok(gradeService.getGradesBySequence(sequenceId));
     }
 
-    @GetMapping(value = "")
-    public ResponseEntity<List<GradeDto>> getGradesByRegistrationId(@NotNull @RequestParam Long registrationId) {
-        return ResponseEntity.ok(gradeService.getGradesByRegistrationId(registrationId));
+    @GetMapping(value = "/registration/{registrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GradeDto>> getGradesByRegistration(@NotNull @PathVariable Long registrationId) {
+        return ResponseEntity.ok(gradeService.getGradesByRegistration(registrationId));
     }
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
