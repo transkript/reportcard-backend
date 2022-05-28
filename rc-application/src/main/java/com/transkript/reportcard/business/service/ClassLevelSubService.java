@@ -2,12 +2,13 @@ package com.transkript.reportcard.business.service;
 
 
 import com.transkript.reportcard.api.dto.ClassLevelSubDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 
 import java.util.List;
 
 public interface ClassLevelSubService {
-    String addClassLevelSub(ClassLevelSubDto classLevelSubDto);
+    EntityResponse addClassLevelSub(ClassLevelSubDto classLevelSubDto);
 
     List<ClassLevelSubDto> getClassLevelSubs();
 
@@ -15,7 +16,7 @@ public interface ClassLevelSubService {
 
     ClassLevelSubDto getClassLevelSub(Long id);
 
-    String updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto);
+    EntityResponse updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto);
 
     String deleteClassLevelSub(Long id);
 

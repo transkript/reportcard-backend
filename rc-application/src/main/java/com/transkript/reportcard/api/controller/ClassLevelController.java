@@ -1,10 +1,12 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.ClassLevelDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.ClassLevelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -26,7 +29,7 @@ public class ClassLevelController {
     private final ClassLevelService classLevelService;
 
     @PostMapping
-    public ResponseEntity<String> addClassLevel(
+    public ResponseEntity<EntityResponse> addClassLevel(
             @RequestBody ClassLevelDto classLevelDto) {
         log.info("Adding class level with name " + classLevelDto.getName());
         return new ResponseEntity<>(classLevelService.addClassLevel(classLevelDto), HttpStatus.CREATED);
@@ -38,6 +41,12 @@ public class ClassLevelController {
         return ResponseEntity.ok(classLevelService.getClassLevels());
     }
 
+    @GetMapping(value = "/{sectionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ClassLevelDto>> getClassLevels(@NotNull @PathVariable Long sectionId) {
+        log.info("Getting class levels by section id: {}", sectionId);
+        return ResponseEntity.ok(classLevelService.getClassLevels(sectionId));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ClassLevelDto> getClassLevel(@PathVariable("id") Long id) {
         log.info("Getting class level");
@@ -45,7 +54,7 @@ public class ClassLevelController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateClassLevel(
+    public ResponseEntity<EntityResponse> updateClassLevel(
             @PathVariable("id") Long id,
             @RequestBody ClassLevelDto classLevelDto
     ) {
@@ -54,10 +63,9 @@ public class ClassLevelController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClassLevel(
-            @PathVariable("id") Long id
-    ) {
+    public ResponseEntity<Void> deleteClassLevel(@PathVariable("id") Long id) {
         log.info("Deleting class level with id: " + id);
-        return ResponseEntity.ok(classLevelService.deleteClassLevel(id));
+        classLevelService.deleteClassLevel(id);
+        return ResponseEntity.noContent().build();
     }
 }

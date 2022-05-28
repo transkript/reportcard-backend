@@ -1,6 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.ClassLevelSubDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.ClassLevelSubService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class ClassLevelSubController {
     private final ClassLevelSubService classLevelSubService;
 
     @PostMapping
-    public ResponseEntity<String> addClassLevelSub(@RequestBody ClassLevelSubDto classLevelSubDto) {
+    public ResponseEntity<EntityResponse> addClassLevelSub(@RequestBody ClassLevelSubDto classLevelSubDto) {
         log.info("Adding Class level sub with Name " + classLevelSubDto.getName());
         return new ResponseEntity<>(classLevelSubService.addClassLevelSub(classLevelSubDto), HttpStatus.CREATED);
     }
@@ -52,8 +53,8 @@ public class ClassLevelSubController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateClassLevelSub(@PathVariable("id") Long id,
-                                                      @RequestBody ClassLevelSubDto classLevelSubDto) {
+    public ResponseEntity<EntityResponse> updateClassLevelSub(@PathVariable("id") Long id,
+                                                              @RequestBody ClassLevelSubDto classLevelSubDto) {
         log.info("Updating class level sub with id: " + id);
         return ResponseEntity.ok(classLevelSubService.updateClassLevelSub(id, classLevelSubDto));
     }

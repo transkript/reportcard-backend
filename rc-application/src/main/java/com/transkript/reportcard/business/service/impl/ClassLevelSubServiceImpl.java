@@ -1,6 +1,7 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.ClassLevelSubDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.ClassLevelSubMapper;
 import com.transkript.reportcard.business.service.ClassLevelService;
 import com.transkript.reportcard.business.service.ClassLevelSubService;
@@ -26,13 +27,14 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     ClassLevelService classLevelService;
 
     @Override
-    public String addClassLevelSub(ClassLevelSubDto classLevelSubDto) {
+    public EntityResponse addClassLevelSub(ClassLevelSubDto classLevelSubDto) {
         ClassLevelSub classLevelSub = classLevelSubMapper.mapDtoToClassLevelSub(classLevelSubDto);
         ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
         classLevelSub.setId(null);
         classLevelSub.setClassLevel(classLevel);
-        classLevelSubRepository.save(classLevelSub);
-        return "Successfully saved class level sub with Name: " + classLevel.getName();
+        return  EntityResponse.builder().message("Successfully saved class level sub")
+                .id(classLevelSubRepository.save(classLevelSub).getId())
+                .message("class level sub").build();
     }
 
     @Override
@@ -55,14 +57,14 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     }
 
     @Override
-    public String updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto) {
+    public EntityResponse updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto) {
         if (id != null && classLevelSubRepository.existsById(id)) {
             ClassLevelSub classLevelSub = classLevelSubMapper.mapDtoToClassLevelSub(classLevelSubDto);
             ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
             classLevelSub.setId(id);
             classLevelSub.setClassLevel(classLevel);
             classLevelSubRepository.save(classLevelSub);
-            return "Successfully updated class level sub with id: " + id;
+            return EntityResponse.builder().message("Successfully updated class level sub").entityName("class level sub").id(id).build();
         }
         throw new EntityException.EntityNotFoundException("class level" + id);
     }

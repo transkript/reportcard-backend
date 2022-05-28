@@ -1,8 +1,10 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.ClassLevelDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.ClassLevelMapper;
 import com.transkript.reportcard.business.service.ClassLevelService;
+import com.transkript.reportcard.business.service.SectionService;
 import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.repository.ClassLevelRepository;
@@ -25,9 +27,10 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     private final ClassLevelRepository classLevelRepository;
     private final ClassLevelMapper classLevelMapper;
     private final SectionRepository sectionRepository;
+    private final SectionService sectionService;
 
     @Override
-    public String addClassLevel(ClassLevelDto classLevelDto) {
+    public EntityResponse addClassLevel(ClassLevelDto classLevelDto) {
         ClassLevel classLevel = classLevelMapper.mapDtoToClassLevel(classLevelDto);
         Section section = sectionRepository.findById(classLevelDto.getSectionId()).orElseThrow(
                 () -> new EntityException.EntityNotFoundException("section with id: " +
@@ -36,7 +39,9 @@ public class ClassLevelServiceImpl implements ClassLevelService {
         classLevel.setId(null);
         classLevel.setSection(section);
         classLevelRepository.save(classLevel);
-        return "Successfully saved Class level with Name: " + classLevel.getName();
+        return EntityResponse.builder().message("Successfully saved Class level")
+                .entityName("class level")
+                .id(classLevelRepository.save(classLevel).getId()).build();
     }
 
     @Override
@@ -47,6 +52,12 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     }
 
     @Override
+    public List<ClassLevelDto> getClassLevels(Long sectionId) {
+        Section section = sectionService.getSectionEntity(sectionId);
+        return classLevelRepository.findAllBySection(section).stream().map(classLevelMapper::mapClassLevelToDto).toList();
+    }
+
+    @Override
     public ClassLevelDto getClassLevel(Long id) {
         return classLevelMapper.mapClassLevelToDto(getClassLevelEntity(id));
     }
@@ -54,32 +65,31 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     @Override
     public ClassLevel getClassLevelEntity(Long id) {
         return classLevelRepository.findById(id).orElseThrow(() -> {
-            throw new EntityException.EntityNotFoundException("Class level with id: " + id);
+            throw new EntityException.EntityNotFoundException("class level", id);
         });
     }
 
     @Override
-    public String updateClassLevel(Long id, ClassLevelDto classLevelDto) {
+    public EntityResponse updateClassLevel(Long id, ClassLevelDto classLevelDto) {
         if (id != null && classLevelRepository.existsById(id)) {
             ClassLevel classLevel = classLevelMapper.mapDtoToClassLevel(classLevelDto);
-            Section section = sectionRepository.findById(classLevelDto.getSectionId()).orElseThrow(
-                    () -> new EntityException.EntityNotFoundException("section with id: " +
-                            classLevelDto.getSectionId())
-            );
-            classLevel.setId(null);
+            Section section = sectionRepository.findById(classLevelDto.getSectionId())
+                    .orElseThrow(() -> new EntityException.EntityNotFoundException("section", classLevelDto.getSectionId()));
+            classLevel.setId(id);
             classLevel.setSection(section);
             classLevelRepository.save(classLevel);
-            return "Successfully updated class level with ID: " + id;
+            return EntityResponse.builder().message("Successfully updated class level")
+                    .entityName("class level")
+                    .id(classLevelRepository.save(classLevel).getId()).build();
         }
-        throw new EntityException.EntityNotFoundException("Class level with id: " + id);
+        throw new EntityException.EntityNotFoundException("class level", id);
     }
 
     @Override
-    public String deleteClassLevel(Long id) {
+    public void deleteClassLevel(Long id) {
         if (id != null && classLevelRepository.existsById(id)) {
             classLevelRepository.deleteById(id);
-            return "Successfully deleted class level with ID: " + id;
         }
-        throw new EntityException.EntityNotFoundException("Class level with id " + id);
+        throw new EntityException.EntityNotFoundException("class level", id);
     }
 }
