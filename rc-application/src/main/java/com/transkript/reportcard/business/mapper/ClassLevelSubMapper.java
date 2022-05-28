@@ -12,11 +12,13 @@ public interface ClassLevelSubMapper {
 
     @Mappings({
             @Mapping(target = "classLevelId", expression = "java(classLevelSub.getClassLevel().getId())"),
+            @Mapping(target = "numberOfApplications", expression = "java(classLevelSub.getStudentApplications().size())"),
     })
     ClassLevelSubDto mapClassLevelSubToDto(ClassLevelSub classLevelSub);
 
     @Mappings({
             @Mapping(target = "classLevel", ignore = true),
+            @Mapping(target = "studentApplications", ignore = true),
     })
     @InheritInverseConfiguration
     ClassLevelSub mapDtoToClassLevelSub(ClassLevelSubDto classlevelsubDto);

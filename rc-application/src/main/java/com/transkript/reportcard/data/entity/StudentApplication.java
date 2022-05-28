@@ -54,16 +54,11 @@ public class StudentApplication {
     private AcademicYear academicYear;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "class_level_sub_id", nullable = false)
+    @JoinColumn(name = "class_level_sub_id")
     private ClassLevelSub classLevelSub;
 
     @OneToMany(mappedBy = "studentApplication", orphanRemoval = true)
     @ToString.Exclude
     private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
-    /*
-    @Builder.Default
-    @OneToMany(mappedBy = "studentApplication", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
 
-     */
 }
