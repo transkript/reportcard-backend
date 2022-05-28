@@ -32,7 +32,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
         ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
         classLevelSub.setId(null);
         classLevelSub.setClassLevel(classLevel);
-        return  EntityResponse.builder().message("Successfully saved class level sub")
+        return EntityResponse.builder().message("Successfully saved class level sub")
                 .id(classLevelSubRepository.save(classLevelSub).getId())
                 .message("class level sub").build();
     }

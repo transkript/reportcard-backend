@@ -19,4 +19,7 @@ public class ClassLevelSubDto {
 
     @JsonProperty("class_level_id")
     private Long classLevelId;
+
+    @JsonProperty("number_of_applications")
+    private Integer numberOfApplications;
 }

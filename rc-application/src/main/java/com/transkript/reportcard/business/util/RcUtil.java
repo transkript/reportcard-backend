@@ -1,19 +1,19 @@
 package com.transkript.reportcard.business.util;
 
 import com.trankscript.reportcard.ReportCardProcess;
+import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Section;
+import com.transkript.reportcard.data.entity.Sequence;
+import com.transkript.reportcard.data.entity.Student;
+import com.transkript.reportcard.data.entity.Subject;
+import com.transkript.reportcard.data.entity.Term;
+import com.transkript.reportcard.data.entity.relation.Grade;
 import com.transkript.reportcard.model.RcClassLevel;
 import com.transkript.reportcard.model.RcGrade;
 import com.transkript.reportcard.model.RcSchool;
 import com.transkript.reportcard.model.RcStudent;
 import com.transkript.reportcard.model.RcSubject;
 import com.transkript.reportcard.model.ReportCard;
-import com.transkript.reportcard.data.entity.ClassLevelSub;
-import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.Term;
-import com.transkript.reportcard.data.entity.relation.Grade;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,13 +34,13 @@ public class RcUtil {
         RcClassLevel rcClassLevel = new RcClassLevel(classLevelSub.getClassLevel().getName(), classLevelSub.getName(), term.getAcademicYear().getName());
         Map<Long, RcSubject> rcSubjectMap = new HashMap<>();
         List<String> sequenceNames = new ArrayList<>(2);
-        termGrades.forEach((sequence, grades)-> {
+        termGrades.forEach((sequence, grades) -> {
             sequenceNames.add(sequence.getName());
             grades.forEach(grade -> {
                 Subject subject = grade.getSubjectRegistration().getSubject();
                 RcGrade rcGrade = new RcGrade(sequence.getName(), grade.getScore());
 
-                if(rcSubjectMap.containsKey(subject.getId())) {
+                if (rcSubjectMap.containsKey(subject.getId())) {
                     rcSubjectMap.get(subject.getId()).getGrades().put(rcGrade.getSequence(), rcGrade);
                 } else {
                     RcSubject rcSubject = new RcSubject(subject.getName(), subject.getCoefficient(), subject.getCode(), new HashMap<>());
