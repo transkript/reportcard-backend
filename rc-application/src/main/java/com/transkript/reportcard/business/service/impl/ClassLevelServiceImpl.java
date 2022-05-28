@@ -89,6 +89,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     public void deleteClassLevel(Long id) {
         if (id != null && classLevelRepository.existsById(id)) {
             classLevelRepository.deleteById(id);
+            return;
         }
         throw new EntityException.EntityNotFoundException("class level", id);
     }
