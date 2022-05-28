@@ -33,7 +33,7 @@ class StudentMapperTest {
         Assertions.assertEquals(expectedDto.getName(), actualStudent.getName());
         Assertions.assertEquals(expectedDto.getPob(), actualStudent.getPob());
         Assertions.assertEquals(expectedDto.getRegNum(), actualStudent.getRegNum());
-        Assertions.assertEquals(expectedDto.getGender(), actualStudent.getGender());
+        Assertions.assertEquals(expectedDto.getGender(), actualStudent.getGender().name().split("")[0]);
         Assertions.assertEquals(expectedDto.getDob(), actualStudent.getDob());
         Assertions.assertEquals(expectedDto.getNumberOfApplications(), actualStudent.getStudentApplications().size());
     }
@@ -50,7 +50,7 @@ class StudentMapperTest {
         Assertions.assertEquals(expectedStudent.getName(), actualStudentDto.getName());
         Assertions.assertEquals(expectedStudent.getPob(), actualStudentDto.getPob());
         Assertions.assertEquals(expectedStudent.getRegNum(), actualStudentDto.getRegNum());
-        Assertions.assertEquals(expectedStudent.getGender(), actualStudentDto.getGender());
+        Assertions.assertEquals(expectedStudent.getGender().name().split("")[0], actualStudentDto.getGender());
         Assertions.assertEquals(expectedStudent.getDob(), actualStudentDto.getDob());
     }
 }

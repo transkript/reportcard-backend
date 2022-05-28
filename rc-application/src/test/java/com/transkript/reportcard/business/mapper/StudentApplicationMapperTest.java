@@ -2,6 +2,8 @@ package com.transkript.reportcard.business.mapper;
 
 import com.transkript.reportcard.api.dto.StudentApplicationDto;
 import com.transkript.reportcard.data.entity.AcademicYear;
+import com.transkript.reportcard.data.entity.ClassLevel;
+import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
@@ -20,6 +22,8 @@ class StudentApplicationMapperTest {
     StudentApplicationDto testStudentApplicationDto;
     Student testStudent;
     AcademicYear testAcademicYear;
+    ClassLevel testClassLevel = ClassLevel.builder().id(1L).name("class level").build();
+    ClassLevelSub testClassLevelSub = ClassLevelSub.builder().id(1L).name("class level sub").studentApplications(List.of()).classLevel(testClassLevel).build();
 
     @Autowired
     StudentApplicationMapperTest(StudentApplicationMapper studentApplicationMapper) {
@@ -32,15 +36,16 @@ class StudentApplicationMapperTest {
         testAcademicYear = new AcademicYear();
         testAcademicYear.setId(4L);
         testStudentApplication = StudentApplication.builder()
-                .applicationKey(new ApplicationKey(12L, 11L))
+                .applicationKey(new ApplicationKey(testStudent.getId(), testAcademicYear.getId()))
                 .createdAt(LocalDateTime.now())
                 .student(testStudent)
                 .academicYear(testAcademicYear)
                 .subjectRegistrations(List.of())
+                .classLevelSub(testClassLevelSub)
                 .build();
 
-        StudentApplicationDto expectedDto = studentApplicationMapper
-                .mapStudentApplicationToDto(testStudentApplication);
+        System.out.println(testStudentApplication);
+        StudentApplicationDto expectedDto = studentApplicationMapper.mapStudentApplicationToDto(testStudentApplication);
 
         Assertions.assertEquals(expectedDto.getStudentId(), testStudentApplication.getApplicationKey().getStudentId());
         Assertions.assertEquals(expectedDto.getAcademicYearId(), testStudentApplication.getApplicationKey().getYearId());
