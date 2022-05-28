@@ -1,4 +1,4 @@
-package com.trankscript.reportcard.model
+package com.transkript.reportcard.model
 
 class RcSchool(val name: String, val section: String) {
     override fun toString(): String {

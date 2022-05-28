@@ -51,7 +51,7 @@ public class RcServiceImpl implements RcService {
                 try {
                     grade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(sequence.getId()).registrationId(subjectRegistration.getId()).build());
                 } catch (EntityException.EntityNotFoundException e) {
-                    grade = Grade.builder().score(0F).description("").sequence(sequence).subjectRegistration(subjectRegistration).build();
+                    grade = Grade.builder().score(0F).description("This grade has not been added").sequence(sequence).subjectRegistration(subjectRegistration).build();
                 }
                 termGrades.get(sequence).add(grade);
             });

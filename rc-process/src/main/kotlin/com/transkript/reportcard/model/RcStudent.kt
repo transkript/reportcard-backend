@@ -1,4 +1,4 @@
-package com.trankscript.reportcard.model
+package com.transkript.reportcard.model
 
 import java.time.LocalDateTime
 
@@ -7,6 +7,7 @@ class RcStudent(
     val rcClassLevel: RcClassLevel, val rcSubjects: List<RcSubject>
 ) {
     override fun toString(): String {
-        return "RcStudent(name='$name', regNum='$regNum', dob=$dob, pob='$pob', rcClassLevel=$rcClassLevel, rcSubjects=list)"
+        return "RcStudent(name='$name', regNum='$regNum', dob=$dob, pob='$pob', rcClassLevel=$rcClassLevel, " +
+                "rcSubjects=[${rcSubjects.joinToString(",\n ")}])"
     }
 }
