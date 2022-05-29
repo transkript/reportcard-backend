@@ -16,6 +16,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -72,15 +73,20 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     @Override
     public EntityResponse updateClassLevel(Long id, ClassLevelDto classLevelDto) {
         if (id != null && classLevelRepository.existsById(id)) {
-            ClassLevel classLevel = classLevelMapper.mapDtoToClassLevel(classLevelDto);
-            Section section = sectionRepository.findById(classLevelDto.getSectionId())
-                    .orElseThrow(() -> new EntityException.EntityNotFoundException("section", classLevelDto.getSectionId()));
-            classLevel.setId(id);
-            classLevel.setSection(section);
-            classLevelRepository.save(classLevel);
+            ClassLevel existingClassLevel = getClassLevelEntity(id);
+            Section existingSection = sectionService.getSectionEntity(classLevelDto.getId());
+
+            if (!Objects.equals(classLevelDto.getName(), existingClassLevel.getName())) {
+                existingClassLevel.setName(classLevelDto.getName());
+            }
+            if(!Objects.equals(classLevelDto.getSectionId(), existingSection.getId())) {
+                Section section = sectionService.getSectionEntity(classLevelDto.getSectionId());
+                existingClassLevel.setSection(section);
+            }
+            classLevelRepository.save(existingClassLevel);
+
             return EntityResponse.builder().message("Successfully updated class level")
-                    .entityName("class level")
-                    .id(classLevelRepository.save(classLevel).getId()).build();
+                    .entityName("class level").id(existingClassLevel.getId()).build();
         }
         throw new EntityException.EntityNotFoundException("class level", id);
     }

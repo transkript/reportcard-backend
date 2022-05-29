@@ -29,8 +29,7 @@ public class ClassLevelController {
     private final ClassLevelService classLevelService;
 
     @PostMapping
-    public ResponseEntity<EntityResponse> addClassLevel(
-            @RequestBody ClassLevelDto classLevelDto) {
+    public ResponseEntity<EntityResponse> addClassLevel(@RequestBody ClassLevelDto classLevelDto) {
         log.info("Adding class level with name " + classLevelDto.getName());
         return new ResponseEntity<>(classLevelService.addClassLevel(classLevelDto), HttpStatus.CREATED);
     }
