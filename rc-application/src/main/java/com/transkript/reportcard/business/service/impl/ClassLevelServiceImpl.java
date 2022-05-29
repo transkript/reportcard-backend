@@ -53,7 +53,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     }
 
     @Override
-    public List<ClassLevelDto> getClassLevels(Long sectionId) {
+    public List<ClassLevelDto> getClassLevelsBySection(Long sectionId) {
         Section section = sectionService.getSectionEntity(sectionId);
         return classLevelRepository.findAllBySection(section).stream().map(classLevelMapper::mapClassLevelToDto).toList();
     }

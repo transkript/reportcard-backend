@@ -12,7 +12,7 @@ public interface ClassLevelService {
 
     List<ClassLevelDto> getClassLevels();
 
-    List<ClassLevelDto> getClassLevels(Long sectionId);
+    List<ClassLevelDto> getClassLevelsBySection(Long sectionId);
 
     ClassLevelDto getClassLevel(Long id);
 
