@@ -37,6 +37,8 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         subjectRegistration.setCreatedAt(LocalDateTime.now());
         subjectRegistration.setUpdatedAt(LocalDateTime.now());
         subjectRegistration.setId(null);
+
+        StudentApplication studentApplication;
         {
             if (subjectRegistrationDto.getStudentId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Student Id is required");
@@ -46,7 +48,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
             }
 
             ApplicationKey applicationKey = new ApplicationKey(subjectRegistrationDto.getStudentId(), subjectRegistrationDto.getYearId());
-            StudentApplication studentApplication = studentApplicationService.getStudentApplicationEntity(applicationKey);
+            studentApplication = studentApplicationService.getStudentApplicationEntity(applicationKey);
             subjectRegistration.setStudentApplication(studentApplication);
         }
         {
@@ -54,7 +56,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
                 throw new ReportCardException.IllegalArgumentException("Subject Id is required");
             } else {
                 Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.getSubjectId());
-                if (subjectRegistrationRepository.findBySubject(subject).isPresent()) {
+                if (subjectRegistrationRepository.findByStudentApplicationAndSubject(studentApplication, subject).isPresent()) {
                     throw new ReportCardException.IllegalStateException("Subject already registered: " + subject.getName(), HttpStatus.CONFLICT);
                 }
                 subjectRegistration.setSubject(subject);
@@ -79,6 +81,11 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     }
 
     @Override
+    public SubjectRegistrationDto getSubjectRegistration(Long registrationId) {
+        return subjectRegistrationMapper.mapSubjectRegistrationToDto(getSubjectRegistrationEntity(registrationId));
+    }
+
+    @Override
     @Transactional
     public void deleteSubjectRegistration(Long registrationId) {
         if (registrationId == null) {
@@ -97,8 +104,17 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
                 .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", registrationId));
     }
 
+    @Override
+    public SubjectRegistration getSubjectRegistrationEntity(ApplicationKey applicationKey, Long subjectId) {
+        StudentApplication studentApplication = studentApplicationService.getStudentApplicationEntity(applicationKey);
+        Subject subject = subjectService.getSubjectEntity(subjectId);
+        return subjectRegistrationRepository.findByStudentApplicationAndSubject(studentApplication, subject)
+                .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", applicationKey.getYearId(), applicationKey.getStudentId(), subjectId));
+    }
+
     /**
-     * @param applicationId
+     * @param studentId
+     * @param yearId
      * @return
      */
     @Override
