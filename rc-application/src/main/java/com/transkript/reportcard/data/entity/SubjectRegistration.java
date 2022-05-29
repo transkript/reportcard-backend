@@ -60,12 +60,4 @@ public class SubjectRegistration {
             @JoinColumn(name = "student_application_academic_year_id", referencedColumnName = "academic_year_id", nullable = false)
     })
     private StudentApplication studentApplication;
-
-    /*
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "student_application_id", nullable = false)
-    private StudentApplication studentApplication;
-
-     */
-
 }
