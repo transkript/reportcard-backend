@@ -17,8 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectRegistrationDto {
-    @JsonProperty(value = "id")
-    private Long id;
+    @JsonProperty(value = "id") private Long id;
 
     @JsonProperty(value = "created_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -29,14 +28,9 @@ public class SubjectRegistrationDto {
     private LocalDateTime updatedAt;
 
     // from relations
-    @JsonProperty(value = "student_id")
-    @NotNull
-    private Long studentId;
+    @JsonProperty(value = "student_id") @NotNull private Long studentId;
 
-    @JsonProperty(value = "year_id")
-    private Long yearId;
+    @JsonProperty(value = "year_id") private Long yearId;
 
-    @JsonProperty(value = "subject_id")
-    @NotNull
-    private Long subjectId;
+    @JsonProperty(value = "subject_id") @NotNull private Long subjectId;
 }
