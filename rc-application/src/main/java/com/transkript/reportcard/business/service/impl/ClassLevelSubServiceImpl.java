@@ -70,10 +70,10 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     }
 
     @Override
-    public String deleteClassLevelSub(Long id) {
+    public void deleteClassLevelSub(Long id) {
         if (id != null && classLevelSubRepository.existsById(id)) {
             classLevelSubRepository.deleteById(id);
-            return "Successfully deleted class level sub with id: " + id;
+            return;
         }
         throw new EntityException.EntityNotFoundException("class level" + id);
     }

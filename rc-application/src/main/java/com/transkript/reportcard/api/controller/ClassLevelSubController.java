@@ -53,17 +53,15 @@ public class ClassLevelSubController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntityResponse> updateClassLevelSub(@PathVariable("id") Long id,
-                                                              @RequestBody ClassLevelSubDto classLevelSubDto) {
+    public ResponseEntity<EntityResponse> updateClassLevelSub(@PathVariable("id") Long id, @RequestBody ClassLevelSubDto classLevelSubDto) {
         log.info("Updating class level sub with id: " + id);
         return ResponseEntity.ok(classLevelSubService.updateClassLevelSub(id, classLevelSubDto));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteClassLevelSub(
-            @PathVariable("id") Long id
-    ) {
+    public ResponseEntity<Void> deleteClassLevelSub(@PathVariable("id") Long id) {
         log.info("Deleting class level sub with id: " + id);
-        return ResponseEntity.ok(classLevelSubService.deleteClassLevelSub(id));
+        classLevelSubService.deleteClassLevelSub(id);
+        return ResponseEntity.noContent().build();
     }
 }

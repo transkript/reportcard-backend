@@ -18,7 +18,7 @@ public interface ClassLevelSubService {
 
     EntityResponse updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto);
 
-    String deleteClassLevelSub(Long id);
+    void deleteClassLevelSub(Long id);
 
     ClassLevelSub getClassLevelSubEntity(Long id);
 
