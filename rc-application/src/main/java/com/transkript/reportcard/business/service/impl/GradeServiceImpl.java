@@ -117,4 +117,17 @@ public class GradeServiceImpl implements GradeService {
         SubjectRegistration subjectRegistration = subjectRegistrationService.getSubjectRegistrationEntity(registrationId);
         return gradeRepository.findAllBySubjectRegistration(subjectRegistration);
     }
+
+    @Override
+    public EntityResponse updateGrade(GradeDto gradeDto) {
+        GradeKey gradeKey = GradeKey.builder().registrationId(gradeDto.getRegistrationId()).sequenceId(gradeDto.getSequenceId()).build();
+        if (!gradeRepository.existsById(gradeKey)) {
+            throw new EntityException.EntityNotFoundException("grade", gradeKey.getRegistrationId(), gradeKey.getSequenceId());
+        }
+        Grade grade = getGradeEntity(gradeKey);
+        grade.setScore(gradeDto.getScore());
+        gradeRepository.save(grade);
+        return EntityResponse.builder().ids(Map.of("registration_id", gradeKey.getRegistrationId(), "sequence_id", gradeKey.getSequenceId()))
+                .entityName("grade").message("Update grade successful").build();
+    }
 }

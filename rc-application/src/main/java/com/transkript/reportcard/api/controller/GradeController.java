@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +51,12 @@ public class GradeController {
             @NotNull @RequestParam Long sequenceId) {
         log.info("Getting all grades of registrationId {}, and sequenceId {}", registrationId, sequenceId);
         return ResponseEntity.ok(gradeService.getGrade(registrationId, sequenceId));
+    }
+
+    @PutMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EntityResponse> updateGrade(@Valid @RequestBody GradeDto gradeDto) {
+        log.info("Updating grade for registration {} and sequence {}", gradeDto.getRegistrationId(), gradeDto.getSequenceId());
+        return ResponseEntity.ok(gradeService.updateGrade(gradeDto));
     }
 
 

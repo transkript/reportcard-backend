@@ -15,6 +15,7 @@ public interface GradeMapper {
     @Mappings({
             @Mapping(target = "registrationId", expression = "java(mapRegistrationId(grade.getGradeKey()))"),
             @Mapping(target = "sequenceId", expression = "java(mapSequenceId(grade.getGradeKey()))"),
+            @Mapping(target = "description", expression = "java(grade.getDescription().name())"),
     })
     GradeDto mapGradeToDto(Grade grade);
 
@@ -29,7 +30,8 @@ public interface GradeMapper {
     @Mappings({
             @Mapping(target = "subjectRegistration", ignore = true),
             @Mapping(target = "sequence", ignore = true),
-            @Mapping(target = "gradeKey", expression = "java(inverseMapGradeKey(gradeDto))")
+            @Mapping(target = "gradeKey", expression = "java(inverseMapGradeKey(gradeDto))"),
+            @Mapping(target = "description", ignore = true)
     })
     @InheritInverseConfiguration
     Grade mapDtoToGrade(GradeDto gradeDto);

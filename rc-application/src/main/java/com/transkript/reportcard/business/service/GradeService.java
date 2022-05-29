@@ -20,4 +20,6 @@ public interface GradeService {
     Grade getGradeEntity(GradeKey gradeKey);
 
     List<Grade> getGradeEntitiesBySubjectRegistration(Long registrationId);
+
+    EntityResponse updateGrade(GradeDto gradeDto);
 }
