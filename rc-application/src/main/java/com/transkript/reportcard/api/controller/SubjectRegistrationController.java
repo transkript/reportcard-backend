@@ -40,8 +40,14 @@ public class SubjectRegistrationController {
         return new ResponseEntity<>(subjectRegistrationService.addSubjectRegistrations(subjectRegistrationDtoList), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "")
-    public ResponseEntity<List<SubjectRegistrationDto>> getSubjectionRegistrations(@NotNull @RequestParam Long studentId, @NotNull @RequestParam Long yearId) {
+    @GetMapping(value = "/{registrationId}")
+    public ResponseEntity<SubjectRegistrationDto> getSubjectRegistration(@PathVariable @NotNull Long registrationId) {
+        log.info("Get subject registration {}", registrationId);
+        return ResponseEntity.ok(subjectRegistrationService.getSubjectRegistration(registrationId));
+    }
+
+    @GetMapping(value = "/multiple")
+    public ResponseEntity<List<SubjectRegistrationDto>> getSubjectRegistrations(@NotNull @RequestParam Long studentId, @NotNull @RequestParam Long yearId) {
         log.info("Get subject registrations for student {} and year {}", studentId, yearId);
         return new ResponseEntity<>(subjectRegistrationService.getSubjectionRegistrations(studentId, yearId), HttpStatus.OK);
     }
