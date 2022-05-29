@@ -13,6 +13,7 @@ import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
+import com.transkript.reportcard.data.enums.GradeDesc;
 import com.transkript.reportcard.exception.EntityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,7 @@ public class RcServiceImpl implements RcService {
                 try {
                     grade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(sequence.getId()).registrationId(subjectRegistration.getId()).build());
                 } catch (EntityException.EntityNotFoundException e) {
-                    grade = Grade.builder().score(0F).description("This grade has not been added").sequence(sequence).subjectRegistration(subjectRegistration).build();
+                    grade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(sequence).subjectRegistration(subjectRegistration).build();
                 }
                 termGrades.get(sequence).add(grade);
             });
