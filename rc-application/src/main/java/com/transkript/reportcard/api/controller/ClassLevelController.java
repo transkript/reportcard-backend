@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
@@ -40,13 +41,13 @@ public class ClassLevelController {
         return ResponseEntity.ok(classLevelService.getClassLevels());
     }
 
-    @GetMapping(value = "/{sectionId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ClassLevelDto>> getClassLevels(@NotNull @PathVariable Long sectionId) {
+    @GetMapping(value = "/section", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ClassLevelDto>> getClassLevels(@NotNull @RequestParam Long sectionId) {
         log.info("Getting class levels by section id: {}", sectionId);
-        return ResponseEntity.ok(classLevelService.getClassLevels(sectionId));
+        return ResponseEntity.ok(classLevelService.getClassLevelsBySection(sectionId));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<ClassLevelDto> getClassLevel(@PathVariable("id") Long id) {
         log.info("Getting class level");
         return ResponseEntity.ok(classLevelService.getClassLevel(id));
