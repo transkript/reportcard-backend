@@ -1,30 +1,44 @@
 package com.transkript.reportcard.model
 
 class ReportCard(
-    val rcSchool: RcSchool,
-    val rcStudent: RcStudent,
-    val termName: String,
-    val sequenceNames: MutableList<String>
+    val studentId: Long,
+    val schoolInfo: SchoolInfo,
+    val studentInfo: StudentInfo,
+    val classLevelInfo: ClassLevelInfo,
+    val subjectInfos: MutableList<SubjectInfo>,
+    val sequenceNames: Array<String>
 ) {
+    var subjectsPassed: Int = 0
     var average: Double = 0.0
-
+    var rank = -1
+    var classAverage: Double = 0.0
 
     init {
         calculateAverage()
+        calculateNumberOfSubjectsPassed()
     }
 
     private fun calculateAverage() {
-        var sumOfCoeff = 0
-        var coeffByGradeValue = 0.0
-        rcStudent.rcSubjects.stream().peek { rcSubject: RcSubject ->
-            rcSubject.calcScore()
-            val subjectValue = rcSubject.score
-            coeffByGradeValue += subjectValue
-        }.map(RcSubject::coeff).forEach { coeff: Int -> sumOfCoeff += coeff }
-        average = coeffByGradeValue / sumOfCoeff
+        var totalScore = 0.0
+        var totalCoeff = 0
+        for (subjectInfo in subjectInfos) {
+            totalScore += subjectInfo.total
+            totalCoeff += subjectInfo.coeff
+        }
+        average = totalScore / totalCoeff
+        println(average.toString() + " " + studentInfo.regNum)
+    }
+
+    private fun calculateNumberOfSubjectsPassed() {
+        subjectsPassed = 0
+        for (subjectInfo in subjectInfos) {
+            if (subjectInfo.average >= 10) {
+                subjectsPassed++
+            }
+        }
     }
 
     override fun toString(): String {
-        return "ReportCard(average=$average, rcStudent=$rcStudent)"
+        return "ReportCard(average=$average, rcStudent=$studentInfo)"
     }
 }
