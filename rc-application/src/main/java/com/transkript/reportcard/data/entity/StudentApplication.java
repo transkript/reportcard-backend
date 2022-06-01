@@ -43,6 +43,9 @@ public class StudentApplication {
     @Column(name = "updated_at", nullable = false, updatable = true)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(name = "repeating")
+    private Boolean repeating;
+
     @MapsId("studentId")
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", nullable = false)
