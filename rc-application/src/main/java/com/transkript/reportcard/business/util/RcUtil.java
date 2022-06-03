@@ -53,7 +53,7 @@ public class RcUtil {
             Subject subject = entry.getKey();
             Grade[] grades = entry.getValue();
 
-            if(grades.length != 2) {
+            if (grades.length != 2) {
                 throw new ReportCardException.IllegalStateException("Grade array length must be 2");
             }
             GradeInfo seqAGradeInfo = new GradeInfo(grades[0].getScore(), grades[0].getDescription() != GradeDesc.NOT_GRADED);
@@ -75,7 +75,7 @@ public class RcUtil {
         AtomicReference<ReportCard> card = new AtomicReference<>();
         processReportCardsClassRank(classReportCards);
         classReportCards.forEach((r) -> {
-            if(r.getStudentId() == studentId) {
+            if (r.getStudentId() == studentId) {
                 card.set(r);
             }
         });
@@ -87,7 +87,7 @@ public class RcUtil {
         classReportCards.sort(Comparator.comparingDouble(ReportCard::getAverage));
 
         // reverse order of cards
-        for(int i = 0; i < classReportCards.size() / 2; i++) {
+        for (int i = 0; i < classReportCards.size() / 2; i++) {
             ReportCard temp = classReportCards.get(i);
             classReportCards.set(i, classReportCards.get(classReportCards.size() - i - 1));
             classReportCards.set(classReportCards.size() - i - 1, temp);
@@ -97,12 +97,12 @@ public class RcUtil {
         classReportCards.forEach(r -> averages.add(r.getAverage()));
 
         Double averagesTotal = 0D;
-        for(Double avg: averages) {
+        for (Double avg : averages) {
             averagesTotal += avg;
         }
         double classAverage = averagesTotal / averages.size();
 
-        for(int i = 0; i < classReportCards.size(); i++) {
+        for (int i = 0; i < classReportCards.size(); i++) {
 
             classReportCards.get(i).setRank(i + 1);
             classReportCards.get(i).setClassAverage(classAverage);
@@ -114,12 +114,14 @@ public class RcUtil {
             card.getSubjectInfos().forEach(System.out::println);
         });
     }
+
     private void processReportCardsSubjectRank(List<ReportCard> classReportCards) {
         Map<Long, List<ReportCard>> subjectRanks = new HashMap<>();
         classReportCards.forEach(card -> card.getSubjectInfos().forEach(subjectInfo -> {
-            if(!subjectRanks.containsKey(subjectInfo.getId())) {
+            if (!subjectRanks.containsKey(subjectInfo.getId())) {
                 subjectRanks.put(subjectInfo.getId(), new ArrayList<>());
-            } subjectRanks.get(subjectInfo.getId()).add(card);
+            }
+            subjectRanks.get(subjectInfo.getId()).add(card);
         }));
 
 

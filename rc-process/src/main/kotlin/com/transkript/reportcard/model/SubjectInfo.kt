@@ -3,7 +3,14 @@ package com.transkript.reportcard.model
 import com.transkript.reportcard.enums.Remark
 import kotlin.math.roundToInt
 
-class SubjectInfo(val id: Long, val name: String, val coeff: Int, private val code: String, private val seqAGrade: GradeInfo, private val seqBGrade: GradeInfo) {
+class SubjectInfo(
+    val id: Long,
+    val name: String,
+    val coeff: Int,
+    private val code: String,
+    private val seqAGrade: GradeInfo,
+    private val seqBGrade: GradeInfo
+) {
     var average = 0.0F
     var total = 0.0F
     var sRank: Int = 0
@@ -16,7 +23,7 @@ class SubjectInfo(val id: Long, val name: String, val coeff: Int, private val co
 
     init {
         this.average = (seqAGrade.score + seqBGrade.score) / 2
-        this.total =  coeff * average
+        this.total = coeff * average
         averageLit = calcAverage()
         totalLit = calcTotal()
         setRemarks()

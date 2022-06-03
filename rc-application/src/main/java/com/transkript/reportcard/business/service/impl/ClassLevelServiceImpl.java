@@ -79,7 +79,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
             if (!Objects.equals(classLevelDto.getName(), existingClassLevel.getName())) {
                 existingClassLevel.setName(classLevelDto.getName());
             }
-            if(!Objects.equals(classLevelDto.getSectionId(), existingSection.getId())) {
+            if (!Objects.equals(classLevelDto.getSectionId(), existingSection.getId())) {
                 Section section = sectionService.getSectionEntity(classLevelDto.getSectionId());
                 existingClassLevel.setSection(section);
             }

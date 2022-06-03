@@ -1,7 +1,6 @@
 package com.transkript.reportcard.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.transkript.reportcard.data.enums.GradeDesc;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,11 +18,17 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GradeDto {
-    @JsonProperty(value = "score") @Max(value = 20) @Min(value = 0) private Float score;
+    @JsonProperty(value = "score")
+    @Max(value = 20)
+    @Min(value = 0)
+    private Float score;
 
-    @JsonProperty(value = "description") private String description;
+    @JsonProperty(value = "description")
+    private String description;
 
-    @JsonProperty(value = "registration_id") private Long registrationId;
+    @JsonProperty(value = "registration_id")
+    private Long registrationId;
 
-    @JsonProperty(value = "sequence_id") private Long sequenceId;
+    @JsonProperty(value = "sequence_id")
+    private Long sequenceId;
 }

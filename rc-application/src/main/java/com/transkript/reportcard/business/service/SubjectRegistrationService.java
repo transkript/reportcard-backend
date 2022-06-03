@@ -22,6 +22,7 @@ public interface SubjectRegistrationService {
     void deleteSubjectRegistration(Long registrationId);
 
     SubjectRegistration getSubjectRegistrationEntity(Long registrationId);
+
     SubjectRegistration getSubjectRegistrationEntity(ApplicationKey applicationKey, Long subjectId);
 
     List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long studentId, Long yearId);

@@ -1,11 +1,11 @@
 package com.transkript.reportcard.document
 
-import com.transkript.reportcard.model.StudentInfo
 import com.transkript.reportcard.model.ReportCard
+import com.transkript.reportcard.model.StudentInfo
 import com.transkript.reportcard.model.SubjectInfo
 import java.time.format.DateTimeFormatter
 
-class DocReportCard (private val card: ReportCard) {
+class DocReportCard(private val card: ReportCard) {
     private val studentInfo: StudentInfo = card.studentInfo
 
     // set average to 2 decimal places
