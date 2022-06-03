@@ -5,7 +5,7 @@ import com.transkript.reportcard.model.ReportCard
 import com.transkript.reportcard.model.SubjectInfo
 import java.time.format.DateTimeFormatter
 
-class DocReportCard (private val card: ReportCard, private val termName: String) {
+class DocReportCard (private val card: ReportCard) {
     private val studentInfo: StudentInfo = card.studentInfo
 
     // set average to 2 decimal places
@@ -13,6 +13,7 @@ class DocReportCard (private val card: ReportCard, private val termName: String)
     val classAverage: String = String.format("%.2f", card.classAverage)
     val classRank: Int = card.rank
 
+    val studentClassId: Long = card.studentId
     val schoolName: String = card.schoolInfo.name
     val studentName: String = studentInfo.name
     val studentRegNum: String = studentInfo.regNum
@@ -26,6 +27,8 @@ class DocReportCard (private val card: ReportCard, private val termName: String)
 
     val year: String = card.schoolInfo.yearName
     val term: String = card.schoolInfo.termName
+    val seqAName: String = card.schoolInfo.seqAName
+    val seqBName: String = card.schoolInfo.seqBName
 
     val numOfSubjects: Int = card.subjectInfos.size
     val subjectsPassed: String = card.subjectsPassed.toString() + "/" + card.subjectInfos.size
