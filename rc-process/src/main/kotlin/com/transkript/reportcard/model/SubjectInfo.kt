@@ -44,31 +44,15 @@ class SubjectInfo(val name: String, val coeff: Int, private val code: String, pr
     }
 
     private fun setRemarks() {
-        when (this.average.roundToInt()) {
-            in 17..20 -> {
-                remark = Remark.EXCELLENT.value
-            }
-            in 14..15 -> {
-                remark = Remark.VERY_GOOD.value
-            }
-            in 11..13 -> {
-                remark = Remark.GOOD.value
-            }
-            10 -> {
-                remark = Remark.AVERAGE.value
-            }
-            in 7..9 -> {
-                remark = Remark.POOR.value
-            }
-            in 4..6 -> {
-                remark = Remark.VERY_POOR.value
-            }
-            in 0..3 -> {
-                remark = Remark.FAIL.value
-            }
-            else -> {
-                remark = Remark.UNKNOWN.value
-            }
+        remark = when (this.avg.roundToInt()) {
+            in 17..20 -> Remark.EXCELLENT.value
+            in 14..15 -> Remark.VERY_GOOD.value
+            in 11..13 -> Remark.GOOD.value
+            10 -> Remark.AVERAGE.value
+            in 7..9 -> Remark.POOR.value
+            in 4..6 -> Remark.VERY_POOR.value
+            in 0..3 -> Remark.FAIL.value
+            else -> Remark.UNKNOWN.value
         }
     }
 }
