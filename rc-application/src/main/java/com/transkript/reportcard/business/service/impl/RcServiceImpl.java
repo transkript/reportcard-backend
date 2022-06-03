@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class RcServiceImpl implements RcService {
     RcUtil rcUtil = RcUtil.getInstance();
 
     @Override
-    public void getReportCard(Long termId, ReportCardRequest reportCardRequest) {
+    public File getReportCard(Long termId, ReportCardRequest reportCardRequest) {
         ApplicationKey applicationKey = new ApplicationKey(reportCardRequest.studentId(), reportCardRequest.yearId());
         StudentApplication application = studentApplicationService.getStudentApplicationEntity(applicationKey);
         Student student = application.getStudent();
@@ -51,9 +52,9 @@ public class RcServiceImpl implements RcService {
         ReportCard reportCard = getReportCardModel(student, application, term, classLevelSub, reportCardRequest);
         List<ReportCard> classReportCards = getClassReportCardModels(term, classLevelSub, reportCardRequest);
 
-        reportCard = rcUtil.processReportCard(reportCard, classReportCards);
+        reportCard = rcUtil.processReportCard(reportCard.getStudentId(), classReportCards);
 
-        RcUtil.generateReportCard(reportCard);
+        return RcUtil.generateReportCard(reportCard);
     }
 
     private ReportCard getReportCardModel(Student student, StudentApplication application, Term term, ClassLevelSub classLevelSub, ReportCardRequest reportCardRequest) {

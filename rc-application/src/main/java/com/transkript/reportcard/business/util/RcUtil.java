@@ -12,18 +12,21 @@ import com.transkript.reportcard.data.enums.GradeDesc;
 import com.transkript.reportcard.exception.ReportCardException;
 import com.transkript.reportcard.model.ClassLevelInfo;
 import com.transkript.reportcard.model.GradeInfo;
+import com.transkript.reportcard.model.ReportCard;
 import com.transkript.reportcard.model.SchoolInfo;
 import com.transkript.reportcard.model.StudentInfo;
 import com.transkript.reportcard.model.SubjectInfo;
-import com.transkript.reportcard.model.ReportCard;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RcUtil {
     @NotNull
@@ -32,9 +35,9 @@ public class RcUtil {
         return new RcUtil();
     }
 
-    public static void generateReportCard(@NotNull ReportCard reportCard) throws ReportCardException {
+    public static File generateReportCard(@NotNull ReportCard reportCard) throws ReportCardException {
         try {
-            ReportCardProcess.generateReportCard(reportCard);
+            return ReportCardProcess.generateReportCardFile(reportCard);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -55,31 +58,31 @@ public class RcUtil {
             }
             GradeInfo seqAGradeInfo = new GradeInfo(grades[0].getScore(), grades[0].getDescription() != GradeDesc.NOT_GRADED);
             GradeInfo seqBGradeInfo = new GradeInfo(grades[1].getScore(), grades[1].getDescription() != GradeDesc.NOT_GRADED);
-            SubjectInfo subjectInfo = new SubjectInfo(subject.getName(), subject.getCoefficient(), subject.getCode(), seqAGradeInfo, seqBGradeInfo);
+            SubjectInfo subjectInfo = new SubjectInfo(subject.getId(), subject.getName(), subject.getCoefficient(), subject.getCode(), seqAGradeInfo, seqBGradeInfo);
             subjectInfos.add(subjectInfo);
         }
 
         Section section = classLevelSub.getClassLevel().getSection();
-        SchoolInfo schoolInfo = new SchoolInfo(section.getSchool().getName(), section.getName(), term.getAcademicYear().getName(), term.getName());
+        SchoolInfo schoolInfo = new SchoolInfo(section.getSchool().getName(), section.getName(), term.getAcademicYear().getName(), term.getName(), sequenceNames[0], sequenceNames[1]);
         StudentInfo studentInfo = new StudentInfo(student.getName(), student.getRegNum(), student.getGender().name(),
                 student.getDob(), student.getPob(), application.getRepeating() == null || application.getRepeating()
         );
 
-        return new ReportCard(student.getId(), schoolInfo, studentInfo, classLevelInfo, subjectInfos, sequenceNames);
+        return new ReportCard(student.getId(), schoolInfo, studentInfo, classLevelInfo, subjectInfos);
     }
 
-    public ReportCard processReportCard(ReportCard reportCard, List<ReportCard> classReportCards) {
-        processReportCards(classReportCards);
+    public ReportCard processReportCard(Long studentId, List<ReportCard> classReportCards) {
+        AtomicReference<ReportCard> card = new AtomicReference<>();
+        processReportCardsClassRank(classReportCards);
         classReportCards.forEach((r) -> {
-            if(r.getStudentId() == reportCard.getStudentId()) {
-                reportCard.setRank(r.getRank());
-                reportCard.setClassAverage(r.getClassAverage());
+            if(r.getStudentId() == studentId) {
+                card.set(r);
             }
         });
-        return reportCard;
+        return card.get();
     }
 
-    public void processReportCards(List<ReportCard> classReportCards) {
+    public void processReportCardsClassRank(List<ReportCard> classReportCards) {
         // sort the report cards by average score
         classReportCards.sort(Comparator.comparingDouble(ReportCard::getAverage));
 
@@ -104,5 +107,45 @@ public class RcUtil {
             classReportCards.get(i).setRank(i + 1);
             classReportCards.get(i).setClassAverage(classAverage);
         }
+
+        processReportCardsSubjectRank(classReportCards);
+        classReportCards.forEach(card -> {
+            System.out.println("\n" + card.getStudentId());
+            card.getSubjectInfos().forEach(System.out::println);
+        });
+    }
+    private void processReportCardsSubjectRank(List<ReportCard> classReportCards) {
+        Map<Long, List<ReportCard>> subjectRanks = new HashMap<>();
+        classReportCards.forEach(card -> card.getSubjectInfos().forEach(subjectInfo -> {
+            if(!subjectRanks.containsKey(subjectInfo.getId())) {
+                subjectRanks.put(subjectInfo.getId(), new ArrayList<>());
+            } subjectRanks.get(subjectInfo.getId()).add(card);
+        }));
+
+
+        subjectRanks.forEach((subjectId, cards) -> {
+            Map<Long, SubjectInfo> subjectInfosById = new HashMap<>();
+            cards.forEach(card -> card.getSubjectInfos().stream()
+                    .filter(subjectInfo -> subjectInfo.getId() == subjectId).findFirst()
+                    .ifPresent(subjectInfo -> subjectInfosById.put(card.getStudentId(), subjectInfo))
+            );
+
+            List<Map.Entry<Long, SubjectInfo>> subjectEntries = new ArrayList<>();
+
+            // sort the hashmap by average score
+            subjectInfosById.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.comparingDouble(SubjectInfo::getAverage)))
+                    .forEachOrdered(subjectEntries::add);
+
+            for (int i = 0; i < subjectEntries.size(); i++) {
+                subjectEntries.get(i).getValue().setSRank(subjectEntries.size() - i);
+            }
+
+            classReportCards.forEach(card -> {
+                SubjectInfo subjectInfo = subjectInfosById.get(card.getStudentId());
+                card.getSubjectInfos().stream().filter(s -> s.getId() == subjectInfo.getId())
+                        .findFirst().ifPresent(s -> s.setSRank(subjectInfo.getSRank()));
+            });
+        });
     }
 }
