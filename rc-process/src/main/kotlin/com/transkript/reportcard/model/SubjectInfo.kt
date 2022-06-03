@@ -4,13 +4,16 @@ import com.transkript.reportcard.enums.Remark
 import kotlin.math.roundToInt
 
 class SubjectInfo(val name: String, val coeff: Int, private val code: String, private val seqAGrade: GradeInfo, private val seqBGrade: GradeInfo) {
-    var average: Double = 0.0
-    var total: Double = 0.0
+    private var avg = 0.0F
+
+    var average: String = ""
+    var total: String = ""
     var remark: String = ""
-    val seqA: String = if (seqAGrade.graded) seqAGrade.score.toString() else "-"
-    val seqB: String = if (seqBGrade.graded) seqBGrade.score.toString() else "-"
+    val seqA: String = getSeqGrade(seqAGrade)
+    val seqB: String = getSeqGrade(seqBGrade)
 
     init {
+        this.avg = (seqAGrade.score + seqBGrade.score) / 2
         average = calcAverage()
         total = calcTotal()
         setRemarks()
@@ -20,13 +23,24 @@ class SubjectInfo(val name: String, val coeff: Int, private val code: String, pr
         return "RcSubject(name='$name', coeff=$coeff, code='$code', seqAGradeInfo=$seqAGrade, seqBGradeInfo=$seqBGrade)"
     }
 
-    private fun calcAverage(): Double {
-        return ((seqAGrade.score + seqBGrade.score) / 2).toDouble()
+    private fun getSeqGrade(gradeInfo: GradeInfo): String {
+        return if ((gradeInfo.score % 1) == 0.0F) {
+            if (gradeInfo.graded) gradeInfo.score.roundToInt().toString() else "-"
+        } else {
+            if (gradeInfo.graded) gradeInfo.score.toString() else "-"
+        }
     }
 
-    private fun calcTotal(): Double {
-        val t = String.format("%.2f", this.coeff * this.average)
-        return t.toDouble()
+    private fun calcAverage(): String {
+        return if ((avg % 1) == 0.0F) {
+            avg.roundToInt().toString()
+        } else {
+            avg.toString()
+        }
+    }
+
+    private fun calcTotal(): String {
+        return String.format("%.2f", coeff * avg)
     }
 
     private fun setRemarks() {
