@@ -60,7 +60,7 @@ public class ReportCardProcess {
     private static String prepareReportCardDocName(String regNo, String yearName, String termName) {
         yearName = yearName.replaceAll("/", "");
         termName = termName.replaceAll(" ", "");
-        return regNo + "_" + yearName + "_" + termName + ".docx";
+        return "db/" + regNo + "_" + yearName + "_" + termName + ".docx";
     }
 
     private static Configure prepareSubjectsTableRenderPolicy() {
