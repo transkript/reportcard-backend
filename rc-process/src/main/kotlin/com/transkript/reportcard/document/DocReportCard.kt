@@ -1,28 +1,38 @@
 package com.transkript.reportcard.document
 
-import com.transkript.reportcard.model.RcStudent
+import com.transkript.reportcard.model.StudentInfo
+import com.transkript.reportcard.model.ReportCard
+import com.transkript.reportcard.model.SubjectInfo
 import java.time.format.DateTimeFormatter
 
-class DocReportCard (private val rcStudent: RcStudent, private val termName: String, private val sequenceNames: List<String>) {
-    val studentName: String = rcStudent.name
-    val studentRegNum: String = rcStudent.regNum
-    val studentGender: String = rcStudent.gender
-    val studentDob: String = rcStudent.dob.format(DateTimeFormatter.ISO_DATE)
-    val studentPob: String = rcStudent.pob
-    val classLeve: String = rcStudent.rcClassLevel.name
-    val classLevelSub: String = rcStudent.rcClassLevel.subName
-    val year: String = rcStudent.rcClassLevel.academicYear
-    val numOfSubjects: Int = rcStudent.rcSubjects.size
+class DocReportCard (private val card: ReportCard, private val termName: String) {
+    private val studentInfo: StudentInfo = card.studentInfo
 
-    val docSubjects: List<DocSubject> = listOf()
+    // set average to 2 decimal places
+    val average: String = String.format("%.2f", card.average)
+    val classAverage: String = String.format("%.2f", card.classAverage)
+    val classRank: Int = card.rank
 
-    init {
+    val schoolName: String = card.schoolInfo.name
+    val studentName: String = studentInfo.name
+    val studentRegNum: String = studentInfo.regNum
+    val studentGender: String = studentInfo.gender
+    val studentDob: String = studentInfo.dob.format(DateTimeFormatter.ISO_DATE)
+    val studentPob: String = studentInfo.pob
+    val studentRepeating: String = if (studentInfo.repeating) "YES" else "NO"
 
-    }
+    val classLevel: String = card.classLevelInfo.name
+    val classLevelSub: String = card.classLevelInfo.subName
 
-    fun initialiseDocSubjects() {
-        val rcSubjects = rcStudent.rcSubjects
-        
-        rcSubjects.forEach {  }
+    val year: String = card.schoolInfo.yearName
+    val term: String = card.schoolInfo.termName
+
+    val numOfSubjects: Int = card.subjectInfos.size
+    val subjectsPassed: String = card.subjectsPassed.toString() + "/" + card.subjectInfos.size
+
+    val subjects: List<SubjectInfo> = card.subjectInfos
+
+    fun getClassName(): String {
+        return "$classLevel $classLevelSub"
     }
 }
