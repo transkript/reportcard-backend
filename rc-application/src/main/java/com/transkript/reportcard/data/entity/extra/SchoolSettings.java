@@ -28,14 +28,8 @@ public class SchoolSettings {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "school_name", nullable = false, length = 128)
-    private String schoolName;
-
     @Column
     private Boolean applicationOpen;
-
-    @Column
-    private String regNoPattern;
 
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "academic_year_id")
