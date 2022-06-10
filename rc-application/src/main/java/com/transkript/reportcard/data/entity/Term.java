@@ -1,6 +1,5 @@
 package com.transkript.reportcard.data.entity;
 
-import com.transkript.reportcard.data.entity.abstracts.AcademicInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,5 +46,5 @@ public class Term {
     private List<Sequence> sequences;
 
     @Embedded
-    private AcademicInfo academicInfo;
+    private SchoolSettings.AcademicInfo academicInfo;
 }

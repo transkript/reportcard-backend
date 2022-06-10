@@ -1,7 +1,6 @@
 package com.transkript.reportcard.data.entity;
 
 
-import com.transkript.reportcard.data.entity.abstracts.AcademicInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,5 +50,5 @@ public class AcademicYear {
     private List<StudentApplication> studentApplications = new ArrayList<>();
 
     @Embedded
-    private AcademicInfo academicInfo;
+    private SchoolSettings.AcademicInfo academicInfo;
 }
