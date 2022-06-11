@@ -1,6 +1,6 @@
 package com.transkript.reportcard.data.repository;
 
-import com.transkript.reportcard.data.entity.extra.SchoolSettings;
+import com.transkript.reportcard.data.entity.SchoolSettings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
