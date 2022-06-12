@@ -16,6 +16,11 @@ public interface SchoolSettingsMapper {
     })
     SchoolSettingsDto mapSchoolSettingsToDto(SchoolSettings schoolSettings);
 
+    @Mappings({
+            @Mapping(target = "currentTerm", ignore = true),
+            @Mapping(target = "currentSequence", ignore = true),
+            @Mapping(target = "currentAcademicYear", ignore = true),
+    })
     @InheritInverseConfiguration
     SchoolSettings mapDtoToSchoolSettings(SchoolSettingsDto schoolSettingsDto);
 }
