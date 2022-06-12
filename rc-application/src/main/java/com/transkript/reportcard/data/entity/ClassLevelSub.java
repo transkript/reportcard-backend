@@ -32,7 +32,7 @@ public class ClassLevelSub {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "sub_name")
+    @Column(nullable = false, name = "sub_name", unique = true)
     private String name;
 
     @ManyToOne(optional = false)
@@ -40,6 +40,7 @@ public class ClassLevelSub {
     private ClassLevel classLevel;
 
     @OneToMany(mappedBy = "classLevelSub")
+    @Builder.Default
     @ToString.Exclude
     private List<StudentApplication> studentApplications = new ArrayList<>();
 }

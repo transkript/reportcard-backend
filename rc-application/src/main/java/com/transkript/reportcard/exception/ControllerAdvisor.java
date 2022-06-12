@@ -1,8 +1,10 @@
-package com.transkript.reportcard.exception.advice;
+package com.transkript.reportcard.exception;
 
 import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.ReportCardException;
 import com.transkript.reportcard.exception.body.ExceptionBody;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +28,20 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
      * @param request
      * @return
      */
+    @NotNull
     @Override
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
+            @NotNull HttpRequestMethodNotSupportedException ex,
+            @NotNull HttpHeaders headers, @NotNull HttpStatus status, @NotNull WebRequest request) {
         return super.handleHttpRequestMethodNotSupported(ex, headers, status, request);
     }
 
     // Override methods
+    @NotNull
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, @NotNull HttpHeaders headers,
+            @NotNull HttpStatus status, @NotNull WebRequest request) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
@@ -45,6 +53,21 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                         "Validation failed for field(s) in request",
                         request, HttpStatus.BAD_REQUEST, errors),
                 HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(value = {DataIntegrityViolationException.class})
+    protected ResponseEntity<ExceptionBody> handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex, WebRequest webRequest
+    ) {
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(
+                ExceptionBody.buildExceptionBody(
+                        "Data integrity error. Verify with admin/developers to fix this.",
+                        webRequest,
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        Map.of()
+                ), HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 

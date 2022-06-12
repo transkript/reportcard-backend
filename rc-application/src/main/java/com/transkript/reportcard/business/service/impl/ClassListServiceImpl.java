@@ -1,6 +1,5 @@
 package com.transkript.reportcard.business.service.impl;
 
-import com.transkript.reportcard.api.dto.GradeDto;
 import com.transkript.reportcard.api.dto.request.ClassListRequest;
 import com.transkript.reportcard.api.dto.response.ClassListResponse;
 import com.transkript.reportcard.api.dto.response.StudentGrade;
@@ -28,9 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +58,7 @@ public class ClassListServiceImpl implements ClassListService {
         studentApplications.forEach(application -> {
             SubjectRegistration subjectRegistration = subjectRegistrationService.getSubjectRegistrationEntity(application.getApplicationKey(), subject.getId());
 
-            if(subjectRegistration.getGrades().stream().noneMatch(grade -> grade.getSequence().equals(sequence))) {
+            if (subjectRegistration.getGrades().stream().noneMatch(grade -> grade.getSequence().equals(sequence))) {
                 studentGrades.add(new StudentGrade(
                         studentMapper.mapStudentToDto(subjectRegistration.getStudentApplication().getStudent()),
                         gradeMapper.mapGradeToDto(

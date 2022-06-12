@@ -61,6 +61,7 @@ public class StudentApplication {
     private ClassLevelSub classLevelSub;
 
     @OneToMany(mappedBy = "studentApplication", orphanRemoval = true)
+    @Builder.Default
     @ToString.Exclude
     private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
 

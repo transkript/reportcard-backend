@@ -22,7 +22,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping(value = "/api/academic_year")
 public class AcademicYearController {
-
     private final AcademicYearService academicYearService;
 
     @PostMapping

@@ -4,6 +4,7 @@ import com.transkript.reportcard.api.dto.StudentDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.StudentMapper;
 import com.transkript.reportcard.business.service.StudentService;
+import com.transkript.reportcard.business.util.SchoolUtil;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.repository.StudentRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -104,7 +105,6 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return EntityResponse.builder().entityName("student").id(studentRepository.save(existingStudent).getId())
-                .message("Student updated successfully")
-                .date(new Date()).build();
+                .message("Student updated successfully").build();
     }
 }

@@ -58,7 +58,7 @@ public class GradeServiceImpl implements GradeService {
                 .id(registration.getId())
                 .ids(Map.of("sequenceId", grade.getGradeKey().getSequenceId(),
                         "registration", grade.getGradeKey().getRegistrationId()))
-                .entityName("grade").message("Added grade successfully").date(new Date()).build();
+                .entityName("grade").message("Added grade successfully").build();
     }
 
     /**

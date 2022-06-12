@@ -1,8 +1,5 @@
-package com.transkript.reportcard.data.entity.extra;
+package com.transkript.reportcard.data.entity;
 
-import com.transkript.reportcard.data.entity.AcademicYear;
-import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.Term;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,11 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,7 +28,7 @@ public class SchoolSettings {
     private Long id;
 
     @Column
-    private Boolean registrationOpen;
+    private Boolean applicationOpen;
 
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "academic_year_id")
@@ -45,10 +44,10 @@ public class SchoolSettings {
 
     @Builder.Default
     @Column(name = "max_grade_score", nullable = false)
-    private Long maxGradeScore = 20L;
+    private Long maxGrade = 20L;
 
     @Builder.Default
     @Column(name = "min_grade_score", nullable = false)
-    private Long minGradeScore = 0L;
+    private Long minGrade = 0L;
 
 }

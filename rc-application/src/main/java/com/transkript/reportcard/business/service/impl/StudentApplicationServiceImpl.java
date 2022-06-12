@@ -83,7 +83,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         return EntityResponse.builder().ids(
                 Map.of("academic year", studentApplication.getAcademicYear().getId(),
                         "student", studentApplication.getStudent().getId()
-                )).message("Student application created successfully").date(new Date()).build();
+                )).message("Student application created successfully").build();
     }
 
     @Override

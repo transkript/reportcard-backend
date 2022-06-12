@@ -13,7 +13,8 @@ public record ReportCardRequest(
     public record SequenceRequest(
             @JsonProperty(value = "x_sequence") Long openingSequenceId,
             @JsonProperty(value = "y_sequence") Long closingSequenceId
-    ) implements Serializable {}
+    ) implements Serializable {
+    }
 }
 
 

@@ -6,16 +6,18 @@ import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
 import com.transkript.reportcard.document.DocReportCard;
 import com.transkript.reportcard.model.ReportCard;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ReportCardProcess {
-    public static void generateReportCard(ReportCard card) throws IOException {
+    public static File generateReportCardFile(ReportCard card) throws IOException {
         String schoolName = card.getSchoolInfo().getName();
 
-        DocReportCard docCard = new DocReportCard(card, card.getSchoolInfo().getTermName());
+        DocReportCard docCard = new DocReportCard(card);
 
         Configure subjectsConfig = prepareSubjectsTableRenderPolicy();
         Map<String, Object> data = new HashMap<>();
@@ -24,6 +26,9 @@ public class ReportCardProcess {
         data.put("school_name", docCard.getSchoolName());
         data.put("year_name", docCard.getYear());
         data.put("term_name", docCard.getTerm());
+        data.put("seq_a_name", docCard.getSeqAName());
+        data.put("seq_b_name", docCard.getSeqBName());
+
 
         // student info
         data.put("student_name", docCard.getStudentName());
@@ -32,7 +37,7 @@ public class ReportCardProcess {
         data.put("student_gender", docCard.getStudentGender());
         data.put("student_repeating", docCard.getStudentRepeating()); // TODO fix this
         data.put("student_regno", docCard.getStudentRegNum());
-        data.put("student_class_id", 0); // TODO fix this
+        data.put("student_class_id", docCard.getStudentClassId()); // TODO fix this
         data.put("average", docCard.getAverage());
 
         // class info
@@ -45,16 +50,15 @@ public class ReportCardProcess {
         data.put("subjects_passed", docCard.getSubjectsPassed());
         data.put("subjects", docCard.getSubjects());
 
+        // load template from resources in the docs folder
+        File templateFile = new File(Objects.requireNonNull(
+                ReportCardProcess.class.getClassLoader().getResource("docs/report_card_template.docx")).getFile()
+        );
+        File outputFile = new File(prepareReportCardDocName(docCard.getStudentRegNum(), docCard.getYear(), docCard.getTerm()));
+        XWPFTemplate template = XWPFTemplate.compile(templateFile, subjectsConfig).render(data);
+        template.writeAndClose(new FileOutputStream(outputFile));
 
-        XWPFTemplate template = XWPFTemplate.compile(
-                "/home/kanye/IdeaProjects/Maven/reportcard-backend/rc-process/src/main/resources/docs/reportcard.docx",
-                subjectsConfig
-                ).render(data);
-        template.writeAndClose(new FileOutputStream(prepareReportCardDocName(
-                card.getStudentInfo().getRegNum(),
-                card.getSchoolInfo().getYearName(),
-                card.getSchoolInfo().getTermName())
-        ));
+        return outputFile;
     }
 
     private static String prepareReportCardDocName(String regNo, String yearName, String termName) {
@@ -65,8 +69,6 @@ public class ReportCardProcess {
 
     private static Configure prepareSubjectsTableRenderPolicy() {
         LoopRowTableRenderPolicy rowTableRenderPolicy = new LoopRowTableRenderPolicy();
-        return Configure.builder()
-                .bind("subjects", rowTableRenderPolicy)
-                .build();
+        return Configure.builder().bind("subjects", rowTableRenderPolicy).build();
     }
 }

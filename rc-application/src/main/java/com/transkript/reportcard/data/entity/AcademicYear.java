@@ -1,7 +1,7 @@
 package com.transkript.reportcard.data.entity;
 
 
-import com.transkript.reportcard.data.entity.abstracts.AcademicInfo;
+import com.transkript.reportcard.data.entity.composite.AcademicInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public class AcademicYear {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "year_name")
+    @Column(nullable = false, name = "year_name", unique = true)
     private String name;
 
     // one to many term

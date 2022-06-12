@@ -5,8 +5,7 @@ class ReportCard(
     val schoolInfo: SchoolInfo,
     val studentInfo: StudentInfo,
     val classLevelInfo: ClassLevelInfo,
-    val subjectInfos: MutableList<SubjectInfo>,
-    val sequenceNames: Array<String>
+    val subjectInfos: MutableList<SubjectInfo>
 ) {
     var subjectsPassed: Int = 0
     var average: Double = 0.0

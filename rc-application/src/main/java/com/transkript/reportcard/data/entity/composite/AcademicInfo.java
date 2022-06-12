@@ -1,4 +1,4 @@
-package com.transkript.reportcard.data.entity.abstracts;
+package com.transkript.reportcard.data.entity.composite;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

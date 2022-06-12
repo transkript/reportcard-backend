@@ -1,6 +1,6 @@
 package com.transkript.reportcard.data.entity;
 
-import com.transkript.reportcard.data.entity.abstracts.AcademicInfo;
+import com.transkript.reportcard.data.entity.composite.AcademicInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class Term {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     // many to one year

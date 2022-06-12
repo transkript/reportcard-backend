@@ -20,7 +20,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -58,7 +57,7 @@ public class Grade {
     @PrePersist
     @PreUpdate
     public void prePersist() {
-        if(score < 10) {
+        if (score < 10) {
             description = GradeDesc.FAILED;
         } else if (score > 10) {
             description = GradeDesc.PASSED;
