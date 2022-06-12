@@ -70,7 +70,7 @@ public class SubjectServiceImpl implements SubjectService {
                 subject.setSection(section);
             }
             return EntityResponse.builder().id(subjectRepository.save(subject).getId())
-                    .entityName("subject").message("subject updated successfully").date(new Date()).build();
+                    .entityName("subject").message("subject updated successfully").build();
         }
         throw new EntityException.EntityNotFoundException("subject");
     }

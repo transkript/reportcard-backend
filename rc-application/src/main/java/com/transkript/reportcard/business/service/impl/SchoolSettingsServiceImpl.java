@@ -48,11 +48,11 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
         } else {
             schoolSettingsRepository.findAll().stream().findFirst().ifPresentOrElse(
                     settings -> {
-                        if(!Objects.equals(settings.getMaxGradeScore(), schoolSettingsDto.maxGrade())) {
-                            settings.setMaxGradeScore(schoolSettingsDto.maxGrade());
+                        if(!Objects.equals(settings.getMaxGrade(), schoolSettingsDto.maxGrade())) {
+                            settings.setMaxGrade(schoolSettingsDto.maxGrade());
                         }
-                        if(!Objects.equals(settings.getMinGradeScore(), schoolSettingsDto.minGrade())) {
-                            settings.setMinGradeScore(schoolSettingsDto.minGrade());
+                        if(!Objects.equals(settings.getMinGrade(), schoolSettingsDto.minGrade())) {
+                            settings.setMinGrade(schoolSettingsDto.minGrade());
                         }
 
                     },
