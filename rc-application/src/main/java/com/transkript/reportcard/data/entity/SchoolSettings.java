@@ -44,23 +44,10 @@ public class SchoolSettings {
 
     @Builder.Default
     @Column(name = "max_grade_score", nullable = false)
-    private Long maxGradeScore = 20L;
+    private Long maxGrade = 20L;
 
     @Builder.Default
     @Column(name = "min_grade_score", nullable = false)
-    private Long minGradeScore = 0L;
+    private Long minGrade = 0L;
 
-    @Builder
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Embeddable
-    public static class AcademicInfo {
-        @Column(name = "start_date")
-        private LocalDateTime startDate;
-
-        @Column(name = "end_date")
-        private LocalDateTime endDate;
-    }
 }
