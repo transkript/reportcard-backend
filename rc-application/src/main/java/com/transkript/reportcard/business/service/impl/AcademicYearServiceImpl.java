@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AcademicYearServiceImpl implements AcademicYearService {
-
     private final AcademicYearRepository academicYearRepository;
     private final AcademicYearMapper academicYearMapper;
 
