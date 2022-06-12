@@ -60,7 +60,15 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ExceptionBody> handleDataIntegrityViolationException(
             DataIntegrityViolationException ex, WebRequest webRequest
     ) {
-        return getExceptionEntity(ex, webRequest, HttpStatus.INTERNAL_SERVER_ERROR, Map.of());
+        logger.error(ex.getMessage());
+        return new ResponseEntity<>(
+                ExceptionBody.buildExceptionBody(
+                        "Data integrity error. Verify with admin/developers to fix this.",
+                        webRequest,
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        Map.of()
+                ), HttpStatus.INTERNAL_SERVER_ERROR
+        );
     }
 
     // ReportCard Exception handlers
