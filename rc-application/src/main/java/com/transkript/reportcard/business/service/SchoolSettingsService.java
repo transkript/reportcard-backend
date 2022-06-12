@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface SchoolSettingsService {
     EntityResponse addSettings(SchoolSettingsDto schoolSettingsDto);
+
+    SchoolSettingsDto getSettings();
 }

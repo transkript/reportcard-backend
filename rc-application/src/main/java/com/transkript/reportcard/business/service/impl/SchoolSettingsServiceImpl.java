@@ -48,13 +48,9 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
         } else {
             schoolSettingsRepository.findAll().stream().findFirst().ifPresentOrElse(
                     settings -> {
-                        if(!Objects.equals(settings.getMaxGrade(), schoolSettingsDto.maxGrade())) {
-                            settings.setMaxGrade(schoolSettingsDto.maxGrade());
-                        }
-                        if(!Objects.equals(settings.getMinGrade(), schoolSettingsDto.minGrade())) {
-                            settings.setMinGrade(schoolSettingsDto.minGrade());
-                        }
-
+                        settings.setMaxGrade(schoolSettingsDto.maxGrade());
+                        settings.setMinGrade(schoolSettingsDto.minGrade());
+                        settings.setApplicationOpen(schoolSettings.getApplicationOpen());
                     },
                     () -> schoolSettingsRepository.save(schoolSettings)
             );
@@ -64,5 +60,12 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
         return EntityResponse.builder().id(
                 schoolSettingsRepository.findAll().stream().findFirst().orElse(schoolSettings).getId()
         ).message("Successfully added settings for the system").entityName("school settings").build();
+    }
+
+    @Override
+    public SchoolSettingsDto getSettings() {
+        return schoolSettingsMapper.mapSchoolSettingsToDto(
+                schoolSettingsRepository.findAll().stream().findFirst().orElse(null)
+        );
     }
 }
