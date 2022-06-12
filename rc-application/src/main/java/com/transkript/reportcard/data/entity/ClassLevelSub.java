@@ -40,6 +40,7 @@ public class ClassLevelSub {
     private ClassLevel classLevel;
 
     @OneToMany(mappedBy = "classLevelSub")
+    @Builder.Default
     @ToString.Exclude
     private List<StudentApplication> studentApplications = new ArrayList<>();
 }
