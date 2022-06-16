@@ -125,7 +125,6 @@ public class DefaultController {
             studentApplicationRepository.save(studentApplication);
         }
         for (int i = 0, j = 0; i < terms.length; i++, j = j + 2) {
-            terms[i].setAcademicYear(academicYear);
             terms[i] = termRepository.save(terms[i]);
 
             {

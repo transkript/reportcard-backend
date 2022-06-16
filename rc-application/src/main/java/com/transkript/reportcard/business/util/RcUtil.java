@@ -46,7 +46,7 @@ public class RcUtil {
     public ReportCard createReportCard(
             @NotNull Student student, @NotNull StudentApplication application, @NotNull Term term,
             @NotNull ClassLevelSub classLevelSub, @NotNull Map<Subject, Grade[]> subjectGrades, String[] sequenceNames) {
-        ClassLevelInfo classLevelInfo = new ClassLevelInfo(classLevelSub.getClassLevel().getName(), classLevelSub.getName(), term.getAcademicYear().getName());
+        ClassLevelInfo classLevelInfo = new ClassLevelInfo(classLevelSub.getClassLevel().getName(), classLevelSub.getName(), application.getAcademicYear().getName());
         List<SubjectInfo> subjectInfos = new ArrayList<>();
 
         for (Map.Entry<Subject, Grade[]> entry : subjectGrades.entrySet()) {
@@ -63,7 +63,7 @@ public class RcUtil {
         }
 
         Section section = classLevelSub.getClassLevel().getSection();
-        SchoolInfo schoolInfo = new SchoolInfo(section.getSchool().getName(), section.getName(), term.getAcademicYear().getName(), term.getName(), sequenceNames[0], sequenceNames[1]);
+        SchoolInfo schoolInfo = new SchoolInfo(section.getSchool().getName(), section.getName(), application.getAcademicYear().getName(), term.getName(), sequenceNames[0], sequenceNames[1]);
         StudentInfo studentInfo = new StudentInfo(student.getName(), student.getRegNum(), student.getGender().name(),
                 student.getDob(), student.getPob(), application.getRepeating() == null || application.getRepeating()
         );
