@@ -1,6 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.SequenceDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.SequenceService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +27,8 @@ public class SequenceController {
     private final SequenceService sequenceService;
 
     @PostMapping
-    public ResponseEntity<String> addSequence(@RequestBody SequenceDto sequenceDto) {
-        log.info("Adding section with name " + sequenceDto.getName());
+    public ResponseEntity<EntityResponse> addSequence(@RequestBody SequenceDto sequenceDto) {
+        log.info("Adding section with name " + sequenceDto.name());
         return new ResponseEntity<>(sequenceService.addSequence(sequenceDto), HttpStatus.CREATED);
     }
 
@@ -38,26 +39,19 @@ public class SequenceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SequenceDto> getSequence(
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<SequenceDto> getSequence(@PathVariable Long id) {
         log.info("Getting the Sequence with id " + id);
         return ResponseEntity.ok(sequenceService.getSequence(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateSequence(
-            @PathVariable Long id,
-            @RequestBody SequenceDto sequenceDto
-    ) {
+    public ResponseEntity<EntityResponse> updateSequence(@PathVariable Long id, @RequestBody SequenceDto sequenceDto) {
         log.info("Updating Sequence with id " + id);
         return ResponseEntity.ok(sequenceService.updateSequence(id, sequenceDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSequence(
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<String> deleteSequence(@PathVariable Long id) {
         log.info("Deleting Sequence with id " + id);
         return ResponseEntity.ok(sequenceService.deleteSequence(id));
     }

@@ -11,10 +11,7 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
 public interface SequenceMapper {
     @Mappings({
-            @Mapping(
-                    target = "termId",
-                    expression = "java(sequence.getTerm().getId())"
-            )
+            @Mapping(target = "termId", expression = "java(sequence.getTerm().getId())")
     })
     SequenceDto mapSequenceToDto(Sequence sequence);
 

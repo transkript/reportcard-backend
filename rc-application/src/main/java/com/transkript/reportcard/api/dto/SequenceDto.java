@@ -7,21 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class SequenceDto {
-    @JsonProperty(value = "id")
-    private Long id;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-    @JsonProperty(value = "name")
-    private String name;
-
-    @JsonProperty(value = "term_id")
-    private Long termId;
-
-    @JsonProperty("academic_info")
-    private AcademicInfoDto academicInfo;
-}
+public record SequenceDto (
+        @JsonProperty(value = "id")Long id,
+        @NotNull @JsonProperty(value = "name") String name,
+        @NotNull @JsonProperty(value = "term_id") Long termId)
+implements Serializable { }

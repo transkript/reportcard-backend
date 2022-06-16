@@ -37,7 +37,4 @@ public class Sequence {
     @ManyToOne(optional = false)
     @JoinColumn(name = "term_id", nullable = false)
     private Term term;
-
-    @Embedded
-    private AcademicInfo academicInfo;
 }
