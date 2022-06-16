@@ -37,15 +37,7 @@ public class Term {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    // many to one year
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "academic_year_id", nullable = false)
-    private AcademicYear academicYear;
-
     @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Sequence> sequences;
-
-    @Embedded
-    private AcademicInfo academicInfo;
 }

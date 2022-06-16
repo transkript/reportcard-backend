@@ -1,27 +1,11 @@
 package com.transkript.reportcard.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TermDto {
-    @JsonProperty("id")
-    private Long id;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("academic_year_id")
-    private Long academicYearId;
-
-    @JsonProperty("academic_info")
-    private AcademicInfoDto academicInfo;
-}
+public record TermDto (
+        @JsonProperty("id")Long id,
+        @NotNull @JsonProperty("name") String name)
+implements Serializable { }

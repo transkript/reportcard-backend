@@ -1,6 +1,7 @@
 package com.transkript.reportcard;
 
 import com.transkript.reportcard.api.dto.SectionDto;
+import com.transkript.reportcard.api.dto.SequenceDto;
 import com.transkript.reportcard.api.dto.SubjectDto;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.TermDto;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TestDefaults {
+    public static final SequenceDto SEQUENCE_DTO = new SequenceDto(2L, "Second", 1L);
     /**
      * TODO Add actual object in place of all single relations
      */
@@ -30,6 +32,6 @@ public class TestDefaults {
     public static Section SECTION = null;
     public static SectionDto SECTION_DTO = null;
 
-    public static Term TERM = Term.builder().id(1L).name("Term").academicYear(null).sequences(List.of()).build();
-    public static TermDto TERM_DTO = TermDto.builder().id(1L).name("TermDto").academicYearId(1L).build();
+    public static Term TERM = Term.builder().id(1L).name("Term").sequences(List.of()).build();
+    public static TermDto TERM_DTO = new TermDto(1L, "TermDto");
 }

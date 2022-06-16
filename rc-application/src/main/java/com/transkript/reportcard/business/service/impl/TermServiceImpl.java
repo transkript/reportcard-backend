@@ -1,10 +1,11 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.TermDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.TermMapper;
-import com.transkript.reportcard.business.service.AcademicYearService;
+import com.transkript.reportcard.business.service.SchoolService;
 import com.transkript.reportcard.business.service.TermService;
-import com.transkript.reportcard.data.entity.AcademicYear;
+import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.repository.TermRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -22,57 +24,45 @@ import java.util.stream.Collectors;
 @Service
 public class TermServiceImpl implements TermService {
 
-    TermRepository termRepository;
-    TermMapper termMapper;
-    AcademicYearService academicYearService;
+    private final TermRepository termRepository;
+    private final TermMapper termMapper;
+    private final SchoolService schoolService;
 
     @Override
-    public String addTerm(TermDto termDto) {
+    public EntityResponse addTerm(TermDto termDto) {
         Term term = termMapper.mapDtoToTerm(termDto);
-        AcademicYear academicYear = academicYearService.getAcademicYearById(termDto.getAcademicYearId());
-        term.setAcademicYear(academicYear);
         term.setId(null);
-        termRepository.save(term);
-        return "Successfully added Term with Name: " + term.getName();
+        term = termRepository.save(term);
+        return EntityResponse.builder().id(term.getId()).entityName("term").message("Successfully added term: " + term.getName()).build();
     }
 
     @Override
     public List<TermDto> getTerms() {
-        return termRepository.findAll().stream()
-                .map(termMapper::mapTermToDto)
-                .collect(Collectors.toList());
+        return termRepository.findAll().stream().map(termMapper::mapTermToDto).collect(Collectors.toList());
     }
 
     @Override
     public TermDto getTerm(Long id) {
-        return termMapper.mapTermToDto(
-                termRepository.findById(id).orElseThrow(
-                        () -> {
-                            throw new EntityException.EntityNotFoundException("Term with id: " + id);
-                        }
-                )
-        );
+        return termMapper.mapTermToDto(getTermEntity(id));
     }
 
     @Override
     public Term getTermEntity(Long id) {
-        return termRepository.findById(id).orElseThrow(
-                () -> {
-                    throw new EntityException.EntityNotFoundException("Term with id: " + id);
-                }
-        );
+        return termRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("term", id));
     }
 
     @Override
-    public String updateTerm(Long id, TermDto termDto) {
-        if (id != null && termRepository.existsById(id)) {
-            Term term = termMapper.mapDtoToTerm(termDto);
-            term.setId(id);
-            term.setAcademicYear(academicYearService.getAcademicYearById(termDto.getAcademicYearId()));
-            termRepository.save(term);
-            return "Successfully updated Term with id: " + id;
+    public EntityResponse updateTerm(Long id, TermDto termDto) {
+        if (id != null && id.equals(termDto.id()) && termRepository.existsById(id)) {
+            Term term = termRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("term", id));
+
+            if(!Objects.equals(term.getName(), termDto.name())) {
+                term.setName(termDto.name());
+            }
+            term = termRepository.save(term);
+            return EntityResponse.builder().id(term.getId()).entityName("term").message("Successfully updated term: " + term.getName()).build();
         }
-        throw new EntityException.EntityNotFoundException("Term with id: " + id);
+        throw new EntityException.EntityNotFoundException("term" + id);
     }
 
     @Override

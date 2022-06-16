@@ -1,6 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.TermDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.TermService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +27,8 @@ public class TermController {
     private final TermService termService;
 
     @PostMapping
-    public ResponseEntity<String> addTerm(@RequestBody TermDto termDto) {
-        log.info("Adding a term with Name: " + termDto.getName());
+    public ResponseEntity<EntityResponse> addTerm(@RequestBody TermDto termDto) {
+        log.info("Adding a term with Name: " + termDto.name());
         return new ResponseEntity<>(termService.addTerm(termDto), HttpStatus.CREATED);
     }
 
@@ -46,10 +47,7 @@ public class TermController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateTerm(
-            @PathVariable("id") Long id,
-            @RequestBody TermDto termDto
-    ) {
+    public ResponseEntity<EntityResponse> updateTerm(@PathVariable("id") Long id, @RequestBody TermDto termDto) {
         log.info("Updating term with id: " + id);
         return ResponseEntity.ok(termService.updateTerm(id, termDto));
     }

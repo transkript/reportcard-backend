@@ -23,12 +23,11 @@ class TermMapperTest {
         Term actualTerm = TestDefaults.TERM;
         AcademicYear academicYear = new AcademicYear();
         academicYear.setId(1L);
-        actualTerm.setAcademicYear(academicYear);
         TermDto expectedTermDto = termMapper.mapTermToDto(actualTerm);
 
-        Assertions.assertEquals(expectedTermDto.getId(), actualTerm.getId());
-        Assertions.assertEquals(expectedTermDto.getName(), actualTerm.getName());
-        Assertions.assertEquals(expectedTermDto.getAcademicYearId(), actualTerm.getAcademicYear().getId());
+        Assertions.assertEquals(expectedTermDto.id(), actualTerm.getId());
+        Assertions.assertEquals(expectedTermDto.name(), actualTerm.getName());
+
     }
 
     @Test
@@ -36,7 +35,7 @@ class TermMapperTest {
         TermDto actualTermDto = TestDefaults.TERM_DTO;
         Term expectedTerm = termMapper.mapDtoToTerm(actualTermDto);
 
-        Assertions.assertEquals(expectedTerm.getId(), actualTermDto.getId());
-        Assertions.assertEquals(expectedTerm.getName(), actualTermDto.getName());
+        Assertions.assertEquals(expectedTerm.getId(), actualTermDto.id());
+        Assertions.assertEquals(expectedTerm.getName(), actualTermDto.name());
     }
 }
