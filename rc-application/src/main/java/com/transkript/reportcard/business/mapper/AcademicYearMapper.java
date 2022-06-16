@@ -11,15 +11,10 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
 public interface AcademicYearMapper {
 
-    @Mappings({
-            @Mapping(target = "numberOfTerms", expression = "java(academicYear.getTerms().size())")
-    })
+    @Mappings({})
     AcademicYearDto mapAcademicYearToDto(AcademicYear academicYear);
 
-    @Mappings({
-            @Mapping(target = "terms", ignore = true),
-            @Mapping(target = "studentApplications", ignore = true),
-    })
+    @Mappings({@Mapping(target = "studentApplications", ignore = true),})
     @InheritInverseConfiguration
     AcademicYear mapDtoToAcademicYear(AcademicYearDto academicyearDto);
 
