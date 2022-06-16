@@ -32,7 +32,7 @@ public class ClassLevelSub {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "sub_name", unique = true)
+    @Column(nullable = false, name = "sub_name")
     private String name;
 
     @ManyToOne(optional = false)
