@@ -6,7 +6,6 @@ import com.transkript.reportcard.business.mapper.SchoolSettingsMapper;
 import com.transkript.reportcard.business.service.AcademicYearService;
 import com.transkript.reportcard.business.service.SchoolSettingsService;
 import com.transkript.reportcard.business.service.SequenceService;
-import com.transkript.reportcard.business.service.TermService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.SchoolSettings;
 import com.transkript.reportcard.data.entity.Sequence;
@@ -24,21 +23,20 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
     private final SchoolSettingsRepository schoolSettingsRepository;
     private final SchoolSettingsMapper schoolSettingsMapper;
     private final SequenceService sequenceService;
-    private final TermService termService;
     private final AcademicYearService academicYearService;
 
     @Override
     @Transactional
-    public EntityResponse addSettings(SchoolSettingsDto schoolSettingsDto) {
+    public EntityResponse saveSettings(SchoolSettingsDto schoolSettingsDto) {
         SchoolSettings schoolSettings = schoolSettingsMapper.mapDtoToSchoolSettings(schoolSettingsDto);
 
         {
             Sequence currSequence = sequenceService.getSequenceEntity(schoolSettingsDto.currentSequenceId());
-            Term currTerm = termService.getTermEntity(schoolSettingsDto.currentTermId());
+            Term currTerm = currSequence.getTerm();
             AcademicYear currAcademicYear = academicYearService.getAcademicYearEntity(schoolSettingsDto.currentYearId());
 
-            schoolSettings.setCurrentSequence(currSequence);
             schoolSettings.setCurrentTerm(currTerm);
+            schoolSettings.setCurrentSequence(currSequence);
             schoolSettings.setCurrentAcademicYear(currAcademicYear);
         }
 
@@ -46,16 +44,27 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
             schoolSettings.setApplicationOpen(schoolSettings.getApplicationOpen() != null && schoolSettings.getApplicationOpen());
             schoolSettingsRepository.save(schoolSettings);
         } else {
+            // update if not found
             schoolSettingsRepository.findAll().stream().findFirst().ifPresentOrElse(
                     settings -> {
                         settings.setMaxGrade(schoolSettingsDto.maxGrade());
                         settings.setMinGrade(schoolSettingsDto.minGrade());
                         settings.setApplicationOpen(schoolSettings.getApplicationOpen());
+
+                        if(!Objects.equals(settings.getCurrentAcademicYear().getId(), schoolSettings.getCurrentAcademicYear().getId())) {
+                            settings.setCurrentAcademicYear(schoolSettings.getCurrentAcademicYear());
+                        }
+                        if(!Objects.equals(settings.getCurrentTerm().getId(), schoolSettings.getCurrentTerm().getId())) {
+                            settings.setCurrentTerm(schoolSettings.getCurrentTerm());
+                        }
+                        if(!Objects.equals(settings.getCurrentSequence().getId(), schoolSettings.getCurrentSequence().getId())) {
+                            settings.setCurrentSequence(schoolSettings.getCurrentSequence());
+                        }
+                        schoolSettingsRepository.save(settings);
                     },
                     () -> schoolSettingsRepository.save(schoolSettings)
             );
         }
-
 
         return EntityResponse.builder().id(
                 schoolSettingsRepository.findAll().stream().findFirst().orElse(schoolSettings).getId()
