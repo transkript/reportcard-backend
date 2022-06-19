@@ -2,7 +2,9 @@ package com.transkript.reportcard.business.service;
 
 
 import com.transkript.reportcard.api.dto.StudentApplicationDto;
+import com.transkript.reportcard.api.dto.request.StudentApplicationRequest;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
+import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
 import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 
@@ -14,6 +16,9 @@ public interface StudentApplicationService {
     EntityResponse addStudentApplication(StudentApplicationDto applicationDto);
 
     List<StudentApplicationDto> getStudentApplications();
+
+    List<StudentApplicationResponse> getStudentApplicationsByYear(Long yearId);
+    List<StudentApplicationResponse> getStudentApplicationsByApplicationRequest(StudentApplicationRequest request);
 
     StudentApplicationDto getStudentApplication(Long studentId, Long yearId);
 }

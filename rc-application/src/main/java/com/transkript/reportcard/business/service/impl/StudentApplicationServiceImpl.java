@@ -1,13 +1,18 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.StudentApplicationDto;
+import com.transkript.reportcard.api.dto.StudentDto;
+import com.transkript.reportcard.api.dto.request.StudentApplicationRequest;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
+import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
 import com.transkript.reportcard.business.mapper.StudentApplicationMapper;
+import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
 import com.transkript.reportcard.business.service.AcademicYearService;
 import com.transkript.reportcard.business.service.ClassLevelService;
 import com.transkript.reportcard.business.service.ClassLevelSubService;
 import com.transkript.reportcard.business.service.StudentApplicationService;
 import com.transkript.reportcard.business.service.StudentService;
+import com.transkript.reportcard.business.service.SubjectRegistrationService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Student;
@@ -23,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +40,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     private final AcademicYearService academicYearService;
     private final ClassLevelService classLevelService;
     private final ClassLevelSubService classLevelSubService;
+    private final SubjectRegistrationMapper subjectRegistrationMapper;
 
     @Override
     public StudentApplication getStudentApplicationEntity(ApplicationKey applicationKey) {
@@ -92,6 +99,35 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
                 .stream()
                 .map(studentApplicationMapper::mapStudentApplicationToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentApplicationResponse> getStudentApplicationsByYear(Long yearId) {
+        AcademicYear year = academicYearService.getAcademicYearEntity(yearId);
+        return studentApplicationRepository.findAllByAcademicYear(year).stream()
+                .map(application -> {
+                    ClassLevelSub classLevelSub = application.getClassLevelSub();
+                    StudentDto studentDto = studentService.getStudent(application.getStudent().getId());
+                    StudentApplicationDto applicationDto = studentApplicationMapper.mapStudentApplicationToDto(application);
+
+                    return new StudentApplicationResponse(
+                            classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),
+                            studentDto, applicationDto,
+                            application.getSubjectRegistrations().stream().map(subjectRegistrationMapper::mapSubjectRegistrationToDto).toList()
+                    );
+                }).toList();
+    }
+
+
+    @Override
+    public List<StudentApplicationResponse> getStudentApplicationsByApplicationRequest(StudentApplicationRequest request) {
+        if(request.classId() < 0) {
+            return getStudentApplicationsByYear(request.yearId());
+        } else {
+            ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classId());
+            return getStudentApplicationsByYear(request.yearId()).stream()
+                    .filter((sap) -> Objects.equals(sap.application().getClassLevelSubId(), classLevelSub.getId())).toList();
+        }
     }
 
     @Override
