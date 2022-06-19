@@ -24,8 +24,6 @@ public class AcademicYearDto {
     private String name;
 
     //from relations
-    @JsonProperty("number_of_terms")
-    private Integer numberOfTerms;
 
     @JsonProperty(value = "start_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

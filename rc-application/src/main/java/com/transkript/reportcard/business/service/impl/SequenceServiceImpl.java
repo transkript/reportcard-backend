@@ -1,11 +1,11 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.SequenceDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SequenceMapper;
 import com.transkript.reportcard.business.service.SequenceService;
 import com.transkript.reportcard.business.service.TermService;
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.repository.SequenceRepository;
 import com.transkript.reportcard.exception.EntityException;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -27,12 +28,12 @@ public class SequenceServiceImpl implements SequenceService {
     private final TermService termService;
 
     @Override
-    public String addSequence(SequenceDto sequenceDto) {
+    public EntityResponse addSequence(SequenceDto sequenceDto) {
         Sequence sequence = sequenceMapper.mapDtoToSequence(sequenceDto);
         sequence.setId(null);
-        sequence.setTerm(termService.getTermEntity(sequenceDto.getTermId()));
-        sequenceRepository.save(sequence);
-        return "Sequence created successfully";
+        sequence.setTerm(termService.getTermEntity(sequenceDto.termId()));
+        sequence = sequenceRepository.save(sequence);
+        return EntityResponse.builder().id(sequence.getId()).entityName("sequence").message("Successfully created sequence " + sequence.getName()).build();
     }
 
     @Override
@@ -54,13 +55,19 @@ public class SequenceServiceImpl implements SequenceService {
     }
 
     @Override
-    public String updateSequence(Long id, SequenceDto sequenceDto) {
-        if (id != null && sequenceRepository.existsById(id)) {
-            Sequence sequence = sequenceMapper.mapDtoToSequence(sequenceDto);
-            sequence.setId(id);
-            Term term = termService.getTermEntity(sequenceDto.getTermId());
-            sequence.setTerm(term);
-            return "Successfully updated sequence with id: " + id;
+    public EntityResponse updateSequence(Long id, SequenceDto sequenceDto) {
+        if (id != null && id.equals(sequenceDto.id()) && sequenceRepository.existsById(id)) {
+            Sequence sequence = sequenceRepository.getById(id);
+            {
+                if(!Objects.equals(sequence.getName(), sequenceDto.name())) {
+                    sequence.setName(sequenceDto.name());
+                }
+                if(!Objects.equals(sequence.getTerm().getId(), sequenceDto.termId())) {
+                    sequence.setTerm(termService.getTermEntity(sequenceDto.termId()));
+                }
+            }
+            sequence = sequenceRepository.save(sequence);
+            return EntityResponse.builder().id(sequence.getId()).entityName("sequence").message("Successfully updated sequence " + sequence.getName()).build();
         }
         throw new EntityException.EntityNotFoundException("Sequence with id: " + id);
     }

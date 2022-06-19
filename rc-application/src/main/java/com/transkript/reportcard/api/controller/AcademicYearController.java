@@ -1,6 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.AcademicYearDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.AcademicYearService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class AcademicYearController {
     private final AcademicYearService academicYearService;
 
     @PostMapping
-    public ResponseEntity<String> addAcademicYear(
+    public ResponseEntity<EntityResponse> addAcademicYear(
             @RequestBody AcademicYearDto academicYearDto) {
         log.info("Adding Academic Year with name " + academicYearDto.getName());
         return new ResponseEntity<>(academicYearService.addAcademicYear(academicYearDto), HttpStatus.CREATED);
@@ -44,7 +45,7 @@ public class AcademicYearController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateAcademicYear(
+    public ResponseEntity<EntityResponse> updateAcademicYear(
             @RequestBody AcademicYearDto academicYearDto,
             @PathVariable("id") Long id
     ) {
@@ -53,9 +54,10 @@ public class AcademicYearController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAcademicYear(
+    public ResponseEntity<Void> deleteAcademicYear(
             @PathVariable("id") Long id) {
         log.info("Deleting academic year with ID: " + id);
-        return ResponseEntity.ok(academicYearService.deleteAcademicYear(id));
+        academicYearService.deleteAcademicYear(id);
+        return ResponseEntity.ok().build();
     }
 }

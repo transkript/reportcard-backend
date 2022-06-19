@@ -26,7 +26,7 @@ public interface SchoolMapper {
     }
 
     @Mappings({
-            @Mapping(target = "sections", ignore = true)
+            @Mapping(target = "sections", ignore = true),
     })
     @InheritInverseConfiguration
     School mapDtoToSchool(SchoolDto schoolDto);

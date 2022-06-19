@@ -24,7 +24,9 @@ import com.transkript.reportcard.data.repository.SubjectRepository;
 import com.transkript.reportcard.data.repository.TermRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -125,7 +127,6 @@ public class DefaultController {
             studentApplicationRepository.save(studentApplication);
         }
         for (int i = 0, j = 0; i < terms.length; i++, j = j + 2) {
-            terms[i].setAcademicYear(academicYear);
             terms[i] = termRepository.save(terms[i]);
 
             {
@@ -136,6 +137,11 @@ public class DefaultController {
             }
         }
         return "Success";
+    }
+
+    @GetMapping(value = "/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Success");
     }
 
     @DeleteMapping(value = "/delete")

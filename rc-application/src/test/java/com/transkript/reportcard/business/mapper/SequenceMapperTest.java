@@ -1,5 +1,6 @@
 package com.transkript.reportcard.business.mapper;
 
+import com.transkript.reportcard.TestDefaults;
 import com.transkript.reportcard.api.dto.SequenceDto;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.Term;
@@ -33,21 +34,18 @@ class SequenceMapperTest {
 
         SequenceDto expectedDto = this.sequenceMapper.mapSequenceToDto(testSequence);
 
-        Assertions.assertEquals(expectedDto.getId(), testSequence.getId());
-        Assertions.assertEquals(expectedDto.getName(), testSequence.getName());
-        Assertions.assertEquals(expectedDto.getTermId(), testSequence.getTerm().getId());
+        Assertions.assertEquals(expectedDto.id(), testSequence.getId());
+        Assertions.assertEquals(expectedDto.name(), testSequence.getName());
+        Assertions.assertEquals(expectedDto.termId(), testSequence.getTerm().getId());
     }
 
     @Test
     void mapDtoToSequence() {
-        testSequenceDto = SequenceDto.builder()
-                .id(2L)
-                .name("Second")
-                .build();
+        testSequenceDto = TestDefaults.SEQUENCE_DTO;
 
         Sequence expectedSequence = this.sequenceMapper.mapDtoToSequence(testSequenceDto);
 
-        Assertions.assertEquals(expectedSequence.getId(), testSequenceDto.getId());
-        Assertions.assertEquals(expectedSequence.getName(), testSequenceDto.getName());
+        Assertions.assertEquals(expectedSequence.getId(), testSequenceDto.id());
+        Assertions.assertEquals(expectedSequence.getName(), testSequenceDto.name());
     }
 }

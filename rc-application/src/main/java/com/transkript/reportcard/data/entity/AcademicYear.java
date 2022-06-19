@@ -39,12 +39,6 @@ public class AcademicYear {
     @Column(nullable = false, name = "year_name", unique = true)
     private String name;
 
-    // one to many term
-    @OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    @ToString.Exclude
-    private Set<Term> terms = new LinkedHashSet<>();
-
     @OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
