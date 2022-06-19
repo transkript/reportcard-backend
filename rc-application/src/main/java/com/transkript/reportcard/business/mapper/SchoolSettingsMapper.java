@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 public interface SchoolSettingsMapper {
     @Mappings({
             @Mapping(target = "currentYearId", expression = "java(schoolSettings.getCurrentAcademicYear().getId())"),
-            @Mapping(target = "currentTermId", expression = "java(schoolSettings.getCurrentTerm().getId())"),
+            @Mapping(target = "currentTerm", expression = "java(schoolSettings.getCurrentSequence().getTerm().getName())"),
             @Mapping(target = "currentSequenceId", expression = "java(schoolSettings.getCurrentSequence().getId())")
     })
     SchoolSettingsDto mapSchoolSettingsToDto(SchoolSettings schoolSettings);

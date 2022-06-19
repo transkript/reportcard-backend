@@ -32,10 +32,9 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
 
         {
             Sequence currSequence = sequenceService.getSequenceEntity(schoolSettingsDto.currentSequenceId());
-            Term currTerm = currSequence.getTerm();
             AcademicYear currAcademicYear = academicYearService.getAcademicYearEntity(schoolSettingsDto.currentYearId());
 
-            schoolSettings.setCurrentTerm(currTerm);
+            schoolSettings.setCurrentTerm(currSequence.getTerm().getName());
             schoolSettings.setCurrentSequence(currSequence);
             schoolSettings.setCurrentAcademicYear(currAcademicYear);
         }
@@ -54,7 +53,7 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
                         if(!Objects.equals(settings.getCurrentAcademicYear().getId(), schoolSettings.getCurrentAcademicYear().getId())) {
                             settings.setCurrentAcademicYear(schoolSettings.getCurrentAcademicYear());
                         }
-                        if(!Objects.equals(settings.getCurrentTerm().getId(), schoolSettings.getCurrentTerm().getId())) {
+                        if(!Objects.equals(settings.getCurrentTerm(), schoolSettings.getCurrentTerm())) {
                             settings.setCurrentTerm(schoolSettings.getCurrentTerm());
                         }
                         if(!Objects.equals(settings.getCurrentSequence().getId(), schoolSettings.getCurrentSequence().getId())) {

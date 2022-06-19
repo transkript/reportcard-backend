@@ -10,7 +10,7 @@ import java.io.Serializable;
 public record SchoolSettingsDto (
         @NotNull @JsonProperty("id") Long id,
         @NotNull @JsonProperty("curr_year_id") Long currentYearId,
-        @NotNull @JsonProperty("curr_term_id") Long currentTermId,
+        @JsonProperty("curr_term") String currentTerm,
         @NotNull @JsonProperty("curr_seq_id") Long currentSequenceId,
         @NotNull @Min(value = 0) @JsonProperty("min_grade") Long minGrade,
         @NotNull @Max(value = 100)@JsonProperty("max_grade") Long maxGrade,

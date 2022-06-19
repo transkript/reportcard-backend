@@ -32,9 +32,8 @@ public class SchoolSettings {
     @JoinColumn(name = "academic_year_id")
     private AcademicYear currentAcademicYear;
 
-    @OneToOne()
-    @JoinColumn(name = "term_id")
-    private Term currentTerm;
+    @Column(name = "current_term")
+    private String currentTerm;
 
     @OneToOne()
     @JoinColumn(name = "sequence_id")
