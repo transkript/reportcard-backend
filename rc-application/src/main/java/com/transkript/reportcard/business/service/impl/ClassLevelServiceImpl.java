@@ -5,6 +5,7 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.ClassLevelMapper;
 import com.transkript.reportcard.business.service.ClassLevelService;
 import com.transkript.reportcard.business.service.SectionService;
+import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.repository.ClassLevelRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -32,7 +34,16 @@ public class ClassLevelServiceImpl implements ClassLevelService {
 
     @Override
     public EntityResponse addClassLevel(ClassLevelDto classLevelDto) {
+
+
+        Optional<ClassLevel> optionalClassLevel = classLevelRepository.findByName(classLevelDto.getName());
+
+        if(optionalClassLevel.isPresent()) {
+            throw new EntityException.EntityAlreadyExistsException("class level", classLevelDto.getName());
+        }
+
         ClassLevel classLevel = classLevelMapper.mapDtoToClassLevel(classLevelDto);
+
         Section section = sectionRepository.findById(classLevelDto.getSectionId()).orElseThrow(
                 () -> new EntityException.EntityNotFoundException("section with id: " +
                         classLevelDto.getSectionId())
@@ -77,6 +88,9 @@ public class ClassLevelServiceImpl implements ClassLevelService {
             Section existingSection = sectionService.getSectionEntity(classLevelDto.getId());
 
             if (!Objects.equals(classLevelDto.getName(), existingClassLevel.getName())) {
+                if(classLevelRepository.findByName(classLevelDto.getName()).isPresent()) {
+                    throw new EntityException.EntityAlreadyExistsException(EntityName.CLASS_LEVEL, classLevelDto.getName());
+                }
                 existingClassLevel.setName(classLevelDto.getName());
             }
             if (!Objects.equals(classLevelDto.getSectionId(), existingSection.getId())) {

@@ -12,7 +12,7 @@ public class EntityException {
             super("Entity of type " + name + " with id " + id + " not found");
         }
 
-        public EntityNotFoundException(String name, Long... ids) {
+        public EntityNotFoundException(String name, Object... ids) {
             super("Entity of type " + name + " with ids " + Arrays.toString(ids) + " not found");
         }
     }
@@ -26,7 +26,7 @@ public class EntityException {
             super("Entity of type " + name + " with identifier " + id + " already exists");
         }
 
-        public EntityAlreadyExistsException(String name, Long... ids) {
+        public EntityAlreadyExistsException(String name, Object... ids) {
             super("Entity of type " + name + " with ids " + Arrays.toString(ids) + " already exists");
         }
     }
