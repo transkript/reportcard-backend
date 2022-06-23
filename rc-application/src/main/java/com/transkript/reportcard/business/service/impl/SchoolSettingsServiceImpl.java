@@ -76,8 +76,20 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
 
     @Override
     public SchoolSettingsDto getSettings() {
-        return schoolSettingsMapper.mapSchoolSettingsToDto(
-                schoolSettingsRepository.findAll().stream().findFirst().orElse(null)
-        );
+        return schoolSettingsMapper.mapSchoolSettingsToDto(getSettingsEntity());
+    }
+
+    @Override
+    public SchoolSettings getSettingsEntity() {
+        Optional<SchoolSettings> optionalSchoolSettings = schoolSettingsRepository.findAll().stream().findFirst();
+        if (optionalSchoolSettings.isPresent()) {
+            return  optionalSchoolSettings.get();
+        } else {
+            SchoolSettings schoolSettings = SchoolSettings.builder().id(null).schoolName("").maxGrade(20L).minGrade(0L)
+                    .currentAcademicYear(null).currentTerm(null).currentSequence(null).applicationOpen(false)
+                    .build();
+            schoolSettings = schoolSettingsRepository.save(schoolSettings);
+            return schoolSettings;
+        }
     }
 }
