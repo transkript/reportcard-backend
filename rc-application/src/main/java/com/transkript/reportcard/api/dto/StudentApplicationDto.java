@@ -2,39 +2,33 @@ package com.transkript.reportcard.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class StudentApplicationDto {
-    @Builder.Default
-    @JsonProperty(value = "created_at")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt = LocalDateTime.now();
+public record StudentApplicationDto (
+        @JsonProperty(value = "created_at")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime createdAt,
 
-    // From relation
-    @JsonProperty(value = "student_id")
-    @NotNull
-    private Long studentId;
+        @JsonProperty(value = "updated_at")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime updatedAt,
 
-    @JsonProperty(value = "year_id")
-    @NotNull
-    private Long academicYearId;
+        @JsonProperty(value = "repeating")
+        Boolean repeating,
 
-    @JsonProperty(value = "number_of_subjects")
-    private Integer numberOfSubjects;
+        @JsonProperty(value = "student_id")
+        @NotNull
+        Long studentId,
 
-    @JsonProperty(value = "class_sub_id")
-    @NotNull
-    private Long classLevelSubId;
-}
+        @JsonProperty(value = "year_id")
+        @NotNull
+        Long yearId,
+
+        @JsonProperty(value = "cls_id")
+        Long classLevelSubId,
+
+        @JsonProperty(value = "number_of_subjects")
+        Integer numberOfSubjects
+) implements Serializable { }
