@@ -33,7 +33,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
 
     @Override
     public List<AcademicYearDto> getAcademicYears() {
-        return academicYearRepository.findAll().stream().map(academicYearMapper::mapAcademicYearToDto).collect(Collectors.toList());
+        return getAcademicYearEntities().stream().map(academicYearMapper::mapAcademicYearToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -64,5 +64,10 @@ public class AcademicYearServiceImpl implements AcademicYearService {
     public AcademicYear getAcademicYearEntity(Long academicYearId) {
         return academicYearRepository.findById(academicYearId)
                 .orElseThrow(() -> new EntityException.EntityNotFoundException("academic year", academicYearId));
+    }
+
+    @Override
+    public List<AcademicYear> getAcademicYearEntities() {
+        return academicYearRepository.findAll();
     }
 }
