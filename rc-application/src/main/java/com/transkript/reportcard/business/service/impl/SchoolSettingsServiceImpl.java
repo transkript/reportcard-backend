@@ -9,13 +9,13 @@ import com.transkript.reportcard.business.service.SequenceService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.SchoolSettings;
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.repository.SchoolSettingsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
     private final SchoolSettingsMapper schoolSettingsMapper;
     private final SequenceService sequenceService;
     private final AcademicYearService academicYearService;
+
 
     @Override
     @Transactional
@@ -50,6 +51,9 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
                         settings.setMinGrade(schoolSettingsDto.minGrade());
                         settings.setApplicationOpen(schoolSettings.getApplicationOpen());
 
+                        if(!Objects.equals(settings.getSchoolName(), schoolSettings.getSchoolName())) {
+                            settings.setSchoolName(schoolSettings.getSchoolName());
+                        }
                         if(!Objects.equals(settings.getCurrentAcademicYear().getId(), schoolSettings.getCurrentAcademicYear().getId())) {
                             settings.setCurrentAcademicYear(schoolSettings.getCurrentAcademicYear());
                         }

@@ -9,6 +9,8 @@ import java.io.Serializable;
 
 public record SchoolSettingsDto (
         @NotNull @JsonProperty("id") Long id,
+
+        @NotNull @JsonProperty("school_name") String schoolName,
         @NotNull @JsonProperty("curr_year_id") Long currentYearId,
         @JsonProperty("curr_term") String currentTerm,
         @NotNull @JsonProperty("curr_seq_id") Long currentSequenceId,

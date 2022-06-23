@@ -26,6 +26,9 @@ public class SchoolSettings {
     private Long id;
 
     @Column
+    private String schoolName;
+
+    @Column
     private Boolean applicationOpen;
 
     @OneToOne()
@@ -46,5 +49,4 @@ public class SchoolSettings {
     @Builder.Default
     @Column(name = "min_grade_score", nullable = false)
     private Long minGrade = 0L;
-
 }
