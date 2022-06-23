@@ -55,28 +55,28 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         ApplicationKey applicationKey = new ApplicationKey();
         studentApplication.setCreatedAt(LocalDateTime.now());
         {
-            if (applicationDto.getStudentId() == null) {
+            if (applicationDto.studentId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Student id is required");
             } else {
-                Student student = studentService.getStudentEntity(applicationDto.getStudentId());
+                Student student = studentService.getStudentEntity(applicationDto.studentId());
                 applicationKey.setStudentId(student.getId());
                 studentApplication.setStudent(student);
             }
         }
         {
-            if (applicationDto.getAcademicYearId() == null) {
+            if (applicationDto.yearId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Academic year id is required");
             } else {
-                AcademicYear academicYear = academicYearService.getAcademicYearEntity(applicationDto.getAcademicYearId());
+                AcademicYear academicYear = academicYearService.getAcademicYearEntity(applicationDto.yearId());
                 applicationKey.setYearId(academicYear.getId());
                 studentApplication.setAcademicYear(academicYear);
             }
         }
         {
-            if (applicationDto.getClassLevelSubId() == null) {
+            if (applicationDto.classLevelSubId() == null) {
                 throw new ReportCardException.IllegalArgumentException("Class level and class level sub ids are required");
             } else {
-                ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(applicationDto.getClassLevelSubId());
+                ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(applicationDto.classLevelSubId());
                 studentApplication.setClassLevelSub(classLevelSub);
             }
         }
@@ -126,7 +126,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         } else {
             ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classId());
             return getStudentApplicationsByYear(request.yearId()).stream()
-                    .filter((sap) -> Objects.equals(sap.application().getClassLevelSubId(), classLevelSub.getId())).toList();
+                    .filter((sap) -> Objects.equals(sap.application().classLevelSubId(), classLevelSub.getId())).toList();
         }
     }
 

@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 public interface StudentApplicationMapper {
     @Mappings({
             @Mapping(target = "studentId", expression = "java(application.getApplicationKey().getStudentId())"),
-            @Mapping(target = "academicYearId", expression = "java(application.getApplicationKey().getYearId())"),
+            @Mapping(target = "yearId", expression = "java(application.getApplicationKey().getYearId())"),
             @Mapping(target = "numberOfSubjects", expression = "java(application.getSubjectRegistrations().size())"),
             @Mapping(target = "classLevelSubId", expression = "java(application.getClassLevelSub().getId())"),
     })
@@ -26,5 +26,4 @@ public interface StudentApplicationMapper {
     })
     @InheritInverseConfiguration
     StudentApplication mapDtoToStudentApplication(StudentApplicationDto studentapplicationDto);
-
 }

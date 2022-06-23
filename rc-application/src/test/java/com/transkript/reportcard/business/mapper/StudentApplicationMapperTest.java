@@ -47,23 +47,21 @@ class StudentApplicationMapperTest {
         System.out.println(testStudentApplication);
         StudentApplicationDto expectedDto = studentApplicationMapper.mapStudentApplicationToDto(testStudentApplication);
 
-        Assertions.assertEquals(expectedDto.getStudentId(), testStudentApplication.getApplicationKey().getStudentId());
-        Assertions.assertEquals(expectedDto.getAcademicYearId(), testStudentApplication.getApplicationKey().getYearId());
-        Assertions.assertEquals(expectedDto.getCreatedAt(), testStudentApplication.getCreatedAt());
-        Assertions.assertEquals(expectedDto.getStudentId(), testStudentApplication.getStudent().getId());
-        Assertions.assertEquals(expectedDto.getAcademicYearId(), testStudentApplication.getAcademicYear().getId());
-        Assertions.assertEquals(expectedDto.getNumberOfSubjects(), testStudentApplication.getSubjectRegistrations().size());
+        Assertions.assertEquals(expectedDto.studentId(), testStudentApplication.getApplicationKey().getStudentId());
+        Assertions.assertEquals(expectedDto.yearId(), testStudentApplication.getApplicationKey().getYearId());
+        Assertions.assertEquals(expectedDto.createdAt(), testStudentApplication.getCreatedAt());
+        Assertions.assertEquals(expectedDto.updatedAt(), testStudentApplication.getUpdatedAt());
+        Assertions.assertEquals(expectedDto.numberOfSubjects(), testStudentApplication.getSubjectRegistrations().size());
     }
 
     @Test
     void mapDtoToStudentApplication() {
-        testStudentApplicationDto = StudentApplicationDto.builder()
-                .createdAt(LocalDateTime.now())
-                .build();
+        testStudentApplicationDto = new StudentApplicationDto(LocalDateTime.now(), LocalDateTime.now(), false, 1L, 1L, 1L, 15);
+
 
         StudentApplication expectedSApp = studentApplicationMapper
                 .mapDtoToStudentApplication(testStudentApplicationDto);
 
-        Assertions.assertEquals(expectedSApp.getCreatedAt(), testStudentApplicationDto.getCreatedAt());
+        Assertions.assertEquals(expectedSApp.getCreatedAt(), testStudentApplicationDto.createdAt());
     }
 }

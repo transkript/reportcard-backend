@@ -13,7 +13,6 @@ import org.mapstruct.Mappings;
 public interface StudentMapper {
 
     @Mappings({
-            @Mapping(target = "numberOfApplications", expression = "java(student.getStudentApplications().size())"),
             @Mapping(target = "gender", expression = "java(mapGender(student.getGender()))")
     })
     StudentDto mapStudentToDto(Student student);
@@ -28,7 +27,7 @@ public interface StudentMapper {
 
     @Mappings({
             @Mapping(target = "studentApplications", ignore = true),
-            @Mapping(target = "gender", expression = "java(inverseMapGender(studentDto.getGender()))")
+            @Mapping(target = "gender", expression = "java(inverseMapGender(studentDto.gender()))")
     })
     @InheritInverseConfiguration
     Student mapDtoToStudent(StudentDto studentDto);
