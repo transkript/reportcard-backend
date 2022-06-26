@@ -11,17 +11,18 @@ import com.transkript.reportcard.business.service.AcademicYearService;
 import com.transkript.reportcard.business.service.ClassLevelSubService;
 import com.transkript.reportcard.business.service.ClassListService;
 import com.transkript.reportcard.business.service.SequenceService;
+import com.transkript.reportcard.business.service.StudentApplicationTrialService;
 import com.transkript.reportcard.business.service.SubjectRegistrationService;
 import com.transkript.reportcard.business.service.SubjectService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
+import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.enums.GradeDesc;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class ClassListServiceImpl implements ClassListService {
     private final SubjectService subjectService;
     private final SequenceService sequenceService;
     private final SubjectRegistrationService subjectRegistrationService;
+    private final StudentApplicationTrialService studentApplicationTrialService;
     private final GradeMapper gradeMapper;
     private final SubjectMapper subjectMapper;
     private final ClassLevelSubMapper classLevelSubMapper;
@@ -51,16 +53,18 @@ public class ClassListServiceImpl implements ClassListService {
         Sequence sequence = sequenceService.getSequenceEntity(request.sequenceId());
 
 
-        List<StudentApplication> studentApplications = classLevelSub.getStudentApplications().stream()
-                .filter(application -> application.getAcademicYear().equals(academicYear)).toList();
+        List<StudentApplicationTrial> sats = studentApplicationTrialService.getEntitiesByYear(academicYear.getId()).stream()
+                .filter((sat) -> sat.getStudentApplication().getClassLevelSub().getId().equals(classLevelSub.getId()))
+                .toList();
+
 
         List<StudentGrade> studentGrades = new ArrayList<>();
-        studentApplications.forEach(application -> {
-            SubjectRegistration subjectRegistration = subjectRegistrationService.getSubjectRegistrationEntity(application.getApplicationKey(), subject.getId());
+        sats.forEach(sat -> {
+            SubjectRegistration subjectRegistration = subjectRegistrationService.getSubjectRegistrationEntity(sat.getId(), subject.getId());
 
             if (subjectRegistration.getGrades().stream().noneMatch(grade -> grade.getSequence().equals(sequence))) {
                 studentGrades.add(new StudentGrade(
-                        studentMapper.mapStudentToDto(subjectRegistration.getStudentApplication().getStudent()),
+                        studentMapper.mapStudentToDto(subjectRegistration.getStudentApplicationTrial().getStudentApplication().getStudent()),
                         gradeMapper.mapGradeToDto(
                                 Grade.builder().gradeKey(GradeKey.builder().sequenceId(sequence.getId()).registrationId(subjectRegistration.getId()).build())
                                         .score(null).description(GradeDesc.NOT_GRADED).subjectRegistration(subjectRegistration).sequence(sequence).build()
@@ -69,7 +73,7 @@ public class ClassListServiceImpl implements ClassListService {
             } else {
                 subjectRegistration.getGrades().stream().filter(grade -> grade.getSequence().equals(sequence)).forEach(
                         grade -> studentGrades.add(new StudentGrade(
-                                studentMapper.mapStudentToDto(subjectRegistration.getStudentApplication().getStudent()),
+                                studentMapper.mapStudentToDto(subjectRegistration.getStudentApplicationTrial().getStudentApplication().getStudent()),
                                 gradeMapper.mapGradeToDto(grade)
                         ))
                 );
