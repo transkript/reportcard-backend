@@ -1,30 +1,18 @@
 package com.transkript.reportcard.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.Date;
+import java.io.Serializable;
 import java.util.Map;
 
-@Getter
-@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class EntityResponse {
-    @JsonProperty(value = "id")
-    private Long id;
-
-    @JsonProperty(value = "ids")
-    private Map<String, Object> ids;
-
-    @JsonProperty(value = "message")
-    private String message;
-
-    @JsonProperty(value = "entity_name")
-    private String entityName;
-}
+public record EntityResponse (
+        @JsonProperty("id") Long id,
+        @JsonProperty(value = "ids") Map<String, Object> ids,
+        @JsonProperty(value = "message") String message,
+        @JsonProperty(value = "entity_name") String entityName,
+        @JsonProperty(value = "status") Integer status,
+        @JsonProperty(value = "log") Boolean log,
+        @JsonProperty(value = "severity") String severity
+) implements Serializable { }
