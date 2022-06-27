@@ -6,8 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public record ReportCardRequest(
-        @NotNull @JsonProperty(value = "student_id") Long studentId,
-        @NotNull @JsonProperty(value = "year_id") Long yearId,
+        @NotNull @JsonProperty(value = "student_id") Long satId,
         @NotNull @JsonProperty(value = "sequences") SequenceRequest sequenceRequest
 ) implements Serializable {
     public record SequenceRequest(
