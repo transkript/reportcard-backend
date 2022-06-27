@@ -4,10 +4,11 @@ import com.transkript.reportcard.ReportCardProcess;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.StudentApplication;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.entity.relation.Grade;
+import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.enums.GradeDesc;
 import com.transkript.reportcard.exception.ReportCardException;
 import com.transkript.reportcard.model.ClassLevelInfo;
@@ -44,9 +45,11 @@ public class RcUtil {
     }
 
     public ReportCard createReportCard(
-            @NotNull Student student, @NotNull StudentApplication application, @NotNull Term term,
+            @NotNull StudentApplicationTrial sat, @NotNull Term term,
             @NotNull ClassLevelSub classLevelSub, @NotNull Map<Subject, Grade[]> subjectGrades, String[] sequenceNames) {
-        ClassLevelInfo classLevelInfo = new ClassLevelInfo(classLevelSub.getClassLevel().getName(), classLevelSub.getName(), application.getAcademicYear().getName());
+        Student student = sat.getStudentApplication().getStudent();
+        StudentApplication application = sat.getStudentApplication();
+        ClassLevelInfo classLevelInfo = new ClassLevelInfo(classLevelSub.getClassLevel().getName(), classLevelSub.getName(), sat.getAcademicYear().getName());
         List<SubjectInfo> subjectInfos = new ArrayList<>();
 
         for (Map.Entry<Subject, Grade[]> entry : subjectGrades.entrySet()) {
@@ -63,9 +66,9 @@ public class RcUtil {
         }
 
         Section section = classLevelSub.getClassLevel().getSection();
-        SchoolInfo schoolInfo = new SchoolInfo(section.getSchool().getName(), section.getName(), application.getAcademicYear().getName(), term.getName(), sequenceNames[0], sequenceNames[1]);
+        SchoolInfo schoolInfo = new SchoolInfo(section.getSchool().getName(), section.getName(), sat.getAcademicYear().getName(), term.getName(), sequenceNames[0], sequenceNames[1]);
         StudentInfo studentInfo = new StudentInfo(student.getName(), student.getRegNum(), student.getGender().name(),
-                student.getDob(), student.getPob(), application.getRepeating() == null || application.getRepeating()
+                student.getDob(), student.getPob(), sat.getRepeating() == null || sat.getRepeating()
         );
 
         return new ReportCard(student.getId(), schoolInfo, studentInfo, classLevelInfo, subjectInfos);
