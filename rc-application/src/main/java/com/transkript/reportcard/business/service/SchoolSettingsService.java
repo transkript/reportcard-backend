@@ -4,10 +4,18 @@ import com.transkript.reportcard.api.dto.SchoolSettingsDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.data.entity.SchoolSettings;
 
+import java.util.List;
+
 public interface SchoolSettingsService {
-    EntityResponse saveSettings(SchoolSettingsDto schoolSettingsDto);
+    EntityResponse save(SchoolSettingsDto schoolSettingsDto);
 
-    SchoolSettingsDto getSettings();
+    EntityResponse update(SchoolSettingsDto schoolSettingsDto);
 
-    SchoolSettings getSettingsEntity();
+    SchoolSettingsDto retrieve(Long id);
+
+    SchoolSettingsDto retrieveBySchoolId(Long schoolId);
+
+    List<SchoolSettingsDto> retrieveAll();
+
+    SchoolSettings retrieveEntity(Long id);
 }
