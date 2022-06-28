@@ -6,8 +6,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public record StudentApplicationRequest(
-        @NotNull @JsonProperty(value = "class_id") Long classId,
-        @NotNull @JsonProperty(value = "year_id") Long yearId
+        @NotNull @JsonProperty(value = "class_id") Long classSubId,
+        @NotNull @JsonProperty(value = "year_id") Long yearId,
+        @NotNull @JsonProperty(value = "student_id") Long studentId
 ) implements Serializable {
 
 }

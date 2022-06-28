@@ -5,7 +5,7 @@ import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.StudentApplication;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,32 +36,22 @@ class StudentApplicationMapperTest {
         testAcademicYear = new AcademicYear();
         testAcademicYear.setId(4L);
         testStudentApplication = StudentApplication.builder()
-                .applicationKey(new ApplicationKey(testStudent.getId(), testAcademicYear.getId()))
-                .createdAt(LocalDateTime.now())
-                .student(testStudent)
-                .academicYear(testAcademicYear)
-                .subjectRegistrations(List.of())
+                .key(new ApplicationKey(testStudent.getId(), testAcademicYear.getId()))
                 .classLevelSub(testClassLevelSub)
                 .build();
 
         System.out.println(testStudentApplication);
         StudentApplicationDto expectedDto = studentApplicationMapper.mapStudentApplicationToDto(testStudentApplication);
 
-        Assertions.assertEquals(expectedDto.studentId(), testStudentApplication.getApplicationKey().getStudentId());
-        Assertions.assertEquals(expectedDto.yearId(), testStudentApplication.getApplicationKey().getYearId());
-        Assertions.assertEquals(expectedDto.createdAt(), testStudentApplication.getCreatedAt());
-        Assertions.assertEquals(expectedDto.updatedAt(), testStudentApplication.getUpdatedAt());
-        Assertions.assertEquals(expectedDto.numberOfSubjects(), testStudentApplication.getSubjectRegistrations().size());
+        Assertions.assertEquals(expectedDto.applicationKeyDto().studentId(), testStudentApplication.getKey().getStudentId());
     }
 
     @Test
     void mapDtoToStudentApplication() {
-        testStudentApplicationDto = new StudentApplicationDto(LocalDateTime.now(), LocalDateTime.now(), false, 1L, 1L, 1L, 15);
+        testStudentApplicationDto = new StudentApplicationDto(new StudentApplicationDto.ApplicationKeyDto(1L, 1L), List.of());
 
 
         StudentApplication expectedSApp = studentApplicationMapper
                 .mapDtoToStudentApplication(testStudentApplicationDto);
-
-        Assertions.assertEquals(expectedSApp.getCreatedAt(), testStudentApplicationDto.createdAt());
     }
 }

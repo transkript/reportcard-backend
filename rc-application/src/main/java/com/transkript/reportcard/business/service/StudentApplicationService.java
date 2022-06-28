@@ -5,20 +5,26 @@ import com.transkript.reportcard.api.dto.StudentApplicationDto;
 import com.transkript.reportcard.api.dto.request.StudentApplicationRequest;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
-import com.transkript.reportcard.data.entity.StudentApplication;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 
 import java.util.List;
 
 public interface StudentApplicationService {
-    StudentApplication getStudentApplicationEntity(ApplicationKey applicationKey);
+    StudentApplication getAsEntity(ApplicationKey applicationKey);
 
-    EntityResponse addStudentApplication(StudentApplicationDto applicationDto);
+    EntityResponse create(StudentApplicationRequest request);
 
-    List<StudentApplicationDto> getStudentApplications();
+    List<StudentApplicationDto> getAllAsDto();
 
-    List<StudentApplicationResponse> getStudentApplicationsByYear(Long yearId);
-    List<StudentApplicationResponse> getStudentApplicationsByApplicationRequest(StudentApplicationRequest request);
+    List<StudentApplicationResponse> getAllAsResponseByYear(Long yearId);
 
-    StudentApplicationDto getStudentApplication(Long studentId, Long yearId);
+    List<StudentApplicationResponse> getAllAsResponses(StudentApplicationRequest request);
+
+    StudentApplicationResponse getAsResponse(StudentApplicationRequest request);
+
+    StudentApplicationDto getAsDto(StudentApplicationDto.ApplicationKeyDto applicationKeyDto);
+
+    EntityResponse delete(StudentApplicationDto.ApplicationKeyDto applicationKeyDto);
+
 }

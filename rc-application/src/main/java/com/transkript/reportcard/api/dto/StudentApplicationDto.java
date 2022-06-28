@@ -5,30 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record StudentApplicationDto (
-        @JsonProperty(value = "created_at")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime createdAt,
-
-        @JsonProperty(value = "updated_at")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime updatedAt,
-
-        @JsonProperty(value = "repeating")
-        Boolean repeating,
-
-        @JsonProperty(value = "student_id")
-        @NotNull
-        Long studentId,
-
-        @JsonProperty(value = "year_id")
-        @NotNull
-        Long yearId,
-
-        @JsonProperty(value = "cls_id")
-        Long classLevelSubId,
-
-        @JsonProperty(value = "number_of_subjects")
-        Integer numberOfSubjects
-) implements Serializable { }
+        @JsonProperty(value = "application_key") ApplicationKeyDto applicationKeyDto,
+        @JsonProperty(value = "application_trials") List<StudentApplicationTrialDto> applicationTrialDtos
+) implements Serializable {
+        public record ApplicationKeyDto(
+                @NotNull @JsonProperty(value = "student_id") Long studentId,
+                @NotNull @JsonProperty(value = "class_sub_id") Long classSubId
+        ) implements Serializable { }
+}

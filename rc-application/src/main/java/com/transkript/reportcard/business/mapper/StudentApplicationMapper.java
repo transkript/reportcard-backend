@@ -1,7 +1,8 @@
 package com.transkript.reportcard.business.mapper;
 
 import com.transkript.reportcard.api.dto.StudentApplicationDto;
-import com.transkript.reportcard.data.entity.StudentApplication;
+import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,19 +11,18 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
 public interface StudentApplicationMapper {
     @Mappings({
-            @Mapping(target = "studentId", expression = "java(application.getApplicationKey().getStudentId())"),
-            @Mapping(target = "yearId", expression = "java(application.getApplicationKey().getYearId())"),
-            @Mapping(target = "numberOfSubjects", expression = "java(application.getSubjectRegistrations().size())"),
-            @Mapping(target = "classLevelSubId", expression = "java(application.getClassLevelSub().getId())"),
+            @Mapping(target = "applicationKeyDto", expression = "java(mapApplicationKey(application.getKey()))"),
     })
     StudentApplicationDto mapStudentApplicationToDto(StudentApplication application);
 
+    default StudentApplicationDto.ApplicationKeyDto mapApplicationKey(ApplicationKey applicationKey) {
+        return new StudentApplicationDto.ApplicationKeyDto(applicationKey.getStudentId(), applicationKey.getClassSubId());
+    }
     @Mappings({
-            @Mapping(target = "applicationKey", ignore = true),
+            @Mapping(target = "key", ignore = true),
             @Mapping(target = "student", ignore = true),
-            @Mapping(target = "academicYear", ignore = true),
-            @Mapping(target = "subjectRegistrations", ignore = true),
             @Mapping(target = "classLevelSub", ignore = true),
+            @Mapping(target = "studentApplicationTrials", ignore = true),
     })
     @InheritInverseConfiguration
     StudentApplication mapDtoToStudentApplication(StudentApplicationDto studentapplicationDto);

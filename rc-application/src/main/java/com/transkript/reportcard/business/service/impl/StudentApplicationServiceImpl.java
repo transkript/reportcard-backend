@@ -8,93 +8,92 @@ import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
 import com.transkript.reportcard.business.mapper.StudentApplicationMapper;
 import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
 import com.transkript.reportcard.business.service.AcademicYearService;
-import com.transkript.reportcard.business.service.ClassLevelService;
 import com.transkript.reportcard.business.service.ClassLevelSubService;
 import com.transkript.reportcard.business.service.StudentApplicationService;
 import com.transkript.reportcard.business.service.StudentService;
-import com.transkript.reportcard.business.service.SubjectRegistrationService;
+import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.StudentApplication;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.StudentApplicationRepository;
+import com.transkript.reportcard.data.repository.StudentApplicationTrialRepository;
 import com.transkript.reportcard.exception.EntityException;
-import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StudentApplicationServiceImpl implements StudentApplicationService {
     private final StudentApplicationRepository studentApplicationRepository;
+    private final StudentApplicationTrialRepository studentApplicationTrialRepository;
     private final StudentApplicationMapper studentApplicationMapper;
     private final StudentService studentService;
     private final AcademicYearService academicYearService;
-    private final ClassLevelService classLevelService;
     private final ClassLevelSubService classLevelSubService;
     private final SubjectRegistrationMapper subjectRegistrationMapper;
 
     @Override
-    public StudentApplication getStudentApplicationEntity(ApplicationKey applicationKey) {
+    public StudentApplication getAsEntity(ApplicationKey applicationKey) {
         return studentApplicationRepository.findById(applicationKey)
-                .orElseThrow(() -> new EntityException.EntityNotFoundException("student application", applicationKey.getStudentId(), applicationKey.getYearId()));
+                .orElseThrow(() -> new EntityException.EntityNotFoundException("student application", applicationKey.getStudentId(), applicationKey.getClassSubId()));
     }
 
     @Override
-    public EntityResponse addStudentApplication(StudentApplicationDto applicationDto) {
-        StudentApplication studentApplication = studentApplicationMapper.mapDtoToStudentApplication(applicationDto);
+    public EntityResponse create(StudentApplicationRequest request) {
+        StudentApplication studentApplication = new StudentApplication();
+
+        AcademicYear academicYear = academicYearService.getAcademicYearEntity(request.yearId());
+        Student student = studentService.getStudentEntity(request.studentId());
+        ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classSubId());
+
+        StudentApplicationTrial sat = new StudentApplicationTrial();
+        {
+            sat.setCreatedAt(LocalDateTime.now());
+            sat.setUpdatedAt(LocalDateTime.now());
+            sat.setAcademicYear(academicYear);
+            sat.setRepeating(false);
+        }
 
         ApplicationKey applicationKey = new ApplicationKey();
-        studentApplication.setCreatedAt(LocalDateTime.now());
         {
-            if (applicationDto.studentId() == null) {
-                throw new ReportCardException.IllegalArgumentException("Student id is required");
-            } else {
-                Student student = studentService.getStudentEntity(applicationDto.studentId());
-                applicationKey.setStudentId(student.getId());
-                studentApplication.setStudent(student);
-            }
-        }
-        {
-            if (applicationDto.yearId() == null) {
-                throw new ReportCardException.IllegalArgumentException("Academic year id is required");
-            } else {
-                AcademicYear academicYear = academicYearService.getAcademicYearEntity(applicationDto.yearId());
-                applicationKey.setYearId(academicYear.getId());
-                studentApplication.setAcademicYear(academicYear);
-            }
-        }
-        {
-            if (applicationDto.classLevelSubId() == null) {
-                throw new ReportCardException.IllegalArgumentException("Class level and class level sub ids are required");
-            } else {
-                ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(applicationDto.classLevelSubId());
-                studentApplication.setClassLevelSub(classLevelSub);
-            }
+            applicationKey.setStudentId(student.getId());
+            applicationKey.setClassSubId(classLevelSub.getId());
+
+            studentApplication.setStudent(student);
+            studentApplication.setClassLevelSub(classLevelSub);
+
         }
         {
             if (studentApplicationRepository.existsById(applicationKey)) {
-                throw new EntityException.EntityAlreadyExistsException("student application", applicationKey.getStudentId(), applicationKey.getYearId());
+                sat.setRepeating(true);
+                studentApplication = studentApplicationRepository.findById(applicationKey).orElse(studentApplication);
+            } else {
+                studentApplication.setKey(applicationKey);
+                studentApplication = studentApplicationRepository.save(studentApplication);
             }
+            sat.setStudentApplication(studentApplication);
+            studentApplicationTrialRepository.save(sat);
         }
-        studentApplication.setApplicationKey(applicationKey);
-        studentApplication = studentApplicationRepository.save(studentApplication);
         return EntityResponse.builder().ids(
-                Map.of("academic year", studentApplication.getAcademicYear().getId(),
+                Map.of("class level sub", studentApplication.getClassLevelSub().getId(),
                         "student", studentApplication.getStudent().getId()
                 )).message("Student application created successfully").build();
     }
 
     @Override
-    public List<StudentApplicationDto> getStudentApplications() {
+    public List<StudentApplicationDto> getAllAsDto() {
         return studentApplicationRepository.findAll()
                 .stream()
                 .map(studentApplicationMapper::mapStudentApplicationToDto)
@@ -102,38 +101,73 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     }
 
     @Override
-    public List<StudentApplicationResponse> getStudentApplicationsByYear(Long yearId) {
+    public List<StudentApplicationResponse> getAllAsResponseByYear(Long yearId) {
         AcademicYear year = academicYearService.getAcademicYearEntity(yearId);
-        return studentApplicationRepository.findAllByAcademicYear(year).stream()
-                .map(application -> {
+        return studentApplicationTrialRepository.findAllByAcademicYear(year).stream()
+                .map((sat) -> {
+                    StudentApplication application = sat.getStudentApplication();
                     ClassLevelSub classLevelSub = application.getClassLevelSub();
                     StudentDto studentDto = studentService.getStudent(application.getStudent().getId());
                     StudentApplicationDto applicationDto = studentApplicationMapper.mapStudentApplicationToDto(application);
 
                     return new StudentApplicationResponse(
-                            classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),
-                            studentDto, applicationDto,
-                            application.getSubjectRegistrations().stream().map(subjectRegistrationMapper::mapSubjectRegistrationToDto).toList()
+                        classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),
+                        studentDto, applicationDto, application.getStudentApplicationTrials()
                     );
-                }).toList();
+        }).toList();
     }
 
 
     @Override
-    public List<StudentApplicationResponse> getStudentApplicationsByApplicationRequest(StudentApplicationRequest request) {
-        if(request.classId() < 0) {
-            return getStudentApplicationsByYear(request.yearId());
+    public List<StudentApplicationResponse> getAllAsResponses(StudentApplicationRequest request) {
+        if(request.classSubId() < 0) {
+            return getAllAsResponseByYear(request.yearId());
         } else {
-            ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classId());
-            return getStudentApplicationsByYear(request.yearId()).stream()
-                    .filter((sap) -> Objects.equals(sap.application().classLevelSubId(), classLevelSub.getId())).toList();
+            ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classSubId());
+            return getAllAsResponseByYear(request.yearId()).stream()
+                    .filter((sar) -> Objects.equals(sar.application().applicationKeyDto().classSubId(), classLevelSub.getId())).toList();
         }
     }
 
     @Override
-    public StudentApplicationDto getStudentApplication(Long studentId, Long yearId) {
-        return studentApplicationMapper.mapStudentApplicationToDto(getStudentApplicationEntity(
-                new ApplicationKey(studentId, yearId))
+    public StudentApplicationResponse getAsResponse(StudentApplicationRequest request) {
+        StudentApplication application = getAsEntity(new ApplicationKey(request.studentId(), request.classSubId()));
+        ClassLevelSub classLevelSub = application.getClassLevelSub();
+        AcademicYear academicYear = academicYearService.getAcademicYearEntity(request.yearId());
+        var sat = studentApplicationTrialRepository.findByAcademicYearAndStudentApplication(
+                academicYear, application
+        ).orElseThrow(() -> new EntityException.EntityNotFoundException(EntityName.STUDENT_APPLICATION_TRIAL));
+
+        return new StudentApplicationResponse(
+                classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),
+                studentService.getStudent(request.studentId()),
+                studentApplicationMapper.mapStudentApplicationToDto(application),
+                application.getStudentApplicationTrials().stream()
+                        .filter(s -> sat.getAcademicYear().getId().equals(sat.getId())).toList()
         );
+    }
+
+    @Override
+    public StudentApplicationDto getAsDto(StudentApplicationDto.ApplicationKeyDto applicationKeyDto) {
+        return studentApplicationMapper.mapStudentApplicationToDto(getAsEntity(
+                new ApplicationKey(applicationKeyDto.studentId(), applicationKeyDto.classSubId()))
+        );
+    }
+
+    @Override
+    public EntityResponse delete(StudentApplicationDto.ApplicationKeyDto applicationKeyDto) {
+        ApplicationKey applicationKey = new ApplicationKey(applicationKeyDto.studentId(), applicationKeyDto.classSubId());
+        if(studentApplicationRepository.existsById(applicationKey)) {
+            studentApplicationRepository.deleteById(applicationKey);
+            return new EntityResponse(0L, Map.of("student_id", applicationKeyDto.studentId(), "class_id", applicationKeyDto.classSubId()),
+                    "Student application has been deleted successfully",
+                    EntityName.STUDENT_APPLICATION, HttpStatus.OK.value(), true, "success"
+            );
+        } else {
+            return new EntityResponse(0L, Map.of("student_id", applicationKeyDto.studentId(), "class_id", applicationKeyDto.classSubId()),
+                    "Student application not found, so has not been deleted",
+                    EntityName.STUDENT_APPLICATION, HttpStatus.NOT_FOUND.value(), true, "warn"
+            );
+        }
     }
 }
