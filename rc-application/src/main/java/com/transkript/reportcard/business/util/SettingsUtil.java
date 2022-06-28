@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,10 +21,19 @@ public class SettingsUtil {
         return objectMapper;
     }
 
-    public static void writeSettings(SchoolSettingsDto settingsDto) {
+    public static void writeToJson(SchoolSettingsDto settingsDto) {
         ObjectMapper om = getObjectMapper();
         try (FileOutputStream fos = new FileOutputStream(AppConstants.settingsFile)){
             om.writeValue(fos, settingsDto);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void writeAllToJson(List<SchoolSettingsDto> settingsDtoList) {
+        ObjectMapper om = getObjectMapper();
+        try (FileOutputStream fos = new FileOutputStream(AppConstants.settingsFile)){
+            om.writeValue(fos, settingsDtoList);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
