@@ -26,8 +26,8 @@ public class SettingsFilter implements Filter {
             ServletResponse servletResponse,
             FilterChain filterChain) throws IOException, ServletException {
 
-        SchoolSettingsDto schoolSettingsDto = schoolSettingsService.getSettings();
-        SettingsUtil.writeSettings(schoolSettingsDto);
+
+        SettingsUtil.writeAllToJson(schoolSettingsService.retrieveAll());
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }
