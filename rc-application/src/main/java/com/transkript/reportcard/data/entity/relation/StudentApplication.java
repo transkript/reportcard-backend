@@ -1,6 +1,8 @@
-package com.transkript.reportcard.data.entity;
+package com.transkript.reportcard.data.entity.relation;
 
 
+import com.transkript.reportcard.data.entity.ClassLevelSub;
+import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

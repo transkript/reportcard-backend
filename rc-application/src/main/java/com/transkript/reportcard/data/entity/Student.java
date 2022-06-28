@@ -4,6 +4,7 @@ package com.transkript.reportcard.data.entity;
 import com.transkript.reportcard.api.dto.SchoolSettingsDto;
 import com.transkript.reportcard.business.util.SchoolUtil;
 import com.transkript.reportcard.business.util.SettingsUtil;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
