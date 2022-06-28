@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,13 @@ public class School {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @OneToOne(mappedBy = "school", optional = false, orphanRemoval = true)
+    private SchoolSettings schoolSettings;
+
+
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
     private List<Section> sections = new ArrayList<>();
+
 }
