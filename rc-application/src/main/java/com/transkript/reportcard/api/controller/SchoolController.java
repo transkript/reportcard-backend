@@ -1,6 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.SchoolDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.SchoolService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,8 @@ public class SchoolController {
 
 
     @PostMapping
-    public ResponseEntity<String> addSchool(@RequestBody SchoolDto schoolDto) {
-        log.info("Adding school with name " + schoolDto.getName());
+    public ResponseEntity<EntityResponse> addSchool(@RequestBody SchoolDto schoolDto) {
+        log.info("Adding school with name " + schoolDto.name());
         return new ResponseEntity<>(schoolService.addSchool(schoolDto), HttpStatus.CREATED);
     }
 
