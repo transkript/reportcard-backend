@@ -49,4 +49,9 @@ public class SchoolSettings {
     @Builder.Default
     @Column(name = "min_grade_score", nullable = false)
     private Long minGrade = 0L;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "school_id", nullable = false)
+    private School school;
+
 }
