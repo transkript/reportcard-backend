@@ -23,11 +23,9 @@ public class TestDefaults {
 
     public static SubjectRegistration SUBJECT_REGISTRATION = SubjectRegistration.builder()
             .id(1L)
-            .createdAt(LocalDateTime.now())
-            .studentApplication(null).subject(SUBJECT).grades(List.of()).build();
+            .createdAt(LocalDateTime.now()).subject(SUBJECT).grades(List.of()).build();
     public static SubjectRegistrationDto SUBJECT_REGISTRATION_DTO = SubjectRegistrationDto.builder()
-            .createdAt(LocalDateTime.now())
-            .studentId(1L).yearId(2L).subjectId(1L).build();
+            .createdAt(LocalDateTime.now()).subjectId(1L).build();
 
     public static Section SECTION = null;
     public static SectionDto SECTION_DTO = null;
