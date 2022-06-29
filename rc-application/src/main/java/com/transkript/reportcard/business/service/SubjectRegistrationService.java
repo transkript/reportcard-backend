@@ -14,7 +14,7 @@ public interface SubjectRegistrationService {
 
     List<EntityResponse> addSubjectRegistrations(List<SubjectRegistrationDto> subjectRegistrationDtoList);
 
-    List<SubjectRegistrationDto> getSubjectionRegistrations(Long studentId, Long yearId);
+    List<SubjectRegistrationDto> getSubjectionRegistrations(Long satId);
 
     SubjectRegistrationDto getSubjectRegistration(Long registrationId);
 
@@ -23,7 +23,7 @@ public interface SubjectRegistrationService {
 
     SubjectRegistration getSubjectRegistrationEntity(Long registrationId);
 
-    SubjectRegistration getSubjectRegistrationEntity(ApplicationKey applicationKey, Long subjectId);
+    SubjectRegistration getSubjectRegistrationEntity(Long satId, Long subjectId);
 
-    List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long studentId, Long yearId);
+    List<SubjectRegistration> getSubjectRegistrationEntitiesByApplicationTrial(Long satId);
 }

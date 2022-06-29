@@ -4,22 +4,24 @@ import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
 import com.transkript.reportcard.business.service.StudentApplicationService;
+import com.transkript.reportcard.business.service.StudentApplicationTrialService;
 import com.transkript.reportcard.business.service.SubjectRegistrationService;
 import com.transkript.reportcard.business.service.SubjectService;
-import com.transkript.reportcard.data.entity.StudentApplication;
+import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
-import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.SubjectRegistrationRepository;
 import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,44 +31,29 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     private final SubjectRegistrationMapper subjectRegistrationMapper;
     private final StudentApplicationService studentApplicationService;
     private final SubjectService subjectService;
+    private final StudentApplicationTrialService studentApplicationTrialService;
 
 
     @Override
     public EntityResponse addSubjectRegistration(SubjectRegistrationDto subjectRegistrationDto) {
         SubjectRegistration subjectRegistration = subjectRegistrationMapper.mapDtoToSubjectRegistration(subjectRegistrationDto);
-        subjectRegistration.setCreatedAt(LocalDateTime.now());
-        subjectRegistration.setUpdatedAt(LocalDateTime.now());
+        subjectRegistration.setCreatedAt(LocalDateTime.now()); subjectRegistration.setUpdatedAt(LocalDateTime.now());
         subjectRegistration.setId(null);
 
-        StudentApplication studentApplication;
-        {
-            if (subjectRegistrationDto.getStudentId() == null) {
-                throw new ReportCardException.IllegalArgumentException("Student Id is required");
-            }
-            if (subjectRegistrationDto.getYearId() == null) {
-                throw new ReportCardException.IllegalArgumentException("Year Id is required");
-            }
+        StudentApplicationTrial sat = studentApplicationTrialService.getEntity(subjectRegistrationDto.satId());
+        Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.subjectId());
 
-            ApplicationKey applicationKey = new ApplicationKey(subjectRegistrationDto.getStudentId(), subjectRegistrationDto.getYearId());
-            studentApplication = studentApplicationService.getStudentApplicationEntity(applicationKey);
-            subjectRegistration.setStudentApplication(studentApplication);
+        Optional<SubjectRegistration> srOptional = subjectRegistrationRepository.findByStudentApplicationTrialAndSubject(sat, subject);
+        if (srOptional.isPresent()) {
+            return EntityResponse.builder().id(srOptional.get().getId()).entityName(EntityName.SUBJECT_REGISTRATION)
+                    .message("Subject Registration already exists").build();
         }
-        {
-            if (subjectRegistrationDto.getSubjectId() == null) {
-                throw new ReportCardException.IllegalArgumentException("Subject Id is required");
-            } else {
-                Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.getSubjectId());
-                if (subjectRegistrationRepository.findByStudentApplicationAndSubject(studentApplication, subject).isPresent()) {
-                    throw new ReportCardException.IllegalStateException("Subject already registered: " + subject.getName(), HttpStatus.CONFLICT);
-                }
-                subjectRegistration.setSubject(subject);
-            }
-        }
-        return EntityResponse.builder()
-                .id(subjectRegistrationRepository.save(subjectRegistration).getId())
-                .entityName("subjectRegistration")
-                .message("Subject Registration added successfully")
-                .build();
+
+        subjectRegistration.setStudentApplicationTrial(sat);
+        subjectRegistration.setSubject(subject);
+
+        return EntityResponse.builder().id(subjectRegistrationRepository.save(subjectRegistration).getId())
+                .entityName("subjectRegistration").message("Subject Registration added successfully").build();
     }
 
     @Override
@@ -75,8 +62,9 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     }
 
     @Override
-    public List<SubjectRegistrationDto> getSubjectionRegistrations(Long studentId, Long yearId) {
-        return getSubjectRegistrationEntitiesByApplication(studentId, yearId)
+    public List<SubjectRegistrationDto> getSubjectionRegistrations(Long satId) {
+        // TODO get by a particular student, year, classSub
+        return getSubjectRegistrationEntitiesByApplicationTrial(satId)
                 .stream().map(subjectRegistrationMapper::mapSubjectRegistrationToDto).collect(Collectors.toList());
     }
 
@@ -105,27 +93,18 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     }
 
     @Override
-    public SubjectRegistration getSubjectRegistrationEntity(ApplicationKey applicationKey, Long subjectId) {
-        StudentApplication studentApplication = studentApplicationService.getStudentApplicationEntity(applicationKey);
+    public SubjectRegistration getSubjectRegistrationEntity(Long satId, Long subjectId) {
+        StudentApplicationTrial trial = studentApplicationTrialService.getEntity(satId);
         Subject subject = subjectService.getSubjectEntity(subjectId);
-        return subjectRegistrationRepository.findByStudentApplicationAndSubject(studentApplication, subject)
-                .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", applicationKey.getYearId(), applicationKey.getStudentId(), subjectId));
+        return subjectRegistrationRepository.findByStudentApplicationTrialAndSubject(trial, subject)
+                .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", satId, subjectId));
     }
 
-    /**
-     * @param studentId
-     * @param yearId
-     * @return
-     */
-    @Override
     @Transactional(readOnly = true)
-    public List<SubjectRegistration> getSubjectRegistrationEntitiesByApplication(Long studentId, Long yearId) {
-        if (studentId == null || yearId == null) {
-            throw new ReportCardException.IllegalArgumentException("Student Id and Year Id are required");
-        }
-        StudentApplication application = studentApplicationService.getStudentApplicationEntity(
-                new ApplicationKey(studentId, yearId)
-        );
-        return subjectRegistrationRepository.findAllByStudentApplication(application);
+    public List<SubjectRegistration> getSubjectRegistrationEntitiesByApplicationTrial(Long satId) {
+        Objects.requireNonNull(satId, "Student Application Trial Id is required");
+
+        StudentApplicationTrial trial = studentApplicationTrialService.getEntity(satId);
+        return subjectRegistrationRepository.findAllByStudentApplicationTrial(trial);
     }
 }
