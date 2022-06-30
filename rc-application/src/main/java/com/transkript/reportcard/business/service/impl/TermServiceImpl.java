@@ -5,7 +5,6 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.TermMapper;
 import com.transkript.reportcard.business.service.SchoolService;
 import com.transkript.reportcard.business.service.TermService;
-import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.repository.TermRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -56,7 +55,7 @@ public class TermServiceImpl implements TermService {
         if (id != null && id.equals(termDto.id()) && termRepository.existsById(id)) {
             Term term = termRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("term", id));
 
-            if(!Objects.equals(term.getName(), termDto.name())) {
+            if (!Objects.equals(term.getName(), termDto.name())) {
                 term.setName(termDto.name());
             }
             term = termRepository.save(term);

@@ -15,8 +15,8 @@ import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.StudentApplicationRepository;
 import com.transkript.reportcard.data.repository.StudentApplicationTrialRepository;
@@ -111,16 +111,16 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
                     StudentApplicationDto applicationDto = studentApplicationMapper.mapStudentApplicationToDto(application);
 
                     return new StudentApplicationResponse(
-                        classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),
-                        studentDto, applicationDto, application.getStudentApplicationTrials()
+                            classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),
+                            studentDto, applicationDto, application.getStudentApplicationTrials()
                     );
-        }).toList();
+                }).toList();
     }
 
 
     @Override
     public List<StudentApplicationResponse> getAllAsResponses(StudentApplicationRequest request) {
-        if(request.classSubId() < 0) {
+        if (request.classSubId() < 0) {
             return getAllAsResponseByYear(request.yearId());
         } else {
             ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classSubId());
@@ -157,7 +157,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     @Override
     public EntityResponse delete(StudentApplicationDto.ApplicationKeyDto applicationKeyDto) {
         ApplicationKey applicationKey = new ApplicationKey(applicationKeyDto.studentId(), applicationKeyDto.classSubId());
-        if(studentApplicationRepository.existsById(applicationKey)) {
+        if (studentApplicationRepository.existsById(applicationKey)) {
             studentApplicationRepository.deleteById(applicationKey);
             return new EntityResponse(0L, Map.of("student_id", applicationKeyDto.studentId(), "class_id", applicationKeyDto.classSubId()),
                     "Student application has been deleted successfully",

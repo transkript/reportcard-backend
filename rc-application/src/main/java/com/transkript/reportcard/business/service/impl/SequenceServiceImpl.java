@@ -59,10 +59,10 @@ public class SequenceServiceImpl implements SequenceService {
         if (id != null && id.equals(sequenceDto.id()) && sequenceRepository.existsById(id)) {
             Sequence sequence = sequenceRepository.getById(id);
             {
-                if(!Objects.equals(sequence.getName(), sequenceDto.name())) {
+                if (!Objects.equals(sequence.getName(), sequenceDto.name())) {
                     sequence.setName(sequenceDto.name());
                 }
-                if(!Objects.equals(sequence.getTerm().getId(), sequenceDto.termId())) {
+                if (!Objects.equals(sequence.getTerm().getId(), sequenceDto.termId())) {
                     sequence.setTerm(termService.getTermEntity(sequenceDto.termId()));
                 }
             }

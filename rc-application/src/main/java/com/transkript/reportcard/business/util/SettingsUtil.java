@@ -16,14 +16,14 @@ import java.util.List;
 @Setter
 public class SettingsUtil {
     public static ObjectMapper getObjectMapper() {
-        ObjectMapper objectMapper =  new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         return objectMapper;
     }
 
     public static void writeToJson(SchoolSettingsDto settingsDto) {
         ObjectMapper om = getObjectMapper();
-        try (FileOutputStream fos = new FileOutputStream(AppConstants.settingsFile)){
+        try (FileOutputStream fos = new FileOutputStream(AppConstants.settingsFile)) {
             om.writeValue(fos, settingsDto);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -32,7 +32,7 @@ public class SettingsUtil {
 
     public static void writeAllToJson(List<SchoolSettingsDto> settingsDtoList) {
         ObjectMapper om = getObjectMapper();
-        try (FileOutputStream fos = new FileOutputStream(AppConstants.settingsFile)){
+        try (FileOutputStream fos = new FileOutputStream(AppConstants.settingsFile)) {
             om.writeValue(fos, settingsDtoList);
         } catch (IOException e) {
             throw new RuntimeException(e);

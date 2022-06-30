@@ -1,6 +1,5 @@
 package com.transkript.reportcard.business.service.impl;
 
-import com.transkript.reportcard.api.dto.SchoolDto;
 import com.transkript.reportcard.api.dto.SchoolSettingsDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SchoolSettingsMapper;
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -92,17 +90,17 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
                     settings.setMinGrade(schoolSettingsDto.minGrade());
                     settings.setApplicationOpen(schoolSettingsDto.applicationOpen() != null && schoolSettingsDto.applicationOpen());
 
-                    if(!Objects.equals(settings.getSchoolName(), schoolSettingsDto.schoolName())) {
+                    if (!Objects.equals(settings.getSchoolName(), schoolSettingsDto.schoolName())) {
                         School school = schoolRepository.getById(schoolSettingsDto.schoolId());
                         school.setName(schoolSettingsDto.schoolName());
                         school = schoolRepository.save(school);
                         settings.setSchoolName(school.getName());
                     }
-                    if(!Objects.equals(settings.getCurrentAcademicYear().getId(), schoolSettingsDto.currentYearId())) {
+                    if (!Objects.equals(settings.getCurrentAcademicYear().getId(), schoolSettingsDto.currentYearId())) {
                         AcademicYear year = academicYearService.getAcademicYearEntity(schoolSettingsDto.currentYearId());
                         settings.setCurrentAcademicYear(year);
                     }
-                    if(!Objects.equals(settings.getCurrentSequence().getId(), schoolSettingsDto.currentSequenceId())) {
+                    if (!Objects.equals(settings.getCurrentSequence().getId(), schoolSettingsDto.currentSequenceId())) {
                         Sequence sequence = sequenceService.getSequenceEntity(schoolSettingsDto.currentSequenceId());
                         settings.setCurrentSequence(sequence);
                         settings.setCurrentTerm(sequence.getTerm().getName());

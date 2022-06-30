@@ -1,7 +1,7 @@
 package com.transkript.reportcard.business.mapper;
 
-import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.api.dto.StudentApplicationTrialDto;
+import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

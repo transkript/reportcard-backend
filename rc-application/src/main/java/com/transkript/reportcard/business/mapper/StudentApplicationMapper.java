@@ -18,6 +18,7 @@ public interface StudentApplicationMapper {
     default StudentApplicationDto.ApplicationKeyDto mapApplicationKey(ApplicationKey applicationKey) {
         return new StudentApplicationDto.ApplicationKeyDto(applicationKey.getStudentId(), applicationKey.getClassSubId());
     }
+
     @Mappings({
             @Mapping(target = "key", ignore = true),
             @Mapping(target = "student", ignore = true),

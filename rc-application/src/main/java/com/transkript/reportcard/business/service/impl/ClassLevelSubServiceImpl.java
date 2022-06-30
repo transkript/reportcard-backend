@@ -31,7 +31,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     public EntityResponse addClassLevelSub(ClassLevelSubDto classLevelSubDto) {
         ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
 
-        if(classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
+        if (classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
             throw new EntityException.EntityAlreadyExistsException(
                     EntityName.CLASS_LEVEL_SUB,
                     String.format("%s -> %s", classLevel.getName(), classLevelSubDto.getName())
@@ -70,7 +70,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
         if (id != null && classLevelSubRepository.existsById(id) && id.equals(classLevelSubDto.getId())) {
             ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
 
-            if(classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
+            if (classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
                 throw new EntityException.EntityAlreadyExistsException(
                         EntityName.CLASS_LEVEL_SUB,
                         String.format("%s -> %s", classLevel.getName(), classLevelSubDto.getName())

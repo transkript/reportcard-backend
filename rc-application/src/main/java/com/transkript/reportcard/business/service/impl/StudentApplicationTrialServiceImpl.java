@@ -16,6 +16,7 @@ import java.util.List;
 public class StudentApplicationTrialServiceImpl implements StudentApplicationTrialService {
     private final StudentApplicationTrialRepository studentApplicationTrialRepository;
     private final AcademicYearService academicYearService;
+
     @Override
     public StudentApplicationTrial getEntity(Long satId) {
         return studentApplicationTrialRepository.findById(satId).orElseThrow(() -> new EntityException.EntityNotFoundException(EntityName.STUDENT_APPLICATION_TRIAL, satId));

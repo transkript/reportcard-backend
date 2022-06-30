@@ -3,6 +3,7 @@ package com.transkript.reportcard.business.util;
 public class NameUtil {
     /**
      * Remove all non-alphanumeric characters from the given string.
+     *
      * @param name The string to be cleaned.
      * @return The cleaned string.
      */
@@ -12,6 +13,7 @@ public class NameUtil {
 
     /**
      * Compares two strings and returns true if they are equal, ignoring case.
+     *
      * @param name1 The first string to be compared.
      * @param name2 The second string to be compared.
      * @return True if the strings are equal, ignoring case.

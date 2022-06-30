@@ -12,5 +12,6 @@ public interface StudentApplicationTrialRepository extends JpaRepository<Student
     List<StudentApplicationTrial> findAllByAcademicYear(AcademicYear year);
 
     List<StudentApplicationTrial> findAllByStudentApplication(StudentApplication application);
+
     Optional<StudentApplicationTrial> findByAcademicYearAndStudentApplication(AcademicYear academicYear, StudentApplication studentApplication);
 }

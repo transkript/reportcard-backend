@@ -17,7 +17,6 @@ import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

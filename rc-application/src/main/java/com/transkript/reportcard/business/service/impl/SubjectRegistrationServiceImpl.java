@@ -37,7 +37,8 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     @Override
     public EntityResponse addSubjectRegistration(SubjectRegistrationDto subjectRegistrationDto) {
         SubjectRegistration subjectRegistration = subjectRegistrationMapper.mapDtoToSubjectRegistration(subjectRegistrationDto);
-        subjectRegistration.setCreatedAt(LocalDateTime.now()); subjectRegistration.setUpdatedAt(LocalDateTime.now());
+        subjectRegistration.setCreatedAt(LocalDateTime.now());
+        subjectRegistration.setUpdatedAt(LocalDateTime.now());
         subjectRegistration.setId(null);
 
         StudentApplicationTrial sat = studentApplicationTrialService.getEntity(subjectRegistrationDto.satId());

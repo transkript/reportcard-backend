@@ -19,5 +19,6 @@ public interface AcademicYearService {
     void deleteAcademicYear(Long id);
 
     AcademicYear getAcademicYearEntity(Long academicYearId);
+
     List<AcademicYear> getAcademicYearEntities();
 }

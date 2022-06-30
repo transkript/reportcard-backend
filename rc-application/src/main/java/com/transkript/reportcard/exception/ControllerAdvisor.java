@@ -1,7 +1,5 @@
 package com.transkript.reportcard.exception;
 
-import com.transkript.reportcard.exception.EntityException;
-import com.transkript.reportcard.exception.ReportCardException;
 import com.transkript.reportcard.exception.body.ExceptionBody;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.DataIntegrityViolationException;

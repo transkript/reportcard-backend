@@ -38,7 +38,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
 
         Optional<ClassLevel> optionalClassLevel = classLevelRepository.findByName(classLevelDto.getName());
 
-        if(optionalClassLevel.isPresent()) {
+        if (optionalClassLevel.isPresent()) {
             throw new EntityException.EntityAlreadyExistsException("class level", classLevelDto.getName());
         }
 
@@ -88,7 +88,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
             Section existingSection = sectionService.getSectionEntity(classLevelDto.getId());
 
             if (!Objects.equals(classLevelDto.getName(), existingClassLevel.getName())) {
-                if(classLevelRepository.findByName(classLevelDto.getName()).isPresent()) {
+                if (classLevelRepository.findByName(classLevelDto.getName()).isPresent()) {
                     throw new EntityException.EntityAlreadyExistsException(EntityName.CLASS_LEVEL, classLevelDto.getName());
                 }
                 existingClassLevel.setName(classLevelDto.getName());

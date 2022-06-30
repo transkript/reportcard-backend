@@ -20,7 +20,7 @@ public class ReportCardApplication {
 
     private static void prepareWorkingDir() {
         File settingsFile = new File(AppConstants.settingsFile);
-        if(!settingsFile.exists()) {
+        if (!settingsFile.exists()) {
             try {
                 Files.createFile(Path.of(settingsFile.getAbsolutePath()));
                 log.info("Settings file created");

@@ -2,12 +2,7 @@ package com.transkript.reportcard.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,7 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Builder
-public record StudentDto (
+public record StudentDto(
         @JsonProperty("id")
         @NotNull
         Long id,
@@ -40,4 +35,5 @@ public record StudentDto (
 
         @JsonProperty("regno")
         String regNum
-) implements Serializable { }
+) implements Serializable {
+}

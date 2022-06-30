@@ -2,7 +2,6 @@ package com.transkript.reportcard.business.mapper;
 
 
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
-import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

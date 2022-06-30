@@ -1,7 +1,6 @@
 package com.transkript.reportcard.data.entity;
 
 import com.transkript.reportcard.data.entity.relation.Grade;
-import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;

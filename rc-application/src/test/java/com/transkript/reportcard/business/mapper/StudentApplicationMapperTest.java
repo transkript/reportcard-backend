@@ -5,14 +5,13 @@ import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest

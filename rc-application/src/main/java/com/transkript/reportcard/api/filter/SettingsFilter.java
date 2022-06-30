@@ -1,6 +1,5 @@
 package com.transkript.reportcard.api.filter;
 
-import com.transkript.reportcard.api.dto.SchoolSettingsDto;
 import com.transkript.reportcard.business.service.SchoolSettingsService;
 import com.transkript.reportcard.business.util.SettingsUtil;
 import lombok.RequiredArgsConstructor;

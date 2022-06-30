@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 @Builder
-public record EntityResponse (
+public record EntityResponse(
         @JsonProperty("id") Long id,
         @JsonProperty(value = "ids") Map<String, Object> ids,
         @JsonProperty(value = "message") String message,
@@ -15,4 +15,5 @@ public record EntityResponse (
         @JsonProperty(value = "status") Integer status,
         @JsonProperty(value = "log") Boolean log,
         @JsonProperty(value = "severity") String severity
-) implements Serializable { }
+) implements Serializable {
+}

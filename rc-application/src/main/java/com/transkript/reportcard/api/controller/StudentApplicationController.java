@@ -57,7 +57,7 @@ public class StudentApplicationController {
     ) {
         var request = new StudentApplicationRequest(classId, yearId, studentId);
         log.info("Getting student application response by request {}", request);
-        if(request.studentId() == null) {
+        if (request.studentId() == null) {
             throw new ReportCardException.IllegalStateException("Student ID cannot be null");
         }
         return ResponseEntity.ok(studentApplicationService.getAsResponse(request));
@@ -71,14 +71,14 @@ public class StudentApplicationController {
     }
 
     @DeleteMapping(value = "")
-    public ResponseEntity<EntityResponse> delete(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long classId ) {
+    public ResponseEntity<EntityResponse> delete(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long classId) {
         var applicationKeyDto = new StudentApplicationDto.ApplicationKeyDto(studentId, classId);
         log.info("Deleting student application by request {}", applicationKeyDto);
         return ResponseEntity.ok(studentApplicationService.delete(applicationKeyDto));
     }
 
     @PutMapping(value = "")
-    public ResponseEntity<EntityResponse> update(){
+    public ResponseEntity<EntityResponse> update() {
         return null;
     }
 }

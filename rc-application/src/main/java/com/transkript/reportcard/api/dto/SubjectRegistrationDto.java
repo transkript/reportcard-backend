@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Builder
-public record SubjectRegistrationDto (
+public record SubjectRegistrationDto(
         @JsonProperty(value = "id") Long id,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         @JsonProperty(value = "created_at") LocalDateTime createdAt,
@@ -19,4 +19,5 @@ public record SubjectRegistrationDto (
         // from relations
         @JsonProperty(value = "sat_id") @NotNull Long satId,
         @JsonProperty(value = "subject_id") @NotNull Long subjectId
-) implements Serializable { }
+) implements Serializable {
+}

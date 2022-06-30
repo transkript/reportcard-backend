@@ -2,10 +2,10 @@ package com.transkript.reportcard.business.mapper;
 
 import com.transkript.reportcard.TestDefaults;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
-import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -4,7 +4,6 @@ package com.transkript.reportcard.business.service;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
-import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

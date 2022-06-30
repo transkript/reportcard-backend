@@ -33,16 +33,13 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "student_application_trial")
 public class StudentApplicationTrial {
+    @Column(name = "repeating", nullable = false)
+    Boolean repeating;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "order_number", nullable = false)
     private Integer order;
-
-    @Column(name = "repeating", nullable = false)
-    Boolean repeating;
-
     @Builder.Default
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

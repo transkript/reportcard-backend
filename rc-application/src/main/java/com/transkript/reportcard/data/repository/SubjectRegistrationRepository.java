@@ -1,7 +1,6 @@
 package com.transkript.reportcard.data.repository;
 
 
-import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
