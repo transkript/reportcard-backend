@@ -1,25 +1,15 @@
-package com.transkript.reportcard.business.service;
+package com.transkript.reportcard.business.service
 
+import com.transkript.reportcard.api.dto.ClassLevelSubDto
+import com.transkript.reportcard.api.dto.response.EntityResponse
+import com.transkript.reportcard.data.entity.ClassLevelSub
 
-import com.transkript.reportcard.api.dto.ClassLevelSubDto;
-import com.transkript.reportcard.api.dto.response.EntityResponse;
-import com.transkript.reportcard.data.entity.ClassLevelSub;
-
-import java.util.List;
-
-public interface ClassLevelSubService {
-    EntityResponse addClassLevelSub(ClassLevelSubDto classLevelSubDto);
-
-    List<ClassLevelSubDto> getClassLevelSubs();
-
-    List<ClassLevelSubDto> getClassLevelSubsByClassLevel(Long levelId);
-
-    ClassLevelSubDto getClassLevelSub(Long id);
-
-    EntityResponse updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto);
-
-    void deleteClassLevelSub(Long id);
-
-    ClassLevelSub getClassLevelSubEntity(Long id);
-
+interface ClassLevelSubService {
+    fun addClassLevelSub(classLevelSubDto: ClassLevelSubDto?): EntityResponse?
+    val classLevelSubs: List<ClassLevelSubDto?>?
+    fun getClassLevelSubsByClassLevel(levelId: Long?): List<ClassLevelSubDto?>?
+    fun getClassLevelSub(id: Long?): ClassLevelSubDto?
+    fun updateClassLevelSub(id: Long?, classLevelSubDto: ClassLevelSubDto?): EntityResponse?
+    fun deleteClassLevelSub(id: Long?)
+    fun getClassLevelSubEntity(id: Long?): ClassLevelSub?
 }

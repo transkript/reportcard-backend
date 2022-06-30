@@ -1,25 +1,16 @@
-package com.transkript.reportcard.business.service;
+package com.transkript.reportcard.business.service
 
+import com.transkript.reportcard.api.dto.GradeDto
+import com.transkript.reportcard.api.dto.response.EntityResponse
+import com.transkript.reportcard.data.entity.composite.GradeKey
+import com.transkript.reportcard.data.entity.relation.Grade
 
-import com.transkript.reportcard.api.dto.GradeDto;
-import com.transkript.reportcard.api.dto.response.EntityResponse;
-import com.transkript.reportcard.data.entity.composite.GradeKey;
-import com.transkript.reportcard.data.entity.relation.Grade;
-
-import java.util.List;
-
-public interface GradeService {
-    EntityResponse addGrade(GradeDto gradeDto);
-
-    List<GradeDto> getGradesBySequence(Long sequenceId);
-
-    List<GradeDto> getGradesByRegistration(Long registrationId);
-
-    GradeDto getGrade(Long registrationId, Long sequenceId);
-
-    Grade getGradeEntity(GradeKey gradeKey);
-
-    List<Grade> getGradeEntitiesBySubjectRegistration(Long registrationId);
-
-    EntityResponse updateGrade(GradeDto gradeDto);
+interface GradeService {
+    fun addGrade(gradeDto: GradeDto?): EntityResponse?
+    fun getGradesBySequence(sequenceId: Long?): List<GradeDto?>?
+    fun getGradesByRegistration(registrationId: Long?): List<GradeDto?>?
+    fun getGrade(registrationId: Long?, sequenceId: Long?): GradeDto?
+    fun getGradeEntity(gradeKey: GradeKey?): Grade?
+    fun getGradeEntitiesBySubjectRegistration(registrationId: Long?): List<Grade?>?
+    fun updateGrade(gradeDto: GradeDto?): EntityResponse?
 }

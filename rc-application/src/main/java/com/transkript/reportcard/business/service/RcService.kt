@@ -1,9 +1,8 @@
-package com.transkript.reportcard.business.service;
+package com.transkript.reportcard.business.service
 
-import com.transkript.reportcard.api.dto.request.ReportCardRequest;
+import com.transkript.reportcard.api.dto.request.ReportCardRequest
+import java.io.File
 
-import java.io.File;
-
-public interface RcService {
-    File getReportCard(Long termId, ReportCardRequest reportCardRequest);
+interface RcService {
+    fun getReportCard(termId: Long?, reportCardRequest: ReportCardRequest?): File?
 }

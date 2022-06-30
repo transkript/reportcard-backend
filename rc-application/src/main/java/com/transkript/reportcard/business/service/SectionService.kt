@@ -1,21 +1,13 @@
-package com.transkript.reportcard.business.service;
+package com.transkript.reportcard.business.service
 
+import com.transkript.reportcard.api.dto.SectionDto
+import com.transkript.reportcard.data.entity.Section
 
-import com.transkript.reportcard.api.dto.SectionDto;
-import com.transkript.reportcard.data.entity.Section;
-
-import java.util.List;
-
-public interface SectionService {
-    Section getSectionEntity(Long id);
-
-    String addSection(SectionDto sectionDto);
-
-    List<SectionDto> getSections();
-
-    SectionDto getSection(Long id);
-
-    String updateSection(Long id, SectionDto sectionDto);
-
-    String deleteSection(Long id);
+interface SectionService {
+    fun getSectionEntity(id: Long?): Section?
+    fun addSection(sectionDto: SectionDto?): String?
+    val sections: List<SectionDto?>?
+    fun getSection(id: Long?): SectionDto?
+    fun updateSection(id: Long?, sectionDto: SectionDto?): String?
+    fun deleteSection(id: Long?): String?
 }

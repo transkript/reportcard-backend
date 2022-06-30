@@ -1,24 +1,15 @@
-package com.transkript.reportcard.business.service;
+package com.transkript.reportcard.business.service
 
+import com.transkript.reportcard.api.dto.AcademicYearDto
+import com.transkript.reportcard.api.dto.response.EntityResponse
+import com.transkript.reportcard.data.entity.AcademicYear
 
-import com.transkript.reportcard.api.dto.AcademicYearDto;
-import com.transkript.reportcard.api.dto.response.EntityResponse;
-import com.transkript.reportcard.data.entity.AcademicYear;
-
-import java.util.List;
-
-public interface AcademicYearService {
-    EntityResponse addAcademicYear(AcademicYearDto academicYearDto);
-
-    List<AcademicYearDto> getAcademicYears();
-
-    AcademicYearDto getAcademicYear(Long id);
-
-    EntityResponse updateAcademicYear(Long id, AcademicYearDto academicYearDto);
-
-    void deleteAcademicYear(Long id);
-
-    AcademicYear getAcademicYearEntity(Long academicYearId);
-
-    List<AcademicYear> getAcademicYearEntities();
+interface AcademicYearService {
+    fun addAcademicYear(academicYearDto: AcademicYearDto?): EntityResponse?
+    val academicYears: List<AcademicYearDto?>?
+    fun getAcademicYear(id: Long?): AcademicYearDto?
+    fun updateAcademicYear(id: Long?, academicYearDto: AcademicYearDto?): EntityResponse?
+    fun deleteAcademicYear(id: Long?)
+    fun getAcademicYearEntity(academicYearId: Long?): AcademicYear?
+    val academicYearEntities: List<AcademicYear?>?
 }
