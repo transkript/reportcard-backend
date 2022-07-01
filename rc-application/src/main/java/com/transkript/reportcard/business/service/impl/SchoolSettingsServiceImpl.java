@@ -3,10 +3,10 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.SchoolSettingsDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SchoolSettingsMapper;
-import com.transkript.reportcard.business.service.AcademicYearService;
-import com.transkript.reportcard.business.service.SchoolService;
-import com.transkript.reportcard.business.service.SchoolSettingsService;
-import com.transkript.reportcard.business.service.SequenceService;
+import com.transkript.reportcard.business.service.interf.AcademicYearService;
+import com.transkript.reportcard.business.service.interf.SchoolService;
+import com.transkript.reportcard.business.service.interf.SchoolSettingsService;
+import com.transkript.reportcard.business.service.interf.SequenceService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.config.constants.ResponseSeverity;
 import com.transkript.reportcard.data.entity.AcademicYear;
@@ -51,7 +51,7 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
             );
         } else {
             school = schoolRepository.findById(schoolSettingsDto.schoolId()).orElseThrow(
-                    () -> new EntityException.EntityNotFoundException(EntityName.SCHOOL, schoolSettingsDto.schoolId())
+                    () -> new EntityException.NotFound(EntityName.SCHOOL, schoolSettingsDto.schoolId())
             );
 
             // update name of the school from the dto
@@ -108,7 +108,7 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
                     schoolSettingsRepository.save(settings);
                 },
                 () -> {
-                    throw new EntityException.EntityNotFoundException(EntityName.SCHOOL_SETTINGS, schoolSettingsDto.id());
+                    throw new EntityException.NotFound(EntityName.SCHOOL_SETTINGS, schoolSettingsDto.id());
                 }
         );
         return EntityResponse.builder().id(schoolSettingsDto.id()).entityName("school settings").log(true)
@@ -134,7 +134,7 @@ public class SchoolSettingsServiceImpl implements SchoolSettingsService {
     @Override
     public SchoolSettings retrieveEntity(Long id) {
         return schoolSettingsRepository.findById(id).orElseThrow(
-                () -> new EntityException.EntityNotFoundException(EntityName.SCHOOL_SETTINGS, id)
+                () -> new EntityException.NotFound(EntityName.SCHOOL_SETTINGS, id)
         );
     }
 }

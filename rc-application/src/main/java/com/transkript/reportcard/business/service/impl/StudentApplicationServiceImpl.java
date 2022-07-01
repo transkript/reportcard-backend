@@ -7,10 +7,10 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
 import com.transkript.reportcard.business.mapper.StudentApplicationMapper;
 import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
-import com.transkript.reportcard.business.service.AcademicYearService;
-import com.transkript.reportcard.business.service.ClassLevelSubService;
-import com.transkript.reportcard.business.service.StudentApplicationService;
-import com.transkript.reportcard.business.service.StudentService;
+import com.transkript.reportcard.business.service.interf.AcademicYearService;
+import com.transkript.reportcard.business.service.interf.ClassLevelSubService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationService;
+import com.transkript.reportcard.business.service.interf.StudentService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
@@ -47,7 +47,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     @Override
     public StudentApplication getAsEntity(ApplicationKey applicationKey) {
         return studentApplicationRepository.findById(applicationKey)
-                .orElseThrow(() -> new EntityException.EntityNotFoundException("student application", applicationKey.getStudentId(), applicationKey.getClassSubId()));
+                .orElseThrow(() -> new EntityException.NotFound("student application", applicationKey.getStudentId(), applicationKey.getClassSubId()));
     }
 
     @Override
@@ -136,7 +136,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         AcademicYear academicYear = academicYearService.getAcademicYearEntity(request.yearId());
         var sat = studentApplicationTrialRepository.findByAcademicYearAndStudentApplication(
                 academicYear, application
-        ).orElseThrow(() -> new EntityException.EntityNotFoundException(EntityName.STUDENT_APPLICATION_TRIAL));
+        ).orElseThrow(() -> new EntityException.NotFound(EntityName.STUDENT_APPLICATION_TRIAL));
 
         return new StudentApplicationResponse(
                 classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),

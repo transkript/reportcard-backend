@@ -1,7 +1,7 @@
 package com.transkript.reportcard.business.service.impl;
 
-import com.transkript.reportcard.business.service.AcademicYearService;
-import com.transkript.reportcard.business.service.StudentApplicationTrialService;
+import com.transkript.reportcard.business.service.interf.AcademicYearService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationTrialService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.StudentApplicationTrialRepository;
@@ -19,7 +19,7 @@ public class StudentApplicationTrialServiceImpl implements StudentApplicationTri
 
     @Override
     public StudentApplicationTrial getEntity(Long satId) {
-        return studentApplicationTrialRepository.findById(satId).orElseThrow(() -> new EntityException.EntityNotFoundException(EntityName.STUDENT_APPLICATION_TRIAL, satId));
+        return studentApplicationTrialRepository.findById(satId).orElseThrow(() -> new EntityException.NotFound(EntityName.STUDENT_APPLICATION_TRIAL, satId));
     }
 
     @Override

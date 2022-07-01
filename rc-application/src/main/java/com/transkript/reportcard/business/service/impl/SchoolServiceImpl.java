@@ -3,7 +3,7 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.SchoolDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SchoolMapper;
-import com.transkript.reportcard.business.service.SchoolService;
+import com.transkript.reportcard.business.service.interf.SchoolService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.config.constants.ResponseSeverity;
 import com.transkript.reportcard.data.entity.School;
@@ -30,7 +30,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School getSchoolEntity(Long id) {
-        return schoolRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("school", id));
+        return schoolRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("school", id));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.save(school);
             return "school with id: " + id + "successfully updated";
         }
-        throw new EntityException.EntityNotFoundException("school", schoolDto.id());
+        throw new EntityException.NotFound("school", schoolDto.id());
     }
 
     @Override
@@ -73,6 +73,6 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.deleteById(id);
             return "School with ID: " + id + "successfully deleted";
         }
-        throw new EntityException.EntityNotFoundException("school");
+        throw new EntityException.NotFound("school");
     }
 }

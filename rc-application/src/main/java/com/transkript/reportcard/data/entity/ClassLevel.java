@@ -1,6 +1,5 @@
 package com.transkript.reportcard.data.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Getter
 @Setter

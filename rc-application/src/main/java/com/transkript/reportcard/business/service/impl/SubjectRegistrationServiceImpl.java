@@ -3,10 +3,10 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
-import com.transkript.reportcard.business.service.StudentApplicationService;
-import com.transkript.reportcard.business.service.StudentApplicationTrialService;
-import com.transkript.reportcard.business.service.SubjectRegistrationService;
-import com.transkript.reportcard.business.service.SubjectService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationTrialService;
+import com.transkript.reportcard.business.service.interf.SubjectRegistrationService;
+import com.transkript.reportcard.business.service.interf.SubjectService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
@@ -82,7 +82,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         }
         subjectRegistrationRepository.findById(registrationId)
                 .ifPresentOrElse(subjectRegistrationRepository::delete, () -> {
-                    throw new EntityException.EntityNotFoundException("subjectRegistration", registrationId);
+                    throw new EntityException.NotFound("subjectRegistration", registrationId);
                 });
     }
 
@@ -90,7 +90,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     @Transactional(readOnly = true)
     public SubjectRegistration getSubjectRegistrationEntity(Long registrationId) {
         return subjectRegistrationRepository.findById(registrationId)
-                .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", registrationId));
+                .orElseThrow(() -> new EntityException.NotFound("subject registration", registrationId));
     }
 
     @Override
@@ -98,7 +98,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
         StudentApplicationTrial trial = studentApplicationTrialService.getEntity(satId);
         Subject subject = subjectService.getSubjectEntity(subjectId);
         return subjectRegistrationRepository.findByStudentApplicationTrialAndSubject(trial, subject)
-                .orElseThrow(() -> new EntityException.EntityNotFoundException("subject registration", satId, subjectId));
+                .orElseThrow(() -> new EntityException.NotFound("subject registration", satId, subjectId));
     }
 
     @Transactional(readOnly = true)

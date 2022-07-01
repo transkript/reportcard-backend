@@ -1,10 +1,10 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.request.ReportCardRequest;
-import com.transkript.reportcard.business.service.GradeService;
-import com.transkript.reportcard.business.service.RcService;
-import com.transkript.reportcard.business.service.StudentApplicationTrialService;
-import com.transkript.reportcard.business.service.TermService;
+import com.transkript.reportcard.business.service.interf.GradeService;
+import com.transkript.reportcard.business.service.interf.RcService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationTrialService;
+import com.transkript.reportcard.business.service.interf.TermService;
 import com.transkript.reportcard.business.util.RcUtil;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Sequence;
@@ -80,13 +80,13 @@ public class RcServiceImpl implements RcService {
             {
                 try {
                     openGrade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(openSeq.getId()).registrationId(subjectRegistration.getId()).build());
-                } catch (EntityException.EntityNotFoundException e) {
+                } catch (EntityException.NotFound e) {
                     log.info("Opening grade not found for sequence {} and registration {}", openSeq.getId(), subjectRegistration.getId());
                     openGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(openSeq).subjectRegistration(subjectRegistration).build();
                 }
                 try {
                     closeGrade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(closeSeq.getId()).registrationId(subjectRegistration.getId()).build());
-                } catch (EntityException.EntityNotFoundException e) {
+                } catch (EntityException.NotFound e) {
                     log.info("Closing grade not found for sequence {} and registration {}", closeSeq.getId(), subjectRegistration.getId());
                     closeGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(closeSeq).subjectRegistration(subjectRegistration).build();
                 }

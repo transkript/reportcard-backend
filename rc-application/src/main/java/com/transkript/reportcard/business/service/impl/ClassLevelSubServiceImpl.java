@@ -3,8 +3,8 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.ClassLevelSubDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.ClassLevelSubMapper;
-import com.transkript.reportcard.business.service.ClassLevelService;
-import com.transkript.reportcard.business.service.ClassLevelSubService;
+import com.transkript.reportcard.business.service.interf.ClassLevelService;
+import com.transkript.reportcard.business.service.interf.ClassLevelSubService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
@@ -32,7 +32,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
         ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
 
         if (classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
-            throw new EntityException.EntityAlreadyExistsException(
+            throw new EntityException.AlreadyExists(
                     EntityName.CLASS_LEVEL_SUB,
                     String.format("%s -> %s", classLevel.getName(), classLevelSubDto.getName())
             );
@@ -71,7 +71,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
             ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
 
             if (classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
-                throw new EntityException.EntityAlreadyExistsException(
+                throw new EntityException.AlreadyExists(
                         EntityName.CLASS_LEVEL_SUB,
                         String.format("%s -> %s", classLevel.getName(), classLevelSubDto.getName())
                 );
@@ -83,7 +83,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
             classLevelSubRepository.save(classLevelSub);
             return EntityResponse.builder().message("Successfully updated class level sub").entityName("class level sub").id(id).build();
         }
-        throw new EntityException.EntityNotFoundException("class level" + id);
+        throw new EntityException.NotFound("class level" + id);
     }
 
     @Override
@@ -92,13 +92,13 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
             classLevelSubRepository.deleteById(id);
             return;
         }
-        throw new EntityException.EntityNotFoundException("class level" + id);
+        throw new EntityException.NotFound("class level" + id);
     }
 
     @Override
     public ClassLevelSub getClassLevelSubEntity(Long id) {
         return classLevelSubRepository.findById(id).orElseThrow(() -> {
-            throw new EntityException.EntityNotFoundException("class level" + id);
+            throw new EntityException.NotFound("class level" + id);
         });
     }
 }

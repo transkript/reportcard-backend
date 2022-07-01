@@ -4,7 +4,7 @@ import com.transkript.reportcard.api.dto.StudentApplicationDto;
 import com.transkript.reportcard.api.dto.request.StudentApplicationRequest;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
-import com.transkript.reportcard.business.service.StudentApplicationService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationService;
 import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

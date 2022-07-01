@@ -9,15 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     /**
      * @param ex
@@ -77,13 +77,13 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     // Sub Exception handlers
 
-    @ExceptionHandler(value = {EntityException.EntityNotFoundException.class})
-    protected ResponseEntity<ExceptionBody> handleEntityNotFound(EntityException.EntityNotFoundException ex, WebRequest request) {
+    @ExceptionHandler(value = {EntityException.NotFound.class})
+    protected ResponseEntity<ExceptionBody> handleEntityNotFound(EntityException.NotFound ex, WebRequest request) {
         return getExceptionEntity(ex, request, HttpStatus.NOT_FOUND, Map.of("entity", "Entity not found"));
     }
 
-    @ExceptionHandler(value = {EntityException.EntityAlreadyExistsException.class})
-    protected ResponseEntity<ExceptionBody> handleEntityAlreadyExists(EntityException.EntityAlreadyExistsException ex, WebRequest request) {
+    @ExceptionHandler(value = {EntityException.AlreadyExists.class})
+    protected ResponseEntity<ExceptionBody> handleEntityAlreadyExists(EntityException.AlreadyExists ex, WebRequest request) {
         return getExceptionEntity(ex, request, HttpStatus.CONFLICT, Map.of("entity", "Entity already exists"));
     }
 

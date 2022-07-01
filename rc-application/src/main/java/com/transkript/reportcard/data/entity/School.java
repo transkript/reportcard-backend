@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -29,20 +31,12 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "school")
 public class School {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @Column(name = "name", nullable = false, unique = true) private String name;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
-
-    @OneToOne(mappedBy = "school", optional = false, orphanRemoval = true)
-    private SchoolSettings schoolSettings;
-
+    @OneToOne(mappedBy = "school", optional = false, orphanRemoval = true) private SchoolSettings schoolSettings;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    @ToString.Exclude
-    private List<Section> sections = new ArrayList<>();
+    @Builder.Default @ToString.Exclude private List<Section> sections = new ArrayList<>();
 
 }

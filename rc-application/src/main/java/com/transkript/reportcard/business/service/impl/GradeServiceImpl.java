@@ -3,10 +3,10 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.GradeDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.GradeMapper;
-import com.transkript.reportcard.business.service.GradeService;
-import com.transkript.reportcard.business.service.SequenceService;
-import com.transkript.reportcard.business.service.StudentApplicationService;
-import com.transkript.reportcard.business.service.SubjectRegistrationService;
+import com.transkript.reportcard.business.service.interf.GradeService;
+import com.transkript.reportcard.business.service.interf.SequenceService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationService;
+import com.transkript.reportcard.business.service.interf.SubjectRegistrationService;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
@@ -106,7 +106,7 @@ public class GradeServiceImpl implements GradeService {
      */
     @Override
     public Grade getGradeEntity(GradeKey gradeKey) {
-        return gradeRepository.findById(gradeKey).orElseThrow(() -> new EntityException.EntityNotFoundException("grade",
+        return gradeRepository.findById(gradeKey).orElseThrow(() -> new EntityException.NotFound("grade",
                 gradeKey.getRegistrationId(), gradeKey.getSequenceId())
         );
     }
@@ -121,7 +121,7 @@ public class GradeServiceImpl implements GradeService {
     public EntityResponse updateGrade(GradeDto gradeDto) {
         GradeKey gradeKey = GradeKey.builder().registrationId(gradeDto.getRegistrationId()).sequenceId(gradeDto.getSequenceId()).build();
         if (!gradeRepository.existsById(gradeKey)) {
-            throw new EntityException.EntityNotFoundException("grade", gradeKey.getRegistrationId(), gradeKey.getSequenceId());
+            throw new EntityException.NotFound("grade", gradeKey.getRegistrationId(), gradeKey.getSequenceId());
         }
         Grade grade = getGradeEntity(gradeKey);
         grade.setScore(gradeDto.getScore());

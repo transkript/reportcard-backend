@@ -3,8 +3,8 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.StudentDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.StudentMapper;
-import com.transkript.reportcard.business.service.SchoolSettingsService;
-import com.transkript.reportcard.business.service.StudentService;
+import com.transkript.reportcard.business.service.interf.SchoolSettingsService;
+import com.transkript.reportcard.business.service.interf.StudentService;
 import com.transkript.reportcard.business.util.SchoolUtil;
 import com.transkript.reportcard.business.util.SettingsUtil;
 import com.transkript.reportcard.data.entity.Student;
@@ -61,7 +61,7 @@ public class StudentServiceImpl implements StudentService {
                 studentRepository::delete,
                 () -> {
                     log.error("Student with id {} not found", id);
-                    throw new EntityException.EntityNotFoundException("student", id);
+                    throw new EntityException.NotFound("student", id);
                 }
         );
         return EntityResponse.builder().id(id).message("Student deleted successfully").build();
@@ -69,7 +69,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getStudentEntity(Long id) {
-        return studentRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("student", id));
+        return studentRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("student", id));
     }
 
     @Override

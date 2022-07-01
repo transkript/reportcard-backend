@@ -1,4 +1,4 @@
-package com.transkript.reportcard.business.service
+package com.transkript.reportcard.business.service.interf
 
 import com.transkript.reportcard.api.dto.StudentApplicationDto
 import com.transkript.reportcard.api.dto.StudentApplicationDto.ApplicationKeyDto

@@ -1,4 +1,4 @@
-package com.transkript.reportcard.business.service
+package com.transkript.reportcard.business.service.interf
 
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial
 

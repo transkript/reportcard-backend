@@ -2,7 +2,7 @@ package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.SchoolSettingsDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
-import com.transkript.reportcard.business.service.SchoolSettingsService;
+import com.transkript.reportcard.business.service.interf.SchoolSettingsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,13 +26,13 @@ public class SchoolSettingsController {
     private final SchoolSettingsService schoolSettingsService;
 
     @PostMapping
-    public ResponseEntity<EntityResponse> addSettings(@Valid @RequestBody SchoolSettingsDto schoolSettingsDto) {
+    public ResponseEntity<EntityResponse> create(@Valid @RequestBody SchoolSettingsDto schoolSettingsDto) {
         log.info("Saving settings for school system");
         return new ResponseEntity<>(schoolSettingsService.save(schoolSettingsDto), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<EntityResponse> updateSettings(@Valid @RequestBody SchoolSettingsDto schoolSettingsDto) {
+    public ResponseEntity<EntityResponse> update(@Valid @RequestBody SchoolSettingsDto schoolSettingsDto) {
         log.info("Updating settings for school system");
         return ResponseEntity.ok(schoolSettingsService.save(schoolSettingsDto));
     }

@@ -3,8 +3,8 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.SequenceDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SequenceMapper;
-import com.transkript.reportcard.business.service.SequenceService;
-import com.transkript.reportcard.business.service.TermService;
+import com.transkript.reportcard.business.service.interf.SequenceService;
+import com.transkript.reportcard.business.service.interf.TermService;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.repository.SequenceRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -48,7 +48,7 @@ public class SequenceServiceImpl implements SequenceService {
         return sequenceMapper.mapSequenceToDto(
                 sequenceRepository.findById(id).orElseThrow(
                         () -> {
-                            throw new EntityException.EntityNotFoundException("Sequence with id " + id);
+                            throw new EntityException.NotFound("Sequence with id " + id);
                         }
                 )
         );
@@ -69,7 +69,7 @@ public class SequenceServiceImpl implements SequenceService {
             sequence = sequenceRepository.save(sequence);
             return EntityResponse.builder().id(sequence.getId()).entityName("sequence").message("Successfully updated sequence " + sequence.getName()).build();
         }
-        throw new EntityException.EntityNotFoundException("Sequence with id: " + id);
+        throw new EntityException.NotFound("Sequence with id: " + id);
     }
 
     @Override
@@ -78,13 +78,13 @@ public class SequenceServiceImpl implements SequenceService {
             sequenceRepository.deleteById(id);
             return "Successfully deleted Sequence with id: " + id;
         }
-        throw new EntityException.EntityNotFoundException("Sequence with id " + id);
+        throw new EntityException.NotFound("Sequence with id " + id);
     }
 
     @Override
     public Sequence getSequenceEntity(Long sequenceId) {
         return sequenceRepository.findById(sequenceId).orElseThrow(
-                () -> new EntityException.EntityNotFoundException("sequence", sequenceId)
+                () -> new EntityException.NotFound("sequence", sequenceId)
         );
     }
 }

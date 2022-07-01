@@ -2,7 +2,7 @@ package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.ClassLevelDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
-import com.transkript.reportcard.business.service.ClassLevelService;
+import com.transkript.reportcard.business.service.interf.ClassLevelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
