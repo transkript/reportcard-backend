@@ -7,21 +7,32 @@ import com.transkript.reportcard.data.entity.User;
 import com.transkript.reportcard.data.enums.Role;
 import com.transkript.reportcard.data.repository.UserRepository;
 import com.transkript.reportcard.exception.EntityException;
+import com.transkript.reportcard.exception.RcAuthenticationException;
+import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authManager;
-    private final JwtUtil jwtUtil;
     private final @NotNull UserRepository userRepository;
 
     @NotNull
