@@ -10,6 +10,7 @@ import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.RcAuthenticationException;
 import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,10 +43,11 @@ public class AuthServiceImpl implements AuthService {
                 .firstName(userRequest.firstName()).lastName(userRequest.lastName())
                 .password(bCryptPasswordEncoder.encode(userRequest.password())).build();
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            log.error("User with username '{}' already exists", user.getUsername());
             throw new EntityException.AlreadyExists("user", user.getUsername());
         }
-        System.out.println(user);
         user = userRepository.save(user);
+        log.info("User with username '{}' added", user.getUsername());
         return new UserResponse.Register(user.getId(), user.getUsername(), String.format("User '%s' registered successfully", user.getUsername()));
     }
 
