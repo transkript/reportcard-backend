@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authManager;
-    private final JwtUtil jwtUtil;
     private final @NotNull UserRepository userRepository;
     private final @NotNull UserMapper userMapper;
 
