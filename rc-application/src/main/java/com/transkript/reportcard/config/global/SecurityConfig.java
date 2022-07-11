@@ -28,6 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity webSecurity) {
+        webSecurity.ignoring().antMatchers("/h2-console/**");
+    }
+
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.eraseCredentials(false);
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
