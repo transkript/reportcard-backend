@@ -41,17 +41,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                .anyRequest().authenticated()
+        httpSecurity
+                .cors()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(userAuthEntryPoint)
+                    .httpBasic().disable()
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers( "/api/auth/login", "/api/auth/register").permitAll()
+                    .anyRequest().fullyAuthenticated()
                 .and()
-                // disable session creation on spring security
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
+                    .exceptionHandling()
+                    .authenticationEntryPoint(userAuthEntryPoint);
+
+        // disable session creation on spring security
+        httpSecurity.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .maximumSessions(1).maxSessionsPreventsLogin(true);
     }
 
     @Bean
