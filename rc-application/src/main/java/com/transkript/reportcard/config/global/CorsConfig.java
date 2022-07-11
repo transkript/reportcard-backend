@@ -19,6 +19,11 @@ public class CorsConfig implements WebMvcConfigurer {
             "GET", "POST", "PUT", "DELETE"
     };
 
+    private final String[] ALLOWED_HEADERS = new String[] {
+            "Authorization", "Cache-Control", "Content-Type", "Access-Control-Request-Headers", "X-Auth-Token",
+            "Access-Control-Request-Method", "Access-Control-Allow-Headers", "Accept", "Access-Control-Allow-Origin"
+    };
+
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**")
