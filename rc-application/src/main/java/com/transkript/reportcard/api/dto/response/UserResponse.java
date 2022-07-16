@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class UserResponse {
     public record Login (
-            String token,
+            String sessionId,
             String message
     ) implements Serializable { }
     public record Register (
