@@ -1,6 +1,6 @@
 package com.transkript.reportcard.api.filter;
 
-import com.transkript.reportcard.business.service.interf.SchoolSettingsService;
+import com.transkript.reportcard.business.service.i.SchoolSettingsService;
 import com.transkript.reportcard.business.util.SettingsUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
