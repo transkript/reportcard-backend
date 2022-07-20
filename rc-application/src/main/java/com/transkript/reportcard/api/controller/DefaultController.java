@@ -7,10 +7,10 @@ import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.enums.Gender;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.data.repository.ClassLevelRepository;
@@ -66,8 +66,8 @@ public class DefaultController {
             Sequence.builder().id(null).name("Fifth Sequence").build(),
             Sequence.builder().id(null).name("Sixth Sequence").build(),
     };
-    private final StudentApplication studentApplication = StudentApplication.builder().applicationKey(null).student(null)
-            .createdAt(LocalDateTime.now()).build();
+    private final StudentApplication studentApplication = StudentApplication.builder().key(null).student(null)
+            .build();
     private final Section[] sections = {
             Section.builder().id(null).name("Secondary School").category("TECHNICAL").build(),
             Section.builder().id(null).name("High School").category("TECHNICAL").build()
@@ -118,11 +118,11 @@ public class DefaultController {
             subjectRepository.save(subjects[subjects.length - 1]);
         }
         {
-            studentApplication.setApplicationKey(
-                    ApplicationKey.builder().studentId(student.getId()).yearId(academicYear.getId()).build()
-            );
+            studentApplication.setKey(new ApplicationKey(
+                    student.getId(),
+                    classLevels[0].getClassLevelSubs().stream().findFirst().orElseThrow().getId()
+            ));
             studentApplication.setStudent(student);
-            studentApplication.setAcademicYear(academicYear);
             studentApplication.setClassLevelSub(classLevels[0].getClassLevelSubs().stream().findFirst().orElseThrow());
             studentApplicationRepository.save(studentApplication);
         }

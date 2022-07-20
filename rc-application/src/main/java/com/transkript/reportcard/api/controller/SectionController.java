@@ -1,7 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.SectionDto;
-import com.transkript.reportcard.business.service.SectionService;
+import com.transkript.reportcard.business.service.interf.SectionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

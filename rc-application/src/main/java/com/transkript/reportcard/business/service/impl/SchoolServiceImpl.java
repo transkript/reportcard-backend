@@ -1,17 +1,22 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.SchoolDto;
+import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SchoolMapper;
-import com.transkript.reportcard.business.service.SchoolService;
+import com.transkript.reportcard.business.service.interf.SchoolService;
+import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseSeverity;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.repository.SchoolRepository;
 import com.transkript.reportcard.exception.EntityException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Getter
@@ -25,17 +30,18 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School getSchoolEntity(Long id) {
-        return schoolRepository.findById(id).orElseThrow(() -> {
-            throw new EntityException.EntityNotFoundException("school", id);
-        });
+        return schoolRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("school", id));
     }
 
     @Override
-    public String addSchool(SchoolDto schoolDto) {
+    public EntityResponse addSchool(SchoolDto schoolDto) {
         School school = schoolMapper.mapDtoToSchool(schoolDto);
         school.setId(null);
-        schoolRepository.save(school);
-        return "School Successfully created";
+        school = schoolRepository.save(school);
+        return new EntityResponse(school.getId(), Map.of(),
+                "School Successfully created",
+                EntityName.SCHOOL, HttpStatus.CREATED.value(), true, ResponseSeverity.SUCCESS
+        );
     }
 
     @Override
@@ -58,7 +64,7 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.save(school);
             return "school with id: " + id + "successfully updated";
         }
-        throw new EntityException.EntityNotFoundException("school", schoolDto.getId());
+        throw new EntityException.NotFound("school", schoolDto.id());
     }
 
     @Override
@@ -67,6 +73,6 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.deleteById(id);
             return "School with ID: " + id + "successfully deleted";
         }
-        throw new EntityException.EntityNotFoundException("school");
+        throw new EntityException.NotFound("school");
     }
 }

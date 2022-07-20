@@ -1,5 +1,6 @@
 package com.transkript.reportcard.data.entity;
 
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

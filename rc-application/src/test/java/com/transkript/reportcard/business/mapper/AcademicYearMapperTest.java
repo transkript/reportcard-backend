@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-import java.util.Set;
-
 @SpringBootTest
 class AcademicYearMapperTest {
     private final AcademicYearMapper academicYearMapper;
@@ -25,7 +22,7 @@ class AcademicYearMapperTest {
 
     @BeforeEach
     void setup() {
-        testacademicYear = AcademicYear.builder().id(1L).name("2021").studentApplications(List.of()).build();
+        testacademicYear = AcademicYear.builder().id(1L).name("2021").build();
         testacademicYearDto = AcademicYearDto.builder().id(2L).name("2022").build();
     }
 

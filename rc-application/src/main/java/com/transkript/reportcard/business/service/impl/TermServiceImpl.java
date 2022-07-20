@@ -3,9 +3,8 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.TermDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.TermMapper;
-import com.transkript.reportcard.business.service.SchoolService;
-import com.transkript.reportcard.business.service.TermService;
-import com.transkript.reportcard.data.entity.School;
+import com.transkript.reportcard.business.service.interf.SchoolService;
+import com.transkript.reportcard.business.service.interf.TermService;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.repository.TermRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -48,21 +47,21 @@ public class TermServiceImpl implements TermService {
 
     @Override
     public Term getTermEntity(Long id) {
-        return termRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("term", id));
+        return termRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("term", id));
     }
 
     @Override
     public EntityResponse updateTerm(Long id, TermDto termDto) {
         if (id != null && id.equals(termDto.id()) && termRepository.existsById(id)) {
-            Term term = termRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("term", id));
+            Term term = termRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("term", id));
 
-            if(!Objects.equals(term.getName(), termDto.name())) {
+            if (!Objects.equals(term.getName(), termDto.name())) {
                 term.setName(termDto.name());
             }
             term = termRepository.save(term);
             return EntityResponse.builder().id(term.getId()).entityName("term").message("Successfully updated term: " + term.getName()).build();
         }
-        throw new EntityException.EntityNotFoundException("term" + id);
+        throw new EntityException.NotFound("term" + id);
     }
 
     @Override
@@ -71,6 +70,6 @@ public class TermServiceImpl implements TermService {
             termRepository.deleteById(id);
             return "Successfully deleted term with id: " + id;
         }
-        throw new EntityException.EntityNotFoundException("Term with id: " + id);
+        throw new EntityException.NotFound("Term with id: " + id);
     }
 }

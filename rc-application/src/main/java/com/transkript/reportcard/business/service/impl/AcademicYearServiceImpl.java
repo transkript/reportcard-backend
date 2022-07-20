@@ -3,7 +3,7 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.AcademicYearDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.AcademicYearMapper;
-import com.transkript.reportcard.business.service.AcademicYearService;
+import com.transkript.reportcard.business.service.interf.AcademicYearService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -33,7 +33,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
 
     @Override
     public List<AcademicYearDto> getAcademicYears() {
-        return academicYearRepository.findAll().stream().map(academicYearMapper::mapAcademicYearToDto).collect(Collectors.toList());
+        return getAcademicYearEntities().stream().map(academicYearMapper::mapAcademicYearToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
             academicYearRepository.save(academicYear);
             return EntityResponse.builder().id(id).message("successfully deleted entity").entityName("academic year").build();
         }
-        throw new EntityException.EntityNotFoundException("academic year", id);
+        throw new EntityException.NotFound("academic year", id);
     }
 
     @Override
@@ -57,12 +57,17 @@ public class AcademicYearServiceImpl implements AcademicYearService {
         if (id != null && academicYearRepository.existsById(id)) {
             academicYearRepository.deleteById(id);
         }
-        throw new EntityException.EntityNotFoundException("academic year", id);
+        throw new EntityException.NotFound("academic year", id);
     }
 
     @Override
     public AcademicYear getAcademicYearEntity(Long academicYearId) {
         return academicYearRepository.findById(academicYearId)
-                .orElseThrow(() -> new EntityException.EntityNotFoundException("academic year", academicYearId));
+                .orElseThrow(() -> new EntityException.NotFound("academic year", academicYearId));
+    }
+
+    @Override
+    public List<AcademicYear> getAcademicYearEntities() {
+        return academicYearRepository.findAll();
     }
 }

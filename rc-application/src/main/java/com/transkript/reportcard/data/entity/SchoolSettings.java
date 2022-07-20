@@ -26,15 +26,17 @@ public class SchoolSettings {
     private Long id;
 
     @Column
+    private String schoolName;
+
+    @Column
     private Boolean applicationOpen;
 
     @OneToOne()
     @JoinColumn(name = "academic_year_id")
     private AcademicYear currentAcademicYear;
 
-    @OneToOne()
-    @JoinColumn(name = "term_id")
-    private Term currentTerm;
+    @Column(name = "current_term")
+    private String currentTerm;
 
     @OneToOne()
     @JoinColumn(name = "sequence_id")
@@ -47,5 +49,9 @@ public class SchoolSettings {
     @Builder.Default
     @Column(name = "min_grade_score", nullable = false)
     private Long minGrade = 0L;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "school_id", nullable = false)
+    private School school;
 
 }

@@ -29,13 +29,12 @@ class StudentMapperTest {
                 .studentApplications(List.of()).build();
         StudentDto expectedDto = this.studentMapper.mapStudentToDto(actualStudent);
 
-        Assertions.assertEquals(expectedDto.getId(), actualStudent.getId());
-        Assertions.assertEquals(expectedDto.getName(), actualStudent.getName());
-        Assertions.assertEquals(expectedDto.getPob(), actualStudent.getPob());
-        Assertions.assertEquals(expectedDto.getRegNum(), actualStudent.getRegNum());
-        Assertions.assertEquals(expectedDto.getGender(), actualStudent.getGender().name().split("")[0]);
-        Assertions.assertEquals(expectedDto.getDob(), actualStudent.getDob());
-        Assertions.assertEquals(expectedDto.getNumberOfApplications(), actualStudent.getStudentApplications().size());
+        Assertions.assertEquals(expectedDto.id(), actualStudent.getId());
+        Assertions.assertEquals(expectedDto.name(), actualStudent.getName());
+        Assertions.assertEquals(expectedDto.pob(), actualStudent.getPob());
+        Assertions.assertEquals(expectedDto.regNum(), actualStudent.getRegNum());
+        Assertions.assertEquals(expectedDto.gender(), actualStudent.getGender().name().split("")[0]);
+        Assertions.assertEquals(expectedDto.dob(), actualStudent.getDob());
     }
 
     @Test
@@ -46,11 +45,11 @@ class StudentMapperTest {
 
         Student expectedStudent = this.studentMapper.mapDtoToStudent(actualStudentDto);
 
-        Assertions.assertEquals(expectedStudent.getId(), actualStudentDto.getId());
-        Assertions.assertEquals(expectedStudent.getName(), actualStudentDto.getName());
-        Assertions.assertEquals(expectedStudent.getPob(), actualStudentDto.getPob());
-        Assertions.assertEquals(expectedStudent.getRegNum(), actualStudentDto.getRegNum());
-        Assertions.assertEquals(expectedStudent.getGender().name().split("")[0], actualStudentDto.getGender());
-        Assertions.assertEquals(expectedStudent.getDob(), actualStudentDto.getDob());
+        Assertions.assertEquals(expectedStudent.getId(), actualStudentDto.id());
+        Assertions.assertEquals(expectedStudent.getName(), actualStudentDto.name());
+        Assertions.assertEquals(expectedStudent.getPob(), actualStudentDto.pob());
+        Assertions.assertEquals(expectedStudent.getRegNum(), actualStudentDto.regNum());
+        Assertions.assertEquals(expectedStudent.getGender().name().split("")[0], actualStudentDto.gender());
+        Assertions.assertEquals(expectedStudent.getDob(), actualStudentDto.dob());
     }
 }

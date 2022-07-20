@@ -2,8 +2,8 @@ package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.SectionDto;
 import com.transkript.reportcard.business.mapper.SectionMapper;
-import com.transkript.reportcard.business.service.SchoolService;
-import com.transkript.reportcard.business.service.SectionService;
+import com.transkript.reportcard.business.service.interf.SchoolService;
+import com.transkript.reportcard.business.service.interf.SectionService;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.repository.SectionRepository;
@@ -30,7 +30,7 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public Section getSectionEntity(Long id) {
         return sectionRepository.findById(id).orElseThrow(() -> {
-            throw new EntityException.EntityNotFoundException("section");
+            throw new EntityException.NotFound("section");
         });
 
     }
@@ -57,7 +57,7 @@ public class SectionServiceImpl implements SectionService {
     public SectionDto getSection(Long id) {
         Optional<Section> sectionOptional = sectionRepository.findById(id);
         return sectionMapper.mapSectionToDto(sectionOptional.orElseThrow(() -> {
-            throw new EntityException.EntityNotFoundException("section");
+            throw new EntityException.NotFound("section");
         }));
     }
 
@@ -79,7 +79,7 @@ public class SectionServiceImpl implements SectionService {
             sectionRepository.save(section);
             return "Section with Id: " + id + "Successfully Updated";
         }
-        throw new EntityException.EntityNotFoundException("section");
+        throw new EntityException.NotFound("section");
     }
 
     @Override
@@ -88,6 +88,6 @@ public class SectionServiceImpl implements SectionService {
             sectionRepository.deleteById(id);
             return "Section with ID: " + id + "Successfully Deleted";
         }
-        throw new EntityException.EntityNotFoundException("section");
+        throw new EntityException.NotFound("section");
     }
 }

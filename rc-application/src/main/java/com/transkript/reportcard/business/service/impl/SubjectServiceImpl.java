@@ -3,8 +3,8 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.SubjectDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SubjectMapper;
-import com.transkript.reportcard.business.service.SectionService;
-import com.transkript.reportcard.business.service.SubjectService;
+import com.transkript.reportcard.business.service.interf.SectionService;
+import com.transkript.reportcard.business.service.interf.SubjectService;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.repository.SubjectRepository;
@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -72,7 +71,7 @@ public class SubjectServiceImpl implements SubjectService {
             return EntityResponse.builder().id(subjectRepository.save(subject).getId())
                     .entityName("subject").message("subject updated successfully").build();
         }
-        throw new EntityException.EntityNotFoundException("subject");
+        throw new EntityException.NotFound("subject");
     }
 
     @Override
@@ -81,13 +80,13 @@ public class SubjectServiceImpl implements SubjectService {
             subjectRepository.deleteById(id);
             return "Subject with ID: " + id + "Successfully Deleted";
         }
-        throw new EntityException.EntityNotFoundException("subject");
+        throw new EntityException.NotFound("subject");
     }
 
     @Override
     public Subject getSubjectEntity(Long subjectId) {
         return subjectRepository.findById(subjectId).orElseThrow(
-                () -> new EntityException.EntityNotFoundException("subject", subjectId)
+                () -> new EntityException.NotFound("subject", subjectId)
         );
     }
 }

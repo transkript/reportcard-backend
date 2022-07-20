@@ -1,6 +1,7 @@
 package com.transkript.reportcard.data.entity;
 
 import com.transkript.reportcard.data.entity.relation.Grade;
+import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -55,9 +55,7 @@ public class SubjectRegistration {
     private List<Grade> grades = new ArrayList<>();
 
     @ManyToOne(optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "student_application_student_id", referencedColumnName = "student_id", nullable = false),
-            @JoinColumn(name = "student_application_academic_year_id", referencedColumnName = "academic_year_id", nullable = false)
-    })
-    private StudentApplication studentApplication;
+    @JoinColumn(name = "student_application_trial_id", nullable = false)
+    private StudentApplicationTrial studentApplicationTrial;
+
 }

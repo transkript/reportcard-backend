@@ -1,6 +1,8 @@
-package com.transkript.reportcard.data.entity;
+package com.transkript.reportcard.data.entity.relation;
 
 
+import com.transkript.reportcard.data.entity.ClassLevelSub;
+import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,9 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,37 +31,20 @@ import java.util.List;
 @Table(name = "student_application")
 public class StudentApplication {
     @EmbeddedId
-    private ApplicationKey applicationKey;
-
-    @Builder.Default
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Builder.Default
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false, updatable = true)
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @Column(name = "repeating")
-    private Boolean repeating;
+    private ApplicationKey key;
 
     @MapsId("studentId")
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @MapsId("yearId")
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "academic_year_id", nullable = false)
-    private AcademicYear academicYear;
-
+    @MapsId("classSubId")
     @ManyToOne(optional = false)
     @JoinColumn(name = "class_level_sub_id")
     private ClassLevelSub classLevelSub;
 
     @OneToMany(mappedBy = "studentApplication", orphanRemoval = true)
-    @Builder.Default
     @ToString.Exclude
-    private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
-
+    @Builder.Default
+    private List<StudentApplicationTrial> studentApplicationTrials = new ArrayList<>();
 }

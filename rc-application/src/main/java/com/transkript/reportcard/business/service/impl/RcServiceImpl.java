@@ -1,21 +1,20 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.request.ReportCardRequest;
-import com.transkript.reportcard.business.service.GradeService;
-import com.transkript.reportcard.business.service.RcService;
-import com.transkript.reportcard.business.service.StudentApplicationService;
-import com.transkript.reportcard.business.service.TermService;
+import com.transkript.reportcard.business.service.interf.GradeService;
+import com.transkript.reportcard.business.service.interf.RcService;
+import com.transkript.reportcard.business.service.interf.StudentApplicationTrialService;
+import com.transkript.reportcard.business.service.interf.TermService;
 import com.transkript.reportcard.business.util.RcUtil;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.Student;
-import com.transkript.reportcard.data.entity.StudentApplication;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.Term;
-import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
+import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.enums.GradeDesc;
 import com.transkript.reportcard.exception.EntityException;
 import com.transkript.reportcard.exception.ReportCardException;
@@ -35,21 +34,21 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class RcServiceImpl implements RcService {
-    private final StudentApplicationService studentApplicationService;
+    private final StudentApplicationTrialService studentApplicationTrialService;
     private final TermService termService;
     private final GradeService gradeService;
     RcUtil rcUtil = RcUtil.getInstance();
 
     @Override
     public File getReportCard(Long termId, ReportCardRequest reportCardRequest) {
-        ApplicationKey applicationKey = new ApplicationKey(reportCardRequest.studentId(), reportCardRequest.yearId());
-        StudentApplication application = studentApplicationService.getStudentApplicationEntity(applicationKey);
-        Student student = application.getStudent();
+        StudentApplicationTrial studentApplicationTrial = studentApplicationTrialService.getEntity(reportCardRequest.satId());
+
+        StudentApplication application = studentApplicationTrial.getStudentApplication();
         ClassLevelSub classLevelSub = application.getClassLevelSub();
 
         Term term = termService.getTermEntity(termId);
 
-        ReportCard reportCard = getReportCardModel(student, application, term, classLevelSub, reportCardRequest);
+        ReportCard reportCard = getReportCardModel(studentApplicationTrial, term, classLevelSub, reportCardRequest);
         List<ReportCard> classReportCards = getClassReportCardModels(term, classLevelSub, reportCardRequest);
 
         reportCard = rcUtil.processReportCard(reportCard.getStudentId(), classReportCards);
@@ -57,7 +56,7 @@ public class RcServiceImpl implements RcService {
         return RcUtil.generateReportCard(reportCard);
     }
 
-    private ReportCard getReportCardModel(Student student, StudentApplication application, Term term, ClassLevelSub classLevelSub, ReportCardRequest reportCardRequest) {
+    private ReportCard getReportCardModel(StudentApplicationTrial studentApplicationTrial, Term term, ClassLevelSub classLevelSub, ReportCardRequest reportCardRequest) {
         Long openSeqId = reportCardRequest.sequenceRequest().openingSequenceId();
         Long closeSeqId = reportCardRequest.sequenceRequest().closingSequenceId();
         // block to valid opening and closing sequences
@@ -72,22 +71,22 @@ public class RcServiceImpl implements RcService {
 
         String[] sequenceNames = new String[]{openSeq.getName(), closeSeq.getName()};
 
-        SubjectRegistration[] subjectRegistrations = new SubjectRegistration[application.getSubjectRegistrations().size()];
+        SubjectRegistration[] subjectRegistrations = new SubjectRegistration[studentApplicationTrial.getSubjectRegistrations().size()];
         Map<Subject, Grade[]> subjectGrades = new HashMap<>();
-        application.getSubjectRegistrations().toArray(subjectRegistrations);
+        studentApplicationTrial.getSubjectRegistrations().toArray(subjectRegistrations);
 
         Arrays.stream(subjectRegistrations).forEach(subjectRegistration -> {
             Grade openGrade, closeGrade;
             {
                 try {
                     openGrade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(openSeq.getId()).registrationId(subjectRegistration.getId()).build());
-                } catch (EntityException.EntityNotFoundException e) {
+                } catch (EntityException.NotFound e) {
                     log.info("Opening grade not found for sequence {} and registration {}", openSeq.getId(), subjectRegistration.getId());
                     openGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(openSeq).subjectRegistration(subjectRegistration).build();
                 }
                 try {
                     closeGrade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(closeSeq.getId()).registrationId(subjectRegistration.getId()).build());
-                } catch (EntityException.EntityNotFoundException e) {
+                } catch (EntityException.NotFound e) {
                     log.info("Closing grade not found for sequence {} and registration {}", closeSeq.getId(), subjectRegistration.getId());
                     closeGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(closeSeq).subjectRegistration(subjectRegistration).build();
                 }
@@ -95,16 +94,21 @@ public class RcServiceImpl implements RcService {
             subjectGrades.put(subjectRegistration.getSubject(), new Grade[]{openGrade, closeGrade});
         });
 
-        return rcUtil.createReportCard(student, application, term, classLevelSub, subjectGrades, sequenceNames);
+        return rcUtil.createReportCard(
+                studentApplicationTrial, term, classLevelSub, subjectGrades, sequenceNames);
     }
 
     private List<ReportCard> getClassReportCardModels(Term term, ClassLevelSub classLevelSub, ReportCardRequest reportCardRequest) {
-        List<StudentApplication> applications = classLevelSub.getStudentApplications().stream()
-                .filter((application) -> application.getAcademicYear().getId().equals(reportCardRequest.yearId()))
+        StudentApplicationTrial studentApplicationTrial = studentApplicationTrialService.getEntity(reportCardRequest.satId());
+
+        List<StudentApplicationTrial> studentApplicationTrials = studentApplicationTrialService.getEntitiesByYear(studentApplicationTrial.getAcademicYear().getId())
+                .stream().filter((sat) -> sat.getStudentApplication().getClassLevelSub().getId().equals(classLevelSub.getId()))
                 .toList();
+
+
         List<ReportCard> classReportCards = new ArrayList<>();
-        for (StudentApplication application : applications) {
-            classReportCards.add(getReportCardModel(application.getStudent(), application, term, classLevelSub, reportCardRequest));
+        for (StudentApplicationTrial sat : studentApplicationTrials) {
+            classReportCards.add(getReportCardModel(sat, term, classLevelSub, reportCardRequest));
         }
 
         return classReportCards;

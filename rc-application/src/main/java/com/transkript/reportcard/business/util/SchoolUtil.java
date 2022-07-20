@@ -27,14 +27,14 @@ public class SchoolUtil {
 
     private static String getSchoolPart(String schoolName) {
         StringBuilder schoolPart = new StringBuilder();
-        if(schoolName.length() < 2) {
+        if (schoolName.length() < 2) {
             return schoolPart.toString();
         }
-        if(schoolName.split(" ").length < 2) {
+        if (schoolName.split(" ").length < 2) {
             schoolPart.append(schoolName.substring(0, 2).toUpperCase());
         } else {
             String[] schoolNameSplit = schoolName.split(" ");
-            for(String split: schoolNameSplit) {
+            for (String split : schoolNameSplit) {
                 schoolPart.append(split.charAt(0));
             }
         }

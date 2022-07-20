@@ -3,8 +3,10 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.StudentDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.StudentMapper;
-import com.transkript.reportcard.business.service.StudentService;
+import com.transkript.reportcard.business.service.interf.SchoolSettingsService;
+import com.transkript.reportcard.business.service.interf.StudentService;
 import com.transkript.reportcard.business.util.SchoolUtil;
+import com.transkript.reportcard.business.util.SettingsUtil;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.repository.StudentRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -14,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,28 +24,23 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
+    private final SchoolSettingsService schoolSettingsService;
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
     @Override
     public EntityResponse addStudent(StudentDto studentDto) {
-        Long[] id = new Long[1];
         Student student = studentMapper.mapDtoToStudent(studentDto);
         student.setId(null);
+        student.setRegNum("");
         if (student.getDob() == null) {
             student.setDob(LocalDateTime.now());
         }
-        studentRepository.findByRegNum(student.getRegNum()).ifPresentOrElse(
-                (s) -> {
-                    log.error("Student with regNum {} already exists", student.getRegNum());
-                    throw new EntityException.EntityAlreadyExistsException("student", s.getRegNum());
-                },
-                () -> {
-                    log.info("Adding student with regNum {}", student.getRegNum());
-                    id[0] = studentRepository.save(student).getId();
-                }
-        );
-        return EntityResponse.builder().id(id[0]).message("Student added successfully").build();
+
+        student = studentRepository.save(student);
+        this.updateRegNo(student);
+
+        return EntityResponse.builder().id(student.getId()).message("Student added successfully").build();
     }
 
     @Override
@@ -65,7 +61,7 @@ public class StudentServiceImpl implements StudentService {
                 studentRepository::delete,
                 () -> {
                     log.error("Student with id {} not found", id);
-                    throw new EntityException.EntityNotFoundException("student", id);
+                    throw new EntityException.NotFound("student", id);
                 }
         );
         return EntityResponse.builder().id(id).message("Student deleted successfully").build();
@@ -73,7 +69,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getStudentEntity(Long id) {
-        return studentRepository.findById(id).orElseThrow(() -> new EntityException.EntityNotFoundException("student", id));
+        return studentRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("student", id));
     }
 
     @Override
@@ -104,7 +100,20 @@ public class StudentServiceImpl implements StudentService {
                 existingStudent.setPob(student.getPob());
             }
         }
-        return EntityResponse.builder().entityName("student").id(studentRepository.save(existingStudent).getId())
+
+        this.updateRegNo(existingStudent);
+
+        return EntityResponse.builder().entityName("student").id(existingStudent.getId())
                 .message("Student updated successfully").build();
+    }
+
+    private void updateRegNo(Student student) {
+        if (student.getId() == null) {
+            return;
+        }
+        student.setRegNum(SchoolUtil.generateRegNo(student.getId(), SettingsUtil.readSettings().schoolName()));
+
+        student = studentRepository.save(student);
+        log.info("Updating regno for student: '{}' to {}", student.getName(), student.getRegNum());
     }
 }

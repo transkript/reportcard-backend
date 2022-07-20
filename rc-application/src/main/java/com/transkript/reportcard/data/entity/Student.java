@@ -1,6 +1,10 @@
 package com.transkript.reportcard.data.entity;
 
 
+import com.transkript.reportcard.api.dto.SchoolSettingsDto;
+import com.transkript.reportcard.business.util.SchoolUtil;
+import com.transkript.reportcard.business.util.SettingsUtil;
+import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import com.transkript.reportcard.data.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +21,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,4 +62,14 @@ public class Student {
     @ToString.Exclude
     private List<StudentApplication> studentApplications = new ArrayList<>();
 
+    @PreUpdate
+    public void preUpdate() {
+        SchoolSettingsDto schoolSettingsDto = SettingsUtil.readSettings();
+        if (schoolSettingsDto != null) {
+            this.setRegNum(SchoolUtil.generateRegNo(this.id, schoolSettingsDto.schoolName()));
+        } else {
+            this.setRegNum(String.valueOf(this.id));
+        }
+
+    }
 }

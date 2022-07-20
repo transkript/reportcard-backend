@@ -1,7 +1,7 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.request.ReportCardRequest;
-import com.transkript.reportcard.business.service.RcService;
+import com.transkript.reportcard.business.service.interf.RcService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
