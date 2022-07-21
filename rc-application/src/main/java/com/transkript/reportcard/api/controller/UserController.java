@@ -1,6 +1,6 @@
 package com.transkript.reportcard.api.controller;
 
-import com.transkript.reportcard.business.service.interf.UserService;
+import com.transkript.reportcard.business.service.i.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
