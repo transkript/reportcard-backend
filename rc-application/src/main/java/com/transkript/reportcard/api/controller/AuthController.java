@@ -2,7 +2,7 @@ package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.request.UserRequest;
 import com.transkript.reportcard.api.dto.response.UserResponse;
-import com.transkript.reportcard.business.service.interf.AuthService;
+import com.transkript.reportcard.business.service.i.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
