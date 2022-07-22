@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -25,8 +28,14 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<UserResponse.Login> login(@RequestBody UserRequest.Login userRequest) {
+    public ResponseEntity<UserResponse.Login> login(@RequestBody UserRequest.Login userRequest, HttpSession session) {
+
         log.info("Log in user: {}", userRequest.username());
-        return ResponseEntity.ok(authService.loginUser(userRequest));
+        return ResponseEntity.ok(authService.loginUser(userRequest, session));
+    }
+
+    @PostMapping(value = "/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        return ResponseEntity.ok(authService.logout(session));
     }
 }
