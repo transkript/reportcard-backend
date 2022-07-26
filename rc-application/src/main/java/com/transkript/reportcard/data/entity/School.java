@@ -29,12 +29,18 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "school")
 public class School {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
-    @Column(name = "name", nullable = false, unique = true) private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
-    @OneToOne(mappedBy = "school", optional = false, orphanRemoval = true) private SchoolSettings schoolSettings;
+    @OneToOne(mappedBy = "school", optional = false, orphanRemoval = true)
+    private SchoolSettings schoolSettings;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default @ToString.Exclude private List<Section> sections = new ArrayList<>();
+    @Builder.Default
+    @ToString.Exclude
+    private List<Section> sections = new ArrayList<>();
 
 }

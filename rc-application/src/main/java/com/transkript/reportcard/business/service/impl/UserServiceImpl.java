@@ -23,7 +23,8 @@ public class UserServiceImpl implements UserService {
     private final @NotNull UserMapper userMapper;
 
 
-    @NotNull @Override
+    @NotNull
+    @Override
     public EntityResponse save(@NotNull UserDto userDto) {
         User user = userMapper.schoolAdminDtoToSchoolAdmin(userDto);
         user = userRepository.save(user);

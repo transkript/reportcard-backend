@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
-  
+
     @NotNull
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(

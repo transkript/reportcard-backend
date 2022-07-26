@@ -23,7 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserAuthEntryPoint userAuthEntryPoint;
 
-    @Override @Bean
+    @Override
+    @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
@@ -44,14 +45,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .cors()
                 .and()
-                    .httpBasic().disable()
-                    .csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers( "/api/auth/login", "/api/auth/register").permitAll()
-                    .anyRequest().fullyAuthenticated()
+                .httpBasic().disable()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                .anyRequest().fullyAuthenticated()
                 .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(userAuthEntryPoint);
+                .exceptionHandling()
+                .authenticationEntryPoint(userAuthEntryPoint);
 
         // disable session creation on spring security
         httpSecurity.sessionManagement()
