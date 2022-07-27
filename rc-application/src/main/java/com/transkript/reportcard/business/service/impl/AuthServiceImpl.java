@@ -2,9 +2,7 @@ package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.request.UserRequest;
 import com.transkript.reportcard.api.dto.response.UserResponse;
-import com.transkript.reportcard.business.service.interf.AuthService;
-import com.transkript.reportcard.business.util.JwtUtil;
-import com.transkript.reportcard.config.model.JwtToken;
+import com.transkript.reportcard.business.service.i.AuthService;
 import com.transkript.reportcard.data.entity.User;
 import com.transkript.reportcard.data.enums.Role;
 import com.transkript.reportcard.data.repository.UserRepository;

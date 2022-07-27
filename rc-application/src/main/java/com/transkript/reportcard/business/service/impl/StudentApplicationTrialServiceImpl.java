@@ -1,7 +1,7 @@
 package com.transkript.reportcard.business.service.impl;
 
-import com.transkript.reportcard.business.service.interf.AcademicYearService;
-import com.transkript.reportcard.business.service.interf.StudentApplicationTrialService;
+import com.transkript.reportcard.business.service.i.AcademicYearService;
+import com.transkript.reportcard.business.service.i.StudentApplicationTrialService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.StudentApplicationTrialRepository;
