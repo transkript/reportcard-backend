@@ -19,13 +19,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
-    /**
-     * @param ex
-     * @param headers
-     * @param status
-     * @param request
-     * @return
-     */
+
     @NotNull
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
@@ -52,6 +46,13 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                         request, HttpStatus.BAD_REQUEST, errors),
                 HttpStatus.BAD_REQUEST
         );
+    }
+
+    @ExceptionHandler(value = {RcAuthenticationException.class})
+    protected ResponseEntity<ExceptionBody> handleAuthenticationException(RcAuthenticationException ex, WebRequest wr) {
+        logger.error(ex.getMessage());
+
+        return getExceptionEntity(ex, wr, ex.getStatus(), Map.of("message", ex.getMessage()));
     }
 
     @ExceptionHandler(value = {DataIntegrityViolationException.class})

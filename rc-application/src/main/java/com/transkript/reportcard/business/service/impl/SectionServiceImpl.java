@@ -2,8 +2,8 @@ package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.SectionDto;
 import com.transkript.reportcard.business.mapper.SectionMapper;
-import com.transkript.reportcard.business.service.interf.SchoolService;
-import com.transkript.reportcard.business.service.interf.SectionService;
+import com.transkript.reportcard.business.service.i.SchoolService;
+import com.transkript.reportcard.business.service.i.SectionService;
 import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.repository.SectionRepository;

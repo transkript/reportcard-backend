@@ -1,10 +1,10 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.request.ReportCardRequest;
-import com.transkript.reportcard.business.service.interf.GradeService;
-import com.transkript.reportcard.business.service.interf.RcService;
-import com.transkript.reportcard.business.service.interf.StudentApplicationTrialService;
-import com.transkript.reportcard.business.service.interf.TermService;
+import com.transkript.reportcard.business.service.i.GradeService;
+import com.transkript.reportcard.business.service.i.RcService;
+import com.transkript.reportcard.business.service.i.StudentApplicationTrialService;
+import com.transkript.reportcard.business.service.i.TermService;
 import com.transkript.reportcard.business.util.RcUtil;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Sequence;

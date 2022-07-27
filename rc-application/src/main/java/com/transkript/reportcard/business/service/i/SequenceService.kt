@@ -1,4 +1,4 @@
-package com.transkript.reportcard.business.service.interf
+package com.transkript.reportcard.business.service.i
 
 import com.transkript.reportcard.api.dto.SequenceDto
 import com.transkript.reportcard.api.dto.response.EntityResponse

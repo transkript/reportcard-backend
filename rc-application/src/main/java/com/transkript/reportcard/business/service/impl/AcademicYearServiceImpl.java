@@ -3,7 +3,7 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.AcademicYearDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.AcademicYearMapper;
-import com.transkript.reportcard.business.service.interf.AcademicYearService;
+import com.transkript.reportcard.business.service.i.AcademicYearService;
 import com.transkript.reportcard.data.entity.AcademicYear;
 import com.transkript.reportcard.data.repository.AcademicYearRepository;
 import com.transkript.reportcard.exception.EntityException;

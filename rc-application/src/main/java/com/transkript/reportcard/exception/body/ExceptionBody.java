@@ -34,7 +34,7 @@ public class ExceptionBody {
     private LocalDateTime timestamp = LocalDateTime.now();
 
     @JsonProperty("errors")
-    private Map<String, String> errors;
+    private Object errors;
 
     @JsonProperty("path")
     private String path;

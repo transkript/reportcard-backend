@@ -12,4 +12,5 @@ public record UserDto(
         @JsonProperty(value = "last_name") String lastName,
         @JsonProperty(value = "phone") String phone,
         @JsonProperty(value = "address") String address
-) implements Serializable { }
+) implements Serializable {
+}
