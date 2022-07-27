@@ -1,4 +1,4 @@
-package com.transkript.reportcard.business.service.interf
+package com.transkript.reportcard.business.service.i
 
 import com.transkript.reportcard.api.dto.SectionDto
 import com.transkript.reportcard.data.entity.Section
