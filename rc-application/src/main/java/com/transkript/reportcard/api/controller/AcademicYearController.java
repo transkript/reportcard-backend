@@ -29,7 +29,7 @@ public class AcademicYearController {
     public ResponseEntity<EntityResponse> addAcademicYear(
             @RequestBody AcademicYearDto academicYearDto) {
         log.info("Adding Academic Year with name " + academicYearDto.getName());
-        return new ResponseEntity<>(academicYearService.addAcademicYear(academicYearDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(academicYearService.create(academicYearDto), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -41,7 +41,7 @@ public class AcademicYearController {
     @GetMapping("/{id}")
     public ResponseEntity<AcademicYearDto> getAcademicYear(@PathVariable("id") Long id) {
         log.info("Getting academic year with ID: " + id);
-        return ResponseEntity.ok(academicYearService.getAcademicYear(id));
+        return ResponseEntity.ok(academicYearService.getDto(id));
     }
 
     @PutMapping("/{id}")
@@ -50,14 +50,14 @@ public class AcademicYearController {
             @PathVariable("id") Long id
     ) {
         log.info("Updating academic year with ID: " + id);
-        return ResponseEntity.ok(academicYearService.updateAcademicYear(id, academicYearDto));
+        return ResponseEntity.ok(academicYearService.update(id, academicYearDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAcademicYear(
             @PathVariable("id") Long id) {
         log.info("Deleting academic year with ID: " + id);
-        academicYearService.deleteAcademicYear(id);
+        academicYearService.delete(id);
         return ResponseEntity.ok().build();
     }
 }

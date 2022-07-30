@@ -30,7 +30,7 @@ public class SchoolController {
     @PostMapping
     public ResponseEntity<EntityResponse> addSchool(@RequestBody SchoolDto schoolDto) {
         log.info("Adding school with name " + schoolDto.name());
-        return new ResponseEntity<>(schoolService.addSchool(schoolDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(schoolService.create(schoolDto), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -42,18 +42,18 @@ public class SchoolController {
     @GetMapping("/{id}")
     public ResponseEntity<SchoolDto> getSchool(@PathVariable("id") Long id) {
         log.info("Getting school with Id: " + id);
-        return ResponseEntity.ok(schoolService.getSchool(id));
+        return ResponseEntity.ok(schoolService.getDto(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateSchool(@PathVariable("id") Long id, @RequestBody SchoolDto schoolDto) {
+    public ResponseEntity<EntityResponse> updateSchool(@PathVariable("id") Long id, @RequestBody SchoolDto schoolDto) {
         log.info("Updating school with ID: " + id);
-        return ResponseEntity.ok(schoolService.updateSchool(id, schoolDto));
+        return ResponseEntity.ok(schoolService.update(id, schoolDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSchool(@PathVariable("id") Long id) {
         log.info("Deleting School with ID: " + id);
-        return ResponseEntity.ok(schoolService.deleteSchool(id));
+        return ResponseEntity.ok(schoolService.delete(id));
     }
 }

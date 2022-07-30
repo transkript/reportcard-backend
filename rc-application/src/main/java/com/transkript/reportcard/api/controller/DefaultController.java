@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -140,8 +141,9 @@ public class DefaultController {
     }
 
     @GetMapping(value = "/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Success");
+    public ResponseEntity<Map<String, String>> test() {
+        log.info("TESTING BACKEND");
+        return ResponseEntity.ok(Map.of("message", "Success"));
     }
 
     @DeleteMapping(value = "/delete")

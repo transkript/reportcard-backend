@@ -30,19 +30,19 @@ public class SubjectRegistrationController {
     @PostMapping(value = "")
     public ResponseEntity<EntityResponse> addSubjectRegistration(@Valid @RequestBody SubjectRegistrationDto subjectRegistrationDto) {
         log.info("Add subject registration {}", subjectRegistrationDto);
-        return new ResponseEntity<>(subjectRegistrationService.addSubjectRegistration(subjectRegistrationDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(subjectRegistrationService.create(subjectRegistrationDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/multiple")
     public ResponseEntity<List<EntityResponse>> addSubjectRegistrations(@RequestBody List<SubjectRegistrationDto> subjectRegistrationDtoList) {
         log.info("Add subject registrations {}", subjectRegistrationDtoList.stream().map(SubjectRegistrationDto::subjectId).collect(Collectors.toList()));
-        return new ResponseEntity<>(subjectRegistrationService.addSubjectRegistrations(subjectRegistrationDtoList), HttpStatus.CREATED);
+        return new ResponseEntity<>(subjectRegistrationService.createMultiple(subjectRegistrationDtoList), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{registrationId}")
     public ResponseEntity<SubjectRegistrationDto> get(@PathVariable @NotNull Long registrationId) {
         log.info("Get subject registration {}", registrationId);
-        return ResponseEntity.ok(subjectRegistrationService.getSubjectRegistration(registrationId));
+        return ResponseEntity.ok(subjectRegistrationService.getDto(registrationId));
     }
 
     @GetMapping(value = "/sat/{satId}")
@@ -50,13 +50,13 @@ public class SubjectRegistrationController {
             @NotNull @PathVariable Long satId
     ) {
         log.info("Get subject registrations for student application trial {}", satId);
-        return new ResponseEntity<>(subjectRegistrationService.getSubjectionRegistrations(satId), HttpStatus.OK);
+        return new ResponseEntity<>(subjectRegistrationService.getDtoList(satId), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{registrationId}")
     public ResponseEntity<Void> delete(@NotNull @PathVariable Long registrationId) {
         log.info("Delete subject registration {} ", registrationId);
-        subjectRegistrationService.deleteSubjectRegistration(registrationId);
+        subjectRegistrationService.delete(registrationId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

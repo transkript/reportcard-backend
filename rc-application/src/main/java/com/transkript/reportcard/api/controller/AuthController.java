@@ -27,14 +27,14 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<UserResponse.Login> login(@RequestBody UserRequest.Login userRequest, HttpSession session) {
+    public ResponseEntity<UserResponse.Auth> login(@RequestBody UserRequest.Login userRequest, HttpSession session) {
 
         log.info("Log in user: {}", userRequest.username());
         return ResponseEntity.ok(authService.loginUser(userRequest, session));
     }
 
     @PostMapping(value = "/logout")
-    public ResponseEntity<String> logout(HttpSession session) {
-        return ResponseEntity.ok(authService.logout(session));
+    public ResponseEntity<UserResponse.Auth> logout(@RequestBody UserRequest.Logout logout, HttpSession session) {
+        return ResponseEntity.ok(authService.logout(logout, session));
     }
 }

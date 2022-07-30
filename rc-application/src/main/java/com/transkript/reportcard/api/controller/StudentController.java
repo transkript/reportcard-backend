@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -46,13 +47,14 @@ public class StudentController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<EntityResponse> deleteStudent(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable("id") Long id) {
         log.info("Deleting student with id: {}", id);
-        return ResponseEntity.ok(studentService.deleteStudent(id));
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<EntityResponse> updateStudent(@PathVariable("id") Long id, @Valid @RequestBody StudentDto studentDto) {
+    public ResponseEntity<EntityResponse> updateStudent(@PathVariable("id") @NotNull Long id, @Valid @RequestBody StudentDto studentDto) {
         log.info("Updating student with id: {}", id);
         return ResponseEntity.ok(studentService.updateStudent(id, studentDto));
     }

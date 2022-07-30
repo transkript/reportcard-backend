@@ -46,7 +46,7 @@ public class StudentApplicationController {
     public ResponseEntity<StudentApplicationDto> read(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long classId) {
         var request = new StudentApplicationDto.ApplicationKeyDto(studentId, classId);
         log.info("Getting student application by request {}", request);
-        return ResponseEntity.ok(studentApplicationService.getAsDto(request));
+        return ResponseEntity.ok(studentApplicationService.getDto(request));
     }
 
     @GetMapping(value = "one_full")
@@ -71,10 +71,11 @@ public class StudentApplicationController {
     }
 
     @DeleteMapping(value = "")
-    public ResponseEntity<EntityResponse> delete(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long classId) {
+    public ResponseEntity<Void> delete(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long classId) {
         var applicationKeyDto = new StudentApplicationDto.ApplicationKeyDto(studentId, classId);
         log.info("Deleting student application by request {}", applicationKeyDto);
-        return ResponseEntity.ok(studentApplicationService.delete(applicationKeyDto));
+        studentApplicationService.delete(applicationKeyDto);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "")

@@ -29,7 +29,7 @@ public class SequenceController {
     @PostMapping
     public ResponseEntity<EntityResponse> addSequence(@RequestBody SequenceDto sequenceDto) {
         log.info("Adding section with name " + sequenceDto.name());
-        return new ResponseEntity<>(sequenceService.addSequence(sequenceDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(sequenceService.create(sequenceDto), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -41,18 +41,18 @@ public class SequenceController {
     @GetMapping("/{id}")
     public ResponseEntity<SequenceDto> getSequence(@PathVariable Long id) {
         log.info("Getting the Sequence with id " + id);
-        return ResponseEntity.ok(sequenceService.getSequence(id));
+        return ResponseEntity.ok(sequenceService.getDto(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EntityResponse> updateSequence(@PathVariable Long id, @RequestBody SequenceDto sequenceDto) {
         log.info("Updating Sequence with id " + id);
-        return ResponseEntity.ok(sequenceService.updateSequence(id, sequenceDto));
+        return ResponseEntity.ok(sequenceService.update(id, sequenceDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSequence(@PathVariable Long id) {
         log.info("Deleting Sequence with id " + id);
-        return ResponseEntity.ok(sequenceService.deleteSequence(id));
+        return ResponseEntity.ok(sequenceService.delete(id));
     }
 }
