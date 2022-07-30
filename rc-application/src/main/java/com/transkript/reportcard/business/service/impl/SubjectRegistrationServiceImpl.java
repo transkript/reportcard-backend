@@ -3,7 +3,6 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
-import com.transkript.reportcard.business.service.i.StudentApplicationService;
 import com.transkript.reportcard.business.service.i.StudentApplicationTrialService;
 import com.transkript.reportcard.business.service.i.SubjectRegistrationService;
 import com.transkript.reportcard.business.service.i.SubjectService;
@@ -14,7 +13,6 @@ import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.SubjectRegistrationRepository;
 import com.transkript.reportcard.exception.EntityException;
-import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

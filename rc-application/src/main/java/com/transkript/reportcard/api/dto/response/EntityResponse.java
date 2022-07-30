@@ -1,10 +1,8 @@
 package com.transkript.reportcard.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
 
 import java.io.Serializable;
-import java.util.Map;
 
 public record EntityResponse(
         @JsonProperty("id") Object id,

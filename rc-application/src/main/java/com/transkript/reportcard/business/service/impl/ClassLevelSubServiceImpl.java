@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class ClassLevelSubServiceImpl implements ClassLevelSubService {
+    private final String entityName = EntityName.CLASS_LEVEL_SUB;
     ClassLevelSubRepository classLevelSubRepository;
     ClassLevelSubMapper classLevelSubMapper;
     ClassLevelService classLevelService;
-    private final String entityName = EntityName.CLASS_LEVEL_SUB;
 
     @Override
     public EntityResponse addClassLevelSub(ClassLevelSubDto classLevelSubDto) {

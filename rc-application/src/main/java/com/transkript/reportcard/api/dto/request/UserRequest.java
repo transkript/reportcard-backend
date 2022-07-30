@@ -12,6 +12,11 @@ public class UserRequest {
     ) implements Serializable {
     }
 
+    public record Logout(
+            @NotNull @JsonProperty String sessionId
+    ) implements Serializable {
+    }
+
     public record Register(
             @NotNull @JsonProperty(value = "username") String username,
             @NotNull @JsonProperty(value = "password") String password,

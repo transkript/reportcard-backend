@@ -90,7 +90,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         }
         return new EntityResponse(
                 Map.of("class level sub", studentApplication.getClassLevelSub().getId(),
-                "student", studentApplication.getStudent().getId()),
+                        "student", studentApplication.getStudent().getId()),
                 ResponseMessage.SUCCESS.created(entityName), true);
     }
 

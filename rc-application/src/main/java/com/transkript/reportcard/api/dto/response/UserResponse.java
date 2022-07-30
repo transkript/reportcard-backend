@@ -3,7 +3,7 @@ package com.transkript.reportcard.api.dto.response;
 import java.io.Serializable;
 
 public class UserResponse {
-    public record Login(
+    public record Auth(
             String sessionId,
             String message
     ) implements Serializable {

@@ -3,7 +3,6 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.TermDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.TermMapper;
-import com.transkript.reportcard.business.service.i.SchoolService;
 import com.transkript.reportcard.business.service.i.TermService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.config.constants.ResponseMessage;
