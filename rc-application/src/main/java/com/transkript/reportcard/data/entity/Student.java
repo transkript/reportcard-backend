@@ -1,7 +1,6 @@
 package com.transkript.reportcard.data.entity;
 
 
-import com.transkript.reportcard.api.dto.SchoolSettingsDto;
 import com.transkript.reportcard.business.util.SchoolUtil;
 import com.transkript.reportcard.business.util.SettingsUtil;
 import com.transkript.reportcard.data.entity.relation.StudentApplication;
@@ -20,6 +19,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -62,14 +63,12 @@ public class Student {
     @ToString.Exclude
     private List<StudentApplication> studentApplications = new ArrayList<>();
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "school_id", nullable = false)
+    private School school;
+
     @PreUpdate
     public void preUpdate() {
-        SchoolSettingsDto schoolSettingsDto = SettingsUtil.readSettings();
-        if (schoolSettingsDto != null) {
-            this.setRegNum(SchoolUtil.generateRegNo(this.id, schoolSettingsDto.schoolName()));
-        } else {
-            this.setRegNum(String.valueOf(this.id));
-        }
-
+        this.setRegNum(SchoolUtil.generateRegNo(this.id, school.getName()));
     }
 }

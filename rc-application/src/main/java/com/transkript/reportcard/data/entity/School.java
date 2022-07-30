@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -35,8 +36,24 @@ public class School {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToOne(mappedBy = "school", optional = false, orphanRemoval = true)
-    private SchoolSettings schoolSettings;
+    @Column
+    private Boolean applicationOpen;
+
+    @OneToOne()
+    @JoinColumn(name = "academic_year_id")
+    private AcademicYear currentYear;
+
+    @Column(name = "current_term")
+    private String currentTerm;
+
+    @OneToOne()
+    @JoinColumn(name = "sequence_id")
+    private Sequence currentSequence;
+
+    @Builder.Default
+    @Column(name = "max_grade_score", nullable = false)
+    private Long maxGrade = 20L;
+
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
