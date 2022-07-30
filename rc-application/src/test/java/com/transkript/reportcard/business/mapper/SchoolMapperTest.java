@@ -36,7 +36,7 @@ class SchoolMapperTest {
 
     @Test
     void mapDtoToSchool() {
-        testSchoolDto = new SchoolDto(2L, "ABC", 0);
+        testSchoolDto = new SchoolDto(2L, "ABC", 1L, "", 1L, 20L, true, 0);
         School expected = this.schoolMapper.mapDtoToSchool(testSchoolDto);
 
         Assertions.assertEquals(expected.getId(), testSchoolDto.id());
