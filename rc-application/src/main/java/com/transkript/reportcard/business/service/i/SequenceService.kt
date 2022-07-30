@@ -5,10 +5,10 @@ import com.transkript.reportcard.api.dto.response.EntityResponse
 import com.transkript.reportcard.data.entity.Sequence
 
 interface SequenceService {
-    fun addSequence(sequenceDto: SequenceDto?): EntityResponse?
+    fun create(sequenceDto: SequenceDto?): EntityResponse?
     val sequences: List<SequenceDto?>?
-    fun getSequence(id: Long?): SequenceDto?
-    fun updateSequence(id: Long?, sequenceDto: SequenceDto?): EntityResponse?
-    fun deleteSequence(id: Long?): String?
-    fun getSequenceEntity(sequenceId: Long?): Sequence?
+    fun getDto(id: Long?): SequenceDto?
+    fun update(id: Long?, sequenceDto: SequenceDto?): EntityResponse?
+    fun delete(id: Long?): String?
+    fun getEntity(sequenceId: Long?): Sequence?
 }

@@ -38,7 +38,7 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public String addSection(SectionDto sectionDto) {
         Section section = sectionMapper.mapDtoToSection(sectionDto);
-        School school = schoolService.getSchoolEntity(sectionDto.getSchoolId());
+        School school = schoolService.getEntity(sectionDto.getSchoolId());
         section.setId(null);
         section.setSchool(school);
         sectionRepository.save(section);
@@ -73,7 +73,7 @@ public class SectionServiceImpl implements SectionService {
             }
 
             if (sectionDto.getSchoolId() != null && !Objects.equals(sectionDto.getSchoolId(), section.getSchool().getId())) {
-                School school = schoolService.getSchoolEntity(sectionDto.getSchoolId());
+                School school = schoolService.getEntity(sectionDto.getSchoolId());
                 section.setSchool(school);
             }
             sectionRepository.save(section);

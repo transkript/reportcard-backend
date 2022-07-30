@@ -5,6 +5,8 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SubjectMapper;
 import com.transkript.reportcard.business.service.i.SectionService;
 import com.transkript.reportcard.business.service.i.SubjectService;
+import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Subject;
 import com.transkript.reportcard.data.repository.SubjectRepository;
@@ -27,6 +29,7 @@ public class SubjectServiceImpl implements SubjectService {
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
     private final SectionService sectionService;
+    private final String entityName = EntityName.SUBJECT;
 
     @Override
     public List<SubjectDto> getSubjects() {
@@ -47,8 +50,9 @@ public class SubjectServiceImpl implements SubjectService {
         Section section = sectionService.getSectionEntity(subjectDto.getSectionId());
         subject.setId(null);
         subject.setSection(section);
-        return EntityResponse.builder().id(subjectRepository.save(subject).getId())
-                .entityName("subject").message("subject added successfully").build();
+
+        subject = subjectRepository.save(subject);
+        return new EntityResponse(subject.getId(), ResponseMessage.SUCCESS.created(entityName), true);
     }
 
     @Override
@@ -68,8 +72,7 @@ public class SubjectServiceImpl implements SubjectService {
                 Section section = sectionService.getSectionEntity(subjectDto.getSectionId());
                 subject.setSection(section);
             }
-            return EntityResponse.builder().id(subjectRepository.save(subject).getId())
-                    .entityName("subject").message("subject updated successfully").build();
+            return new EntityResponse(subject.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
         }
         throw new EntityException.NotFound("subject");
     }

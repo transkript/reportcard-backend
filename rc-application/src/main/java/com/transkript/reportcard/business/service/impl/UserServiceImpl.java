@@ -4,6 +4,8 @@ import com.transkript.reportcard.api.dto.UserDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.UserMapper;
 import com.transkript.reportcard.business.service.i.UserService;
+import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.User;
 import com.transkript.reportcard.data.repository.UserRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authManager;
     private final @NotNull UserRepository userRepository;
     private final @NotNull UserMapper userMapper;
+    private final String entityName = EntityName.USER;
 
 
     @NotNull
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.schoolAdminDtoToSchoolAdmin(userDto);
         user = userRepository.save(user);
         // TODO complete this
-        return EntityResponse.builder().id(user.getId()).build();
+        return new EntityResponse(user.getId(), ResponseMessage.SUCCESS.created(entityName), true);
     }
 
     @NotNull

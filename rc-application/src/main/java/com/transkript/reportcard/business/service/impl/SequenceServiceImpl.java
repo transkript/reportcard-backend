@@ -5,12 +5,15 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.SequenceMapper;
 import com.transkript.reportcard.business.service.i.SequenceService;
 import com.transkript.reportcard.business.service.i.TermService;
+import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.repository.SequenceRepository;
 import com.transkript.reportcard.exception.EntityException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,14 +29,15 @@ public class SequenceServiceImpl implements SequenceService {
     private final SequenceRepository sequenceRepository;
     private final SequenceMapper sequenceMapper;
     private final TermService termService;
+    private final String entityName = EntityName.SEQUENCE;
 
     @Override
-    public EntityResponse addSequence(SequenceDto sequenceDto) {
+    public EntityResponse create(SequenceDto sequenceDto) {
         Sequence sequence = sequenceMapper.mapDtoToSequence(sequenceDto);
         sequence.setId(null);
         sequence.setTerm(termService.getTermEntity(sequenceDto.termId()));
         sequence = sequenceRepository.save(sequence);
-        return EntityResponse.builder().id(sequence.getId()).entityName("sequence").message("Successfully created sequence " + sequence.getName()).build();
+        return new EntityResponse(sequence.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
@@ -44,7 +48,7 @@ public class SequenceServiceImpl implements SequenceService {
     }
 
     @Override
-    public SequenceDto getSequence(Long id) {
+    public SequenceDto getDto(Long id) {
         return sequenceMapper.mapSequenceToDto(
                 sequenceRepository.findById(id).orElseThrow(
                         () -> {
@@ -55,7 +59,7 @@ public class SequenceServiceImpl implements SequenceService {
     }
 
     @Override
-    public EntityResponse updateSequence(Long id, SequenceDto sequenceDto) {
+    public EntityResponse update(Long id, SequenceDto sequenceDto) {
         if (id != null && id.equals(sequenceDto.id()) && sequenceRepository.existsById(id)) {
             Sequence sequence = sequenceRepository.getById(id);
             {
@@ -67,13 +71,13 @@ public class SequenceServiceImpl implements SequenceService {
                 }
             }
             sequence = sequenceRepository.save(sequence);
-            return EntityResponse.builder().id(sequence.getId()).entityName("sequence").message("Successfully updated sequence " + sequence.getName()).build();
+            return new EntityResponse(sequence.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
         }
         throw new EntityException.NotFound("Sequence with id: " + id);
     }
 
     @Override
-    public String deleteSequence(Long id) {
+    public String delete(Long id) {
         if (id != null && sequenceRepository.existsById(id)) {
             sequenceRepository.deleteById(id);
             return "Successfully deleted Sequence with id: " + id;
@@ -81,10 +85,9 @@ public class SequenceServiceImpl implements SequenceService {
         throw new EntityException.NotFound("Sequence with id " + id);
     }
 
+    @NotNull
     @Override
-    public Sequence getSequenceEntity(Long sequenceId) {
-        return sequenceRepository.findById(sequenceId).orElseThrow(
-                () -> new EntityException.NotFound("sequence", sequenceId)
-        );
+    public Sequence getEntity(Long sequenceId) {
+        return sequenceRepository.findById(sequenceId).orElseThrow(() -> new EntityException.NotFound("sequence", sequenceId));
     }
 }

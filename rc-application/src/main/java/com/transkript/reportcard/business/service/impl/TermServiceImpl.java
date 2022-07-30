@@ -5,6 +5,8 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.TermMapper;
 import com.transkript.reportcard.business.service.i.SchoolService;
 import com.transkript.reportcard.business.service.i.TermService;
+import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.repository.TermRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -25,14 +27,14 @@ public class TermServiceImpl implements TermService {
 
     private final TermRepository termRepository;
     private final TermMapper termMapper;
-    private final SchoolService schoolService;
+    private final String entityName = EntityName.TERM;
 
     @Override
     public EntityResponse addTerm(TermDto termDto) {
         Term term = termMapper.mapDtoToTerm(termDto);
         term.setId(null);
         term = termRepository.save(term);
-        return EntityResponse.builder().id(term.getId()).entityName("term").message("Successfully added term: " + term.getName()).build();
+        return new EntityResponse(term.getId(), ResponseMessage.SUCCESS.created(entityName), true);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class TermServiceImpl implements TermService {
                 term.setName(termDto.name());
             }
             term = termRepository.save(term);
-            return EntityResponse.builder().id(term.getId()).entityName("term").message("Successfully updated term: " + term.getName()).build();
+            return new EntityResponse(term.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
         }
         throw new EntityException.NotFound("term" + id);
     }

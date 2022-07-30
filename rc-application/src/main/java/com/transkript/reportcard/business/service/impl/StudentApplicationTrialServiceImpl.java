@@ -24,6 +24,6 @@ public class StudentApplicationTrialServiceImpl implements StudentApplicationTri
 
     @Override
     public List<StudentApplicationTrial> getEntitiesByYear(Long yearId) {
-        return studentApplicationTrialRepository.findAllByAcademicYear(academicYearService.getAcademicYearEntity(yearId));
+        return studentApplicationTrialRepository.findAllByAcademicYear(academicYearService.getEntity(yearId));
     }
 }

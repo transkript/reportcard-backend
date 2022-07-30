@@ -6,14 +6,14 @@ import com.transkript.reportcard.data.entity.SubjectRegistration
 import org.springframework.transaction.annotation.Transactional
 
 interface SubjectRegistrationService {
-    fun addSubjectRegistration(subjectRegistrationDto: SubjectRegistrationDto?): EntityResponse?
-    fun addSubjectRegistrations(subjectRegistrationDtoList: List<SubjectRegistrationDto?>?): List<EntityResponse?>?
-    fun getSubjectionRegistrations(satId: Long?): List<SubjectRegistrationDto?>?
-    fun getSubjectRegistration(registrationId: Long?): SubjectRegistrationDto?
+    fun create(subjectRegistrationDto: SubjectRegistrationDto): EntityResponse
+    fun createMultiple(subjectRegistrationDtoList: List<SubjectRegistrationDto>): List<EntityResponse>
+    fun getDtoList(satId: Long): List<SubjectRegistrationDto>
+    fun getDto(registrationId: Long): SubjectRegistrationDto
 
     @Transactional
-    fun deleteSubjectRegistration(registrationId: Long?)
-    fun getSubjectRegistrationEntity(registrationId: Long?): SubjectRegistration?
-    fun getSubjectRegistrationEntity(satId: Long?, subjectId: Long?): SubjectRegistration?
-    fun getSubjectRegistrationEntitiesByApplicationTrial(satId: Long?): List<SubjectRegistration?>?
+    fun delete(registrationId: Long)
+    fun getEntity(registrationId: Long): SubjectRegistration
+    fun getEntity(satId: Long, subjectId: Long): SubjectRegistration
+    fun getEntitiesByApplicationTrial(satId: Long): List<SubjectRegistration>
 }

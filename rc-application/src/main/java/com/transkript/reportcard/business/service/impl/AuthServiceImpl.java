@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
 
     @NotNull
     @Override
-    public UserResponse.Login loginUser(@NotNull UserRequest.Login userRequest, @NotNull HttpSession session) {
+    public UserResponse.Auth loginUser(@NotNull UserRequest.Login userRequest, @NotNull HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // check if user is already logged in
         if (authentication != null && authentication.getPrincipal() != null && !authentication.getPrincipal().equals("anonymousUser")) {
@@ -67,17 +67,17 @@ public class AuthServiceImpl implements AuthService {
                 HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 SecurityContextHolder.getContext()
         );
-        return new UserResponse.Login(session.getId(), "Login successful");
+        return new UserResponse.Auth(session.getId(), "Login successful");
     }
 
     @NotNull
     @Override
-    public String logout(@NotNull HttpSession session) {
+    public UserResponse.Auth logout(@NotNull UserRequest.Logout userRequest, @NotNull HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() != null) {
             log.info("Logging out user {}", authentication.getDetails());
             session.invalidate();
-            return "Logged out user";
+            return new UserResponse.Auth(userRequest.sessionId(), "Logged out user");
         } else {
             throw new RcAuthenticationException("No user logged in");
         }

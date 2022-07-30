@@ -8,7 +8,7 @@ interface StudentService {
     fun addStudent(studentDto: StudentDto?): EntityResponse?
     val students: List<StudentDto?>?
     fun getStudent(id: Long?): StudentDto?
-    fun deleteStudent(id: Long?): EntityResponse?
-    fun getStudentEntity(id: Long?): Student?
+    fun deleteStudent(id: Long?)
+    fun getEntity(id: Long?): Student?
     fun updateStudent(id: Long?, studentDto: StudentDto?): EntityResponse?
 }

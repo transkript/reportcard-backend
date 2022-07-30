@@ -5,11 +5,11 @@ import com.transkript.reportcard.api.dto.response.EntityResponse
 import com.transkript.reportcard.data.entity.AcademicYear
 
 interface AcademicYearService {
-    fun addAcademicYear(academicYearDto: AcademicYearDto?): EntityResponse?
+    fun create(academicYearDto: AcademicYearDto?): EntityResponse?
     val academicYears: List<AcademicYearDto?>?
-    fun getAcademicYear(id: Long?): AcademicYearDto?
-    fun updateAcademicYear(id: Long?, academicYearDto: AcademicYearDto?): EntityResponse?
-    fun deleteAcademicYear(id: Long?)
-    fun getAcademicYearEntity(academicYearId: Long?): AcademicYear?
+    fun getDto(id: Long?): AcademicYearDto?
+    fun update(id: Long?, academicYearDto: AcademicYearDto?): EntityResponse?
+    fun delete(id: Long?)
+    fun getEntity(academicYearId: Long?): AcademicYear?
     val academicYearEntities: List<AcademicYear?>?
 }

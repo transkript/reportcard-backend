@@ -3,14 +3,14 @@ package com.transkript.reportcard.business.service.impl;
 import com.transkript.reportcard.api.dto.StudentDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.StudentMapper;
-import com.transkript.reportcard.business.service.i.SchoolSettingsService;
+import com.transkript.reportcard.business.service.i.SchoolService;
 import com.transkript.reportcard.business.service.i.StudentService;
-import com.transkript.reportcard.business.util.SchoolUtil;
-import com.transkript.reportcard.business.util.SettingsUtil;
+import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseMessage;
+import com.transkript.reportcard.data.entity.School;
 import com.transkript.reportcard.data.entity.Student;
 import com.transkript.reportcard.data.repository.StudentRepository;
 import com.transkript.reportcard.exception.EntityException;
-import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,23 +24,25 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-    private final SchoolSettingsService schoolSettingsService;
+    private final SchoolService schoolService;
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final String entityName = EntityName.STUDENT;
 
     @Override
     public EntityResponse addStudent(StudentDto studentDto) {
         Student student = studentMapper.mapDtoToStudent(studentDto);
+        School school = schoolService.getEntity(studentDto.schoolId());
         student.setId(null);
         student.setRegNum("");
+        student.setSchool(school);
         if (student.getDob() == null) {
             student.setDob(LocalDateTime.now());
         }
-
         student = studentRepository.save(student);
-        this.updateRegNo(student);
 
-        return EntityResponse.builder().id(student.getId()).message("Student added successfully").build();
+
+        return new EntityResponse(student.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
@@ -52,38 +54,26 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDto getStudent(Long id) {
-        return studentMapper.mapStudentToDto(getStudentEntity(id));
+        return studentMapper.mapStudentToDto(getEntity(id));
     }
 
     @Override
-    public EntityResponse deleteStudent(Long id) {
-        studentRepository.findById(id).ifPresentOrElse(
-                studentRepository::delete,
-                () -> {
-                    log.error("Student with id {} not found", id);
-                    throw new EntityException.NotFound("student", id);
-                }
-        );
-        return EntityResponse.builder().id(id).message("Student deleted successfully").build();
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
     }
 
     @Override
-    public Student getStudentEntity(Long id) {
+    public Student getEntity(Long id) {
         return studentRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("student", id));
     }
 
     @Override
     public EntityResponse updateStudent(Long id, StudentDto studentDto) {
         Student student = studentMapper.mapDtoToStudent(studentDto);
-        Student existingStudent = getStudentEntity(id);
+        Student existingStudent = this.getEntity(id);
+
         {
-            if (student.getId() == null) {
-                throw new ReportCardException.IllegalArgumentException("Student id cannot be null");
-            } else {
-                existingStudent.setId(id);
-            }
-        }
-        {
+            assert existingStudent != null;
             if (student.getRegNum() != null || !Objects.equals(student.getRegNum(), existingStudent.getRegNum())) {
                 existingStudent.setRegNum(student.getRegNum());
             }
@@ -101,19 +91,6 @@ public class StudentServiceImpl implements StudentService {
             }
         }
 
-        this.updateRegNo(existingStudent);
-
-        return EntityResponse.builder().entityName("student").id(existingStudent.getId())
-                .message("Student updated successfully").build();
-    }
-
-    private void updateRegNo(Student student) {
-        if (student.getId() == null) {
-            return;
-        }
-        student.setRegNum(SchoolUtil.generateRegNo(student.getId(), SettingsUtil.readSettings().schoolName()));
-
-        student = studentRepository.save(student);
-        log.info("Updating regno for student: '{}' to {}", student.getName(), student.getRegNum());
+        return new EntityResponse(student.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 }

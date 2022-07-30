@@ -6,6 +6,7 @@ import com.transkript.reportcard.business.mapper.ClassLevelSubMapper;
 import com.transkript.reportcard.business.service.i.ClassLevelService;
 import com.transkript.reportcard.business.service.i.ClassLevelSubService;
 import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.repository.ClassLevelSubRepository;
@@ -26,6 +27,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     ClassLevelSubRepository classLevelSubRepository;
     ClassLevelSubMapper classLevelSubMapper;
     ClassLevelService classLevelService;
+    private final String entityName = EntityName.CLASS_LEVEL_SUB;
 
     @Override
     public EntityResponse addClassLevelSub(ClassLevelSubDto classLevelSubDto) {
@@ -41,9 +43,9 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
         ClassLevelSub classLevelSub = classLevelSubMapper.mapDtoToClassLevelSub(classLevelSubDto);
         classLevelSub.setId(null);
         classLevelSub.setClassLevel(classLevel);
-        return EntityResponse.builder().message("Successfully saved class level sub")
-                .id(classLevelSubRepository.save(classLevelSub).getId())
-                .message("class level sub").build();
+        classLevelSub = classLevelSubRepository.save(classLevelSub);
+        return new EntityResponse(classLevelSub.getId(), ResponseMessage.SUCCESS.created(entityName), true);
+
     }
 
     @Override
@@ -81,7 +83,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
             classLevelSub.setId(id);
             classLevelSub.setClassLevel(classLevel);
             classLevelSubRepository.save(classLevelSub);
-            return EntityResponse.builder().message("Successfully updated class level sub").entityName("class level sub").id(id).build();
+            return new EntityResponse(classLevelSub.getId(), ResponseMessage.SUCCESS.created(entityName), true);
         }
         throw new EntityException.NotFound("class level" + id);
     }

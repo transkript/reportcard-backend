@@ -7,6 +7,8 @@ import com.transkript.reportcard.business.service.i.GradeService;
 import com.transkript.reportcard.business.service.i.SequenceService;
 import com.transkript.reportcard.business.service.i.StudentApplicationService;
 import com.transkript.reportcard.business.service.i.SubjectRegistrationService;
+import com.transkript.reportcard.config.constants.EntityName;
+import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
@@ -28,6 +30,7 @@ public class GradeServiceImpl implements GradeService {
     private final SubjectRegistrationService subjectRegistrationService;
     private final SequenceService sequenceService;
     private final StudentApplicationService studentApplicationService;
+    private final String entityName = EntityName.GRADE;
 
     /**
      * @param gradeDto
@@ -44,8 +47,8 @@ public class GradeServiceImpl implements GradeService {
 
         Grade grade = gradeMapper.mapDtoToGrade(gradeDto);
 
-        SubjectRegistration registration = subjectRegistrationService.getSubjectRegistrationEntity(grade.getGradeKey().getRegistrationId());
-        Sequence sequence = sequenceService.getSequenceEntity(gradeDto.getSequenceId());
+        SubjectRegistration registration = subjectRegistrationService.getEntity(grade.getGradeKey().getRegistrationId());
+        Sequence sequence = sequenceService.getEntity(gradeDto.getSequenceId());
 
         grade.setSequence(sequence);
         grade.setSubjectRegistration(registration);
@@ -53,11 +56,9 @@ public class GradeServiceImpl implements GradeService {
 
         grade = gradeRepository.save(grade);
 
-        return EntityResponse.builder()
-                .id(registration.getId())
-                .ids(Map.of("sequenceId", grade.getGradeKey().getSequenceId(),
-                        "registration", grade.getGradeKey().getRegistrationId()))
-                .entityName("grade").message("Added grade successfully").build();
+        return new EntityResponse(
+                Map.of("sequenceId", grade.getGradeKey().getSequenceId(), "registration", grade.getGradeKey().getRegistrationId()),
+                ResponseMessage.SUCCESS.created(entityName), true);
     }
 
     /**
@@ -69,7 +70,7 @@ public class GradeServiceImpl implements GradeService {
         if (sequenceId == null) {
             throw new ReportCardException.IllegalArgumentException("Sequence id is required");
         }
-        Sequence sequence = sequenceService.getSequenceEntity(sequenceId);
+        Sequence sequence = sequenceService.getEntity(sequenceId);
         return gradeRepository.findAllBySequence(sequence).stream().map(gradeMapper::mapGradeToDto).toList();
     }
 
@@ -79,7 +80,7 @@ public class GradeServiceImpl implements GradeService {
      */
     @Override
     public List<GradeDto> getGradesByRegistration(Long registrationId) {
-        SubjectRegistration registration = subjectRegistrationService.getSubjectRegistrationEntity(registrationId);
+        SubjectRegistration registration = subjectRegistrationService.getEntity(registrationId);
 
         System.out.println(registration);
         return gradeRepository.findAllBySubjectRegistration(registration)
@@ -113,7 +114,7 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public List<Grade> getGradeEntitiesBySubjectRegistration(Long registrationId) {
-        SubjectRegistration subjectRegistration = subjectRegistrationService.getSubjectRegistrationEntity(registrationId);
+        SubjectRegistration subjectRegistration = subjectRegistrationService.getEntity(registrationId);
         return gradeRepository.findAllBySubjectRegistration(subjectRegistration);
     }
 
@@ -126,7 +127,8 @@ public class GradeServiceImpl implements GradeService {
         Grade grade = getGradeEntity(gradeKey);
         grade.setScore(gradeDto.getScore());
         gradeRepository.save(grade);
-        return EntityResponse.builder().ids(Map.of("registration_id", gradeKey.getRegistrationId(), "sequence_id", gradeKey.getSequenceId()))
-                .entityName("grade").message("Update grade successful").build();
+        return new EntityResponse(
+                Map.of("sequenceId", grade.getGradeKey().getSequenceId(), "registration", grade.getGradeKey().getRegistrationId()),
+                ResponseMessage.SUCCESS.created(entityName), true);
     }
 }

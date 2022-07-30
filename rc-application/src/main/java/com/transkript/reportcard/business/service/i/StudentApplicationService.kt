@@ -9,12 +9,12 @@ import com.transkript.reportcard.data.entity.composite.ApplicationKey
 import com.transkript.reportcard.data.entity.relation.StudentApplication
 
 interface StudentApplicationService {
-    fun getAsEntity(applicationKey: ApplicationKey?): StudentApplication?
-    fun create(request: StudentApplicationRequest?): EntityResponse?
+    fun getAsEntity(applicationKey: ApplicationKey): StudentApplication?
+    fun create(request: StudentApplicationRequest): EntityResponse?
     val allAsDto: List<StudentApplicationDto?>?
-    fun getAllAsResponseByYear(yearId: Long?): List<StudentApplicationResponse?>?
-    fun getAllAsResponses(request: StudentApplicationRequest?): List<StudentApplicationResponse?>?
-    fun getAsResponse(request: StudentApplicationRequest?): StudentApplicationResponse?
-    fun getAsDto(applicationKeyDto: ApplicationKeyDto?): StudentApplicationDto?
-    fun delete(applicationKeyDto: ApplicationKeyDto?): EntityResponse?
+    fun getAllAsResponses(request: StudentApplicationRequest): List<StudentApplicationResponse?>?
+    fun getAsResponse(request: StudentApplicationRequest): StudentApplicationResponse?
+    fun getDto(applicationKeyDto: ApplicationKeyDto): StudentApplicationDto?
+    fun delete(applicationKeyDto: ApplicationKeyDto)
+    fun getAllAsResponseByYear(yearId: Long): List<StudentApplicationResponse>
 }

@@ -46,11 +46,11 @@ public class ClassListServiceImpl implements ClassListService {
 
     @Override
     public ClassListResponse getClassList(ClassListRequest request) {
-        AcademicYear academicYear = academicYearService.getAcademicYearEntity(request.academicYearId());
+        AcademicYear academicYear = academicYearService.getEntity(request.academicYearId());
         ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classId());
         ClassLevel classLevel = classLevelSub.getClassLevel();
         Subject subject = subjectService.getSubjectEntity(request.subjectId());
-        Sequence sequence = sequenceService.getSequenceEntity(request.sequenceId());
+        Sequence sequence = sequenceService.getEntity(request.sequenceId());
 
 
         List<StudentApplicationTrial> sats = studentApplicationTrialService.getEntitiesByYear(academicYear.getId()).stream()
@@ -60,7 +60,7 @@ public class ClassListServiceImpl implements ClassListService {
 
         List<StudentGrade> studentGrades = new ArrayList<>();
         sats.forEach(sat -> {
-            SubjectRegistration subjectRegistration = subjectRegistrationService.getSubjectRegistrationEntity(sat.getId(), subject.getId());
+            SubjectRegistration subjectRegistration = subjectRegistrationService.getEntity(sat.getId(), subject.getId());
 
             if (subjectRegistration.getGrades().stream().noneMatch(grade -> grade.getSequence().equals(sequence))) {
                 studentGrades.add(new StudentGrade(
