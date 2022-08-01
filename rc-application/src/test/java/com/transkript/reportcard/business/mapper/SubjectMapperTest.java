@@ -25,21 +25,21 @@ class SubjectMapperTest {
         Section section = new Section();
         section.setId(1L);
         actualSubject.setSection(section);
-        SubjectDto expectedDto = subjectMapper.mapSubjectToDto(actualSubject);
+        SubjectDto expectedDto = subjectMapper.subjectToSubjectDto(actualSubject);
 
-        Assertions.assertEquals(expectedDto.getId(), actualSubject.getId());
-        Assertions.assertEquals(expectedDto.getName(), actualSubject.getName());
-        Assertions.assertEquals(expectedDto.getCode(), actualSubject.getCode());
-        Assertions.assertEquals(expectedDto.getSectionId(), actualSubject.getSection().getId());
+        Assertions.assertEquals(expectedDto.id(), actualSubject.getId());
+        Assertions.assertEquals(expectedDto.name(), actualSubject.getName());
+        Assertions.assertEquals(expectedDto.code(), actualSubject.getCode());
+        Assertions.assertEquals(expectedDto.sectionId(), actualSubject.getSection().getId());
     }
 
     @Test
     void mapDtoToSubject() {
         SubjectDto actualDto = TestDefaults.SUBJECT_DTO;
-        Subject expectedSubject = subjectMapper.mapDtoToSubject(actualDto);
+        Subject expectedSubject = subjectMapper.subjectDtoToSubject(actualDto);
 
-        Assertions.assertEquals(expectedSubject.getId(), actualDto.getId());
-        Assertions.assertEquals(expectedSubject.getName(), actualDto.getName());
-        Assertions.assertEquals(expectedSubject.getCode(), actualDto.getCode());
+        Assertions.assertEquals(expectedSubject.getId(), actualDto.id());
+        Assertions.assertEquals(expectedSubject.getName(), actualDto.name());
+        Assertions.assertEquals(expectedSubject.getCode(), actualDto.code());
     }
 }

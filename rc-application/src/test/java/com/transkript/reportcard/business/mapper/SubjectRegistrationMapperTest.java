@@ -3,7 +3,7 @@ package com.transkript.reportcard.business.mapper;
 import com.transkript.reportcard.TestDefaults;
 import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import com.transkript.reportcard.data.entity.relation.StudentApplication;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class SubjectRegistrationMapperTest {
     void mapDtoToSubjectRegistration() {
         // TODO load from TestDefaults
         SubjectRegistrationDto actualSubjectRegistrationDto = TestDefaults.SUBJECT_REGISTRATION_DTO;
-        SubjectRegistration expectedSubjectRegistration = this.subjectRegistrationMapper.mapDtoToSubjectRegistration(actualSubjectRegistrationDto);
+        SubjectRegistration expectedSubjectRegistration = this.subjectRegistrationMapper.subjectRegistrationDtoToSubjectRegistration(actualSubjectRegistrationDto);
 
 
     }

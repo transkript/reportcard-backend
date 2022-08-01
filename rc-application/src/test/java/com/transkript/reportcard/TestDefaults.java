@@ -7,7 +7,8 @@ import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.TermDto;
 import com.transkript.reportcard.data.entity.Section;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.entity.Term;
 
 import java.time.LocalDateTime;
@@ -19,13 +20,12 @@ public class TestDefaults {
      * TODO Add actual object in place of all single relations
      */
     public static Subject SUBJECT = Subject.builder().id(1L).name("Math").code("MATHCODE").section(null).build();
-    public static SubjectDto SUBJECT_DTO = SubjectDto.builder().id(1L).name("Math DTO").code("MATHCODEDTO").build();
+    public static SubjectDto SUBJECT_DTO = new SubjectDto(1L, "Math Dto", 3, "MAT", 2L);
 
     public static SubjectRegistration SUBJECT_REGISTRATION = SubjectRegistration.builder()
-            .id(1L)
+            .key(new SubjectRegistrationKey(1L, 2L))
             .createdAt(LocalDateTime.now()).subject(SUBJECT).grades(List.of()).build();
-    public static SubjectRegistrationDto SUBJECT_REGISTRATION_DTO = SubjectRegistrationDto.builder()
-            .createdAt(LocalDateTime.now()).subjectId(1L).build();
+    public static SubjectRegistrationDto SUBJECT_REGISTRATION_DTO = null;
 
     public static Section SECTION = null;
     public static SectionDto SECTION_DTO = null;
