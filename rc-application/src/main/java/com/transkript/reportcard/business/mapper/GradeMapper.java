@@ -1,44 +1,36 @@
 package com.transkript.reportcard.business.mapper;
 
-
 import com.transkript.reportcard.api.dto.GradeDto;
-import com.transkript.reportcard.data.entity.composite.GradeKey;
+import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.InheritConfiguration;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface GradeMapper {
+    @Mapping(source = "key.subjectId", target = "key.registrationKey.subjectId")
+    @Mapping(source = "key.satId", target = "key.registrationKey.satId")
+    @Mapping(source = "sequenceId", target = "sequence.id")
+    @Mapping(source = "key", target = "key")
+    Grade gradeDtoToGrade(GradeDto gradeDto);
 
-    @Mappings({
-            @Mapping(target = "registrationId", expression = "java(mapRegistrationId(grade.getGradeKey()))"),
-            @Mapping(target = "sequenceId", expression = "java(mapSequenceId(grade.getGradeKey()))"),
-            @Mapping(target = "description", expression = "java(grade.getDescription().name())"),
-    })
-    GradeDto mapGradeToDto(Grade grade);
-
-    default Long mapRegistrationId(GradeKey gradeKey) {
-        return gradeKey.getRegistrationId();
+    default SubjectRegistrationKey mapRegistrationKey(GradeDto gradeDto) {
+        return new SubjectRegistrationKey(
+                gradeDto.key().subjectId(),
+                gradeDto.key().satId()
+        );
     }
 
-    default Long mapSequenceId(GradeKey gradeKey) {
-        return gradeKey.getSequenceId();
-    }
+    @InheritInverseConfiguration(name = "gradeDtoToGrade")
+    GradeDto gradeToGradeDto(Grade grade);
 
-    @Mappings({
-            @Mapping(target = "subjectRegistration", ignore = true),
-            @Mapping(target = "sequence", ignore = true),
-            @Mapping(target = "gradeKey", expression = "java(inverseMapGradeKey(gradeDto))"),
-            @Mapping(target = "description", ignore = true)
-    })
-    @InheritInverseConfiguration
-    Grade mapDtoToGrade(GradeDto gradeDto);
-
-    default GradeKey inverseMapGradeKey(GradeDto gradeDto) {
-        return GradeKey.builder().sequenceId(gradeDto.getSequenceId())
-                .registrationId(gradeDto.getRegistrationId())
-                .build();
-    }
+    @InheritConfiguration(name = "gradeDtoToGrade")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Grade updateGradeFromGradeDto(GradeDto gradeDto, @MappingTarget Grade grade);
 }
