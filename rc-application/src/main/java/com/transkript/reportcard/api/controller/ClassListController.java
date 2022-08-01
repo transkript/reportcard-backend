@@ -3,7 +3,7 @@ package com.transkript.reportcard.api.controller;
 import com.transkript.reportcard.api.dto.request.ClassListRequest;
 import com.transkript.reportcard.api.dto.response.ClassListResponse;
 import com.transkript.reportcard.business.service.i.ClassListService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 @Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/class_list")
 public class ClassListController {
     private final ClassListService classListService;
