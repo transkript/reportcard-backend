@@ -39,10 +39,10 @@ public class SubjectRegistrationController {
         return new ResponseEntity<>(subjectRegistrationService.createMultiple(subjectRegistrationDtoList), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/key")
-    public ResponseEntity<SubjectRegistrationDto> get(@RequestBody SubjectRegistrationDto.SubjectRegistrationKeyDto keyDto) {
-        log.info("Get subject registration {}", keyDto);
-        return ResponseEntity.ok(subjectRegistrationService.getDto(keyDto));
+    @GetMapping(value = "/key/{id}")
+    public ResponseEntity<SubjectRegistrationDto> get(@RequestBody Long id) {
+        log.info("Get subject registration {}", id);
+        return ResponseEntity.ok(subjectRegistrationService.getDto(id));
     }
 
     @GetMapping(value = "/sat/{satId}")
@@ -53,10 +53,10 @@ public class SubjectRegistrationController {
         return new ResponseEntity<>(subjectRegistrationService.getAllDtoBySAT(satId), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{registrationId}")
-    public ResponseEntity<Void> delete(@RequestBody SubjectRegistrationDto.SubjectRegistrationKeyDto keyDto) {
-        log.info("Delete subject registration {} ", keyDto);
-        subjectRegistrationService.delete(keyDto);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@RequestBody Long id) {
+        log.info("Delete subject registration {} ", id);
+        subjectRegistrationService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

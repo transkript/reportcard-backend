@@ -9,8 +9,7 @@ import com.transkript.reportcard.business.service.i.SubjectService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.SubjectRegistrationRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -36,25 +35,21 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     @NotNull
     @Override
     public EntityResponse create(@NotNull SubjectRegistrationDto subjectRegistrationDto) {
-        SubjectRegistrationKey key = new SubjectRegistrationKey(
-                subjectRegistrationDto.key().subjectId(),
-                subjectRegistrationDto.key().satId()
-        );
-
         StudentApplicationTrial sat = studentApplicationTrialService.getEntity(subjectRegistrationDto.satId());
         Subject subject = subjectService.getEntity(subjectRegistrationDto.subjectId());
 
-        Optional<SubjectRegistration> srOptional = subjectRegistrationRepository.findById(key);
+        Optional<SubjectRegistration> srOptional = subjectRegistrationRepository
+                .findBySubjectAndStudentApplicationTrial(subject, sat);
         if (srOptional.isPresent()) {
-            throw new EntityException.AlreadyExists(entityName, srOptional.get().getKey());
+            throw new EntityException.AlreadyExists(entityName, srOptional.get().getId());
         }
         SubjectRegistration subjectRegistration = subjectRegistrationRepository.save(
                 SubjectRegistration.builder()
-                        .studentApplicationTrial(sat).subject(subject).key(key)
+                        .studentApplicationTrial(sat).subject(subject).id(null)
                         .createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).build()
         );
 
-        return new EntityResponse(subjectRegistration.getKey(), ResponseMessage.SUCCESS.created(entityName), true);
+        return new EntityResponse(subjectRegistration.getId(), ResponseMessage.SUCCESS.created(entityName), true);
     }
 
     @NotNull
@@ -73,23 +68,31 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     }
 
     @Override
-    public SubjectRegistrationDto getDto(SubjectRegistrationDto.SubjectRegistrationKeyDto keyDto) {
-        SubjectRegistrationKey key = new SubjectRegistrationKey(keyDto.subjectId(), keyDto.satId());
-        return subjectRegistrationMapper.subjectRegistrationToSubjectRegistrationDto(getEntity(key));
+    public SubjectRegistrationDto getDto(Long id) {
+        return subjectRegistrationMapper.subjectRegistrationToSubjectRegistrationDto(getEntity(id));
     }
 
     @Override
     @Transactional
-    public void delete(SubjectRegistrationDto.SubjectRegistrationKeyDto keyDto) {
-        SubjectRegistrationKey key = new SubjectRegistrationKey(keyDto.subjectId(), keyDto.satId());
-        subjectRegistrationRepository.deleteById(key);
+    public void delete(Long id) {
+        subjectRegistrationRepository.deleteById(id);
     }
 
     @NotNull
     @Override
     @Transactional(readOnly = true)
-    public SubjectRegistration getEntity(SubjectRegistrationKey key) {
-        return subjectRegistrationRepository.findById(key)
-                .orElseThrow(() -> new EntityException.NotFound("subject registration", key));
+    public SubjectRegistration getEntity(Long id) {
+        return subjectRegistrationRepository.findById(id)
+                .orElseThrow(() -> new EntityException.NotFound("subject registration", id));
+    }
+
+    @NotNull
+    @Override
+    public SubjectRegistration getEntityBySubjectAndSat(Long subjectId, Long satId) {
+        Subject subject = subjectService.getEntity(subjectId);
+        StudentApplicationTrial sat = studentApplicationTrialService.getEntity(satId);
+
+        return subjectRegistrationRepository.findBySubjectAndStudentApplicationTrial(subject, sat)
+                .orElseThrow(() -> new EntityException.NotFound("subject registration", List.of(subjectId, satId)));
     }
 }

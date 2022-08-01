@@ -1,6 +1,7 @@
 package com.transkript.reportcard.data.entity.relation;
 
 import com.transkript.reportcard.data.entity.AcademicYear;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

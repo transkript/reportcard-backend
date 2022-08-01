@@ -1,7 +1,6 @@
 package com.transkript.reportcard.business.service.impl;
 
 import com.transkript.reportcard.api.dto.GradeDto;
-import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.GradeMapper;
 import com.transkript.reportcard.business.service.i.GradeService;
@@ -11,8 +10,7 @@ import com.transkript.reportcard.business.service.i.SubjectRegistrationService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
 import com.transkript.reportcard.data.repository.GradeRepository;
@@ -37,12 +35,12 @@ public class GradeServiceImpl implements GradeService {
     public EntityResponse create(GradeDto gradeDto) {
         Grade grade = gradeMapper.gradeDtoToGrade(gradeDto);
 
-        SubjectRegistration registration = subjectRegistrationService.getEntity(grade.getKey().getRegistrationKey());
+        SubjectRegistration registration = subjectRegistrationService.getEntity(gradeDto.registrationId());
         Sequence sequence = sequenceService.getEntity(gradeDto.sequenceId());
 
         grade.setSequence(sequence);
-        grade.setSubjectRegistration(registration);
-        grade.setKey(GradeKey.builder().sequenceId(sequence.getId()).registrationKey(registration.getKey()).build());
+        grade.setRegistration(registration);
+        grade.setKey(GradeKey.builder().sequenceId(sequence.getId()).registrationId(registration.getId()).build());
 
         grade = gradeRepository.save(grade);
 
@@ -63,12 +61,11 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public List<GradeDto> getAllDtoByRegistration(SubjectRegistrationDto.SubjectRegistrationKeyDto registrationKeyDto) {
-        SubjectRegistrationKey registrationKey = new SubjectRegistrationKey(registrationKeyDto.subjectId(), registrationKeyDto.satId());
-        SubjectRegistration registration = subjectRegistrationService.getEntity(registrationKey);
+    public List<GradeDto> getAllDtoByRegistration(Long registrationId) {
+        SubjectRegistration registration = subjectRegistrationService.getEntity(registrationId);
 
         System.out.println(registration);
-        return gradeRepository.findAllBySubjectRegistration(registration)
+        return gradeRepository.findAllByRegistration(registration)
                 .stream()
                 .map(gradeMapper::gradeToGradeDto).toList();
     }
@@ -76,7 +73,7 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public GradeDto getDto(GradeDto.GradeKeyDto gradeKeyDto) {
         return gradeMapper.gradeToGradeDto(getEntity(GradeKey.builder()
-                .registrationKey(new SubjectRegistrationKey(gradeKeyDto.subjectId(), gradeKeyDto.satId()))
+                .registrationId(gradeKeyDto.registrationId())
                 .sequenceId(gradeKeyDto.sequenceId())
                 .build()));
     }
@@ -91,15 +88,15 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public List<Grade> getAllEntityBySubjectRegistration(SubjectRegistrationKey registrationId) {
+    public List<Grade> getAllEntityBySubjectRegistration(Long registrationId) {
         SubjectRegistration subjectRegistration = subjectRegistrationService.getEntity(registrationId);
-        return gradeRepository.findAllBySubjectRegistration(subjectRegistration);
+        return gradeRepository.findAllByRegistration(subjectRegistration);
     }
 
     @Override
     public EntityResponse update(GradeDto gradeDto) {
-        GradeKey gradeKey = GradeKey.builder().registrationKey(
-                new SubjectRegistrationKey(gradeDto.key().subjectId(), gradeDto.key().satId())
+        GradeKey gradeKey = GradeKey.builder().registrationId(
+                gradeDto.registrationId()
         ).sequenceId(gradeDto.sequenceId()).build();
         if (!gradeRepository.existsById(gradeKey)) {
             throw new EntityException.NotFound("grade", gradeKey);

@@ -7,29 +7,23 @@ import com.transkript.reportcard.data.enums.Gender;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
 public interface StudentMapper {
 
-    @Mappings({
-            @Mapping(target = "gender", expression = "java(mapGender(student.getGender()))")
-    })
+    @Mapping(target = "gender", expression = "java(mapGender(student.getGender()))")
+    @Mapping(source = "school.id", target = "schoolId")
     StudentDto mapStudentToDto(Student student);
 
     default String mapGender(Gender gender) {
-        return switch (gender) {
-            case MALE -> "M";
-            case FEMALE -> "F";
-            default -> "O";
-        };
+        return switch (gender) { case MALE -> "M"; case FEMALE -> "F"; default -> "O"; };
     }
 
-    @Mappings({
-            @Mapping(target = "studentApplications", ignore = true),
-            @Mapping(target = "gender", expression = "java(inverseMapGender(studentDto.gender()))")
-    })
+
     @InheritInverseConfiguration
+    @Mapping(target = "school", ignore = true)
+    @Mapping(target = "studentApplications", ignore = true)
+    @Mapping(target = "gender", expression = "java(inverseMapGender(studentDto.gender()))")
     Student mapDtoToStudent(StudentDto studentDto);
 
     default Gender inverseMapGender(String gender) {

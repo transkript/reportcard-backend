@@ -2,14 +2,17 @@ package com.transkript.reportcard.data.entity.relation;
 
 
 import com.transkript.reportcard.data.entity.Sequence;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.enums.GradeDesc;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -17,18 +20,18 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "grade")
@@ -49,13 +52,10 @@ public class Grade {
     @JoinColumn(name = "sequence_id", nullable = false)
     private Sequence sequence;
 
-    @MapsId("registrationKey")
     @ManyToOne(optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "SUBJECT_REGISTRATION_SUBJECTID", referencedColumnName = "SUBJECTID", nullable = false),
-            @JoinColumn(name = "SUBJECT_REGISTRATION_SATID", referencedColumnName = "SATID", nullable = false)
-    })
-    private SubjectRegistration subjectRegistration;
+    @JoinColumn(name = "subject_registration_id", nullable = false)
+    private SubjectRegistration registration;
+
 
     @PrePersist
     @PreUpdate
@@ -70,5 +70,18 @@ public class Grade {
             score = null;
             description = GradeDesc.NOT_GRADED;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Grade grade = (Grade) o;
+        return key != null && Objects.equals(key, grade.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
     }
 }

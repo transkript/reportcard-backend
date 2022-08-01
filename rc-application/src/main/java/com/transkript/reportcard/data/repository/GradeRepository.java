@@ -2,7 +2,7 @@ package com.transkript.reportcard.data.repository;
 
 
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface GradeRepository extends JpaRepository<Grade, GradeKey> {
-    List<Grade> findAllBySubjectRegistration(SubjectRegistration subjectRegistration);
+    List<Grade> findAllByRegistration(SubjectRegistration subjectRegistration);
 
     List<Grade> findAllBySequence(Sequence sequence);
 }

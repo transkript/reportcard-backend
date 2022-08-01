@@ -1,7 +1,6 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.GradeDto;
-import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.service.i.GradeService;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +39,10 @@ public class GradeController {
         return ResponseEntity.ok(gradeService.getAllDtoBySequence(sequenceId));
     }
 
-    @GetMapping(value = "/registration/key", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GradeDto>> getAllByRegistration(
-            @RequestBody SubjectRegistrationDto.SubjectRegistrationKeyDto registrationKeyDto
-    ) { return ResponseEntity.ok(gradeService.getAllDtoByRegistration(registrationKeyDto)); }
+    @GetMapping(value = "/registration/{registrationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GradeDto>> getAllByRegistration(@PathVariable Long registrationId) {
+        return ResponseEntity.ok(gradeService.getAllDtoByRegistration(registrationId));
+    }
 
     @GetMapping(value = "/key", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GradeDto> get(@RequestBody GradeDto.GradeKeyDto keyDto) {

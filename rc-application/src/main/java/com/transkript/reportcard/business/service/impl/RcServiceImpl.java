@@ -9,7 +9,7 @@ import com.transkript.reportcard.business.util.RcUtil;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
+import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.Term;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
@@ -79,16 +79,16 @@ public class RcServiceImpl implements RcService {
             Grade openGrade, closeGrade;
             {
                 try {
-                    openGrade = gradeService.getEntity(GradeKey.builder().sequenceId(openSeq.getId()).registrationKey(subjectRegistration.getKey()).build());
+                    openGrade = gradeService.getEntity(GradeKey.builder().sequenceId(openSeq.getId()).registrationId(subjectRegistration.getId()).build());
                 } catch (EntityException.NotFound e) {
-                    log.info("Opening grade not found for sequence {} and registration {}", openSeq.getId(), subjectRegistration.getKey());
-                    openGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(openSeq).subjectRegistration(subjectRegistration).build();
+                    log.info("Opening grade not found for sequence {} and registration {}", openSeq.getId(), subjectRegistration.getId());
+                    openGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(openSeq).registration(subjectRegistration).build();
                 }
                 try {
-                    closeGrade = gradeService.getEntity(GradeKey.builder().sequenceId(closeSeq.getId()).registrationKey(subjectRegistration.getKey()).build());
+                    closeGrade = gradeService.getEntity(GradeKey.builder().sequenceId(closeSeq.getId()).registrationId(subjectRegistration.getId()).build());
                 } catch (EntityException.NotFound e) {
-                    log.info("Closing grade not found for sequence {} and registration {}", closeSeq.getId(), subjectRegistration.getKey());
-                    closeGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(closeSeq).subjectRegistration(subjectRegistration).build();
+                    log.info("Closing grade not found for sequence {} and registration {}", closeSeq.getId(), subjectRegistration.getId());
+                    closeGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(closeSeq).registration(subjectRegistration).build();
                 }
             }
             subjectGrades.put(subjectRegistration.getSubject(), new Grade[]{openGrade, closeGrade});

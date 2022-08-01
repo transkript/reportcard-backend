@@ -1,7 +1,6 @@
 package com.transkript.reportcard.business.mapper;
 
 import com.transkript.reportcard.api.dto.GradeDto;
-import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InheritConfiguration;
@@ -14,18 +13,9 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface GradeMapper {
-    @Mapping(source = "key.subjectId", target = "key.registrationKey.subjectId")
-    @Mapping(source = "key.satId", target = "key.registrationKey.satId")
     @Mapping(source = "sequenceId", target = "sequence.id")
-    @Mapping(source = "key", target = "key")
+    @Mapping(source = "registrationId", target = "registration.id")
     Grade gradeDtoToGrade(GradeDto gradeDto);
-
-    default SubjectRegistrationKey mapRegistrationKey(GradeDto gradeDto) {
-        return new SubjectRegistrationKey(
-                gradeDto.key().subjectId(),
-                gradeDto.key().satId()
-        );
-    }
 
     @InheritInverseConfiguration(name = "gradeDtoToGrade")
     GradeDto gradeToGradeDto(Grade grade);
