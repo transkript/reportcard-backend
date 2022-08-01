@@ -1,30 +1,14 @@
 package com.transkript.reportcard.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-@Builder
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class SubjectDto {
-    @JsonProperty(value = "id")
-    private Long id;
-
-    @JsonProperty(value = "name")
-    private String name;
-
-    @JsonProperty(value = "code")
-    private String code;
-
-    @JsonProperty(value = "coefficient")
-    private Integer coefficient;
-
-    @JsonProperty(value = "section_id")
-    private Long sectionId;
-}
+public record SubjectDto(
+        Long id,
+        @NotNull @NotEmpty String name,
+        @NotNull @Min(0) Integer coefficient,
+        @NotNull @NotEmpty String code,
+        @NotNull Long sectionId
+) implements Serializable { }

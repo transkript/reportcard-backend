@@ -18,10 +18,10 @@ public class UserRequest {
     }
 
     public record Register(
-            @NotNull @JsonProperty(value = "username") String username,
-            @NotNull @JsonProperty(value = "password") String password,
-            @NotNull @JsonProperty(value = "first_name") String firstName,
-            @NotNull @JsonProperty(value = "last_name") String lastName
+            @NotNull String username,
+            @NotNull String password,
+            @NotNull String firstName,
+            @NotNull String lastName
     ) implements Serializable {
     }
 }

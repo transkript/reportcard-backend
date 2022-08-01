@@ -13,22 +13,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class SectionDto {
-    @JsonProperty(value = "id")
-    private Long id;
-
-    @JsonProperty(value = "name")
-    private String name;
-
-    @JsonProperty(value = "category")
-    private String category;
-
+     private Long id;
+     private String name;
+     private String category;
     // From relations
-    @JsonProperty(value = "number_of_class_levels")
     private Integer numberOfClassLevels;
-
-    @JsonProperty(value = "school_id")
     private Long schoolId;
-
-    @JsonProperty(value = "number_of_subjects")
     private Integer numberOfSubjects;
 }

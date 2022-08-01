@@ -11,15 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClassLevelSubDto {
-    @JsonProperty("id")
     private Long id;
-
-    @JsonProperty("name")
     private String name;
-
-    @JsonProperty("class_level_id")
     private Long classLevelId;
-
-    @JsonProperty("number_of_applications")
     private Integer numberOfApplications;
 }

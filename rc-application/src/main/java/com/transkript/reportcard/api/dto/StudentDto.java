@@ -12,16 +12,16 @@ import java.time.LocalDateTime;
 
 @Builder
 public record StudentDto(
-        @JsonProperty("id") @NotNull Long id,
-        @JsonProperty("name") @NotBlank String name,
-        @JsonProperty("gender") @NotBlank()
+        @NotNull Long id,
+        @NotBlank String name,
+
         @Size(min = 1, max = 1, message = "gender should have just 1 character: M or m (Male), F or f (Female), O or o (Other)")
-        String gender,
-        @JsonProperty("dob")
+        @NotBlank() String gender,
+
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime dob,
-        @JsonProperty("pob") @NotNull() String pob,
-        @JsonProperty("regno") String regNum,
-        @JsonProperty("school_id") Long schoolId
+        @NotNull() String pob,
+        String regNum,
+        Long schoolId
 ) implements Serializable {
 }
