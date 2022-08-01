@@ -13,8 +13,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
 public interface SchoolMapper {
     @Mapping(target = "numberOfSections", expression = "java(mapNumberOfSections(school.getSections()))")
-    @Mapping(source = "school.currentYear.id", target = "currentYearId")
-    @Mapping(source = "school.currentSequence.id", target = "currentSequenceId")
+    @Mapping(source = "school.currentYear.id", target = "currYearId")
+    @Mapping(source = "school.currentSequence.id", target = "currSeqId")
     SchoolDto mapSchoolToDto(School school);
 
     default Integer mapNumberOfSections(List<Section> sections) {

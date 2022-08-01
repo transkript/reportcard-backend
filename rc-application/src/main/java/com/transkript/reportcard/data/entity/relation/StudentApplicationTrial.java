@@ -33,13 +33,10 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "student_application_trial")
 public class StudentApplicationTrial {
-    @Column(name = "repeating", nullable = false)
-    Boolean repeating;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "order_number", nullable = false)
-    private Integer order;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @Column(name = "repeating", nullable = false) Boolean repeating;
+    @Column(name = "order_number", nullable = false) private Integer order;
+
     @Builder.Default
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -62,7 +59,7 @@ public class StudentApplicationTrial {
 
 
     @OneToMany(mappedBy = "studentApplicationTrial", orphanRemoval = true)
-    @ToString.Exclude
+    @ToString.Exclude @Builder.Default
     private List<SubjectRegistration> subjectRegistrations = new ArrayList<>();
 
 }

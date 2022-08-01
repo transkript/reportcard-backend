@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface SubjectRegistrationRepository extends JpaRepository<SubjectRegistration, Long> {
     Optional<SubjectRegistration> findBySubject(Subject subject);
 
-    Optional<SubjectRegistration> findByStudentApplicationTrialAndSubject(StudentApplicationTrial studentApplicationTrial, Subject subject);
+    Optional<SubjectRegistration> findBySubjectAndStudentApplicationTrial(Subject subject, StudentApplicationTrial studentApplicationTrial);
 
     List<SubjectRegistration> findAllByStudentApplicationTrial(StudentApplicationTrial studentApplicationTrial);
 }

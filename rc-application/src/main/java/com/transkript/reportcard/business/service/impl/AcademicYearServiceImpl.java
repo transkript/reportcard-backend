@@ -35,8 +35,8 @@ public class AcademicYearServiceImpl implements AcademicYearService {
     }
 
     @Override
-    public List<AcademicYearDto> getAcademicYears() {
-        return getAcademicYearEntities().stream().map(academicYearMapper::mapAcademicYearToDto).collect(Collectors.toList());
+    public List<AcademicYearDto> getAllDtos() {
+        return getAllEntities().stream().map(academicYearMapper::mapAcademicYearToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -45,14 +45,14 @@ public class AcademicYearServiceImpl implements AcademicYearService {
     }
 
     @Override
-    public EntityResponse update(Long id, AcademicYearDto academicYearDto) {
-        if (id != null && academicYearRepository.existsById(id)) {
+    public EntityResponse update(AcademicYearDto academicYearDto) {
+        if (academicYearRepository.existsById(academicYearDto.getId())) {
             AcademicYear academicYear = academicYearMapper.mapDtoToAcademicYear(academicYearDto);
-            academicYear.setId(id);
-            academicYearRepository.save(academicYear);
+            academicYear.setId(academicYear.getId());
+            academicYear = academicYearRepository.save(academicYear);
             return new EntityResponse(academicYear.getId(), ResponseMessage.SUCCESS.created(entityName), true);
         }
-        throw new EntityException.NotFound("academic year", id);
+        throw new EntityException.NotFound("academic year", academicYearDto.getId());
     }
 
     @Override
@@ -70,7 +70,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
     }
 
     @Override
-    public List<AcademicYear> getAcademicYearEntities() {
+    public List<AcademicYear> getAllEntities() {
         return academicYearRepository.findAll();
     }
 }

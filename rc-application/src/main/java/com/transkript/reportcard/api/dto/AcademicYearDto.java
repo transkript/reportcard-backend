@@ -17,18 +17,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AcademicYearDto {
-    @JsonProperty("id")
     private Long id;
 
-    @JsonProperty("name")
     private String name;
 
     //from relations
-
-    @JsonProperty(value = "start_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
-
-    @JsonProperty("academic_info")
     private AcademicInfoDto academicInfo;
 }

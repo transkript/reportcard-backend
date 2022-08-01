@@ -47,9 +47,9 @@ public class ClassListServiceImpl implements ClassListService {
     @Override
     public ClassListResponse getClassList(ClassListRequest request) {
         AcademicYear academicYear = academicYearService.getEntity(request.academicYearId());
-        ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classId());
+        ClassLevelSub classLevelSub = classLevelSubService.getEntity(request.classId());
         ClassLevel classLevel = classLevelSub.getClassLevel();
-        Subject subject = subjectService.getSubjectEntity(request.subjectId());
+        Subject subject = subjectService.getEntity(request.subjectId());
         Sequence sequence = sequenceService.getEntity(request.sequenceId());
 
 
@@ -60,21 +60,21 @@ public class ClassListServiceImpl implements ClassListService {
 
         List<StudentGrade> studentGrades = new ArrayList<>();
         sats.forEach(sat -> {
-            SubjectRegistration subjectRegistration = subjectRegistrationService.getEntity(sat.getId(), subject.getId());
+            SubjectRegistration subjectRegistration = subjectRegistrationService.getEntityBySubjectAndSat(subject.getId(), sat.getId());
 
             if (subjectRegistration.getGrades().stream().noneMatch(grade -> grade.getSequence().equals(sequence))) {
                 studentGrades.add(new StudentGrade(
                         studentMapper.mapStudentToDto(subjectRegistration.getStudentApplicationTrial().getStudentApplication().getStudent()),
-                        gradeMapper.mapGradeToDto(
-                                Grade.builder().gradeKey(GradeKey.builder().sequenceId(sequence.getId()).registrationId(subjectRegistration.getId()).build())
-                                        .score(null).description(GradeDesc.NOT_GRADED).subjectRegistration(subjectRegistration).sequence(sequence).build()
+                        gradeMapper.gradeToGradeDto(
+                                Grade.builder().key(GradeKey.builder().sequenceId(sequence.getId()).registrationId(subjectRegistration.getId()).build())
+                                        .score(null).description(GradeDesc.NOT_GRADED).registration(subjectRegistration).sequence(sequence).build()
                         )
                 ));
             } else {
                 subjectRegistration.getGrades().stream().filter(grade -> grade.getSequence().equals(sequence)).forEach(
                         grade -> studentGrades.add(new StudentGrade(
                                 studentMapper.mapStudentToDto(subjectRegistration.getStudentApplicationTrial().getStudentApplication().getStudent()),
-                                gradeMapper.mapGradeToDto(grade)
+                                gradeMapper.gradeToGradeDto(grade)
                         ))
                 );
             }
@@ -83,7 +83,7 @@ public class ClassListServiceImpl implements ClassListService {
         return new ClassListResponse(
                 String.format("%s %s", classLevel.getName(), classLevelSub.getName()),
                 sequence.getName(),
-                subjectMapper.mapSubjectToDto(subject),
+                subjectMapper.subjectToSubjectDto(subject),
                 classLevelSubMapper.mapClassLevelSubToDto(classLevelSub),
                 studentGrades
         );

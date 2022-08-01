@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface GradeRepository extends JpaRepository<Grade, GradeKey> {
-    List<Grade> findAllBySubjectRegistration(SubjectRegistration subjectRegistration);
+    List<Grade> findAllByRegistration(SubjectRegistration subjectRegistration);
 
     List<Grade> findAllBySequence(Sequence sequence);
 }

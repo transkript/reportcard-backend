@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +28,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EntityResponse> addStudent(@Valid @RequestBody StudentDto studentDto) {
+    public ResponseEntity<EntityResponse> create(@Valid @RequestBody StudentDto studentDto) {
         log.info("Adding student: {}", studentDto);
         return new ResponseEntity<>(studentService.addStudent(studentDto), HttpStatus.CREATED);
     }
@@ -37,26 +36,25 @@ public class StudentController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StudentDto>> getStudents() {
         log.info("Getting students");
-        return ResponseEntity.ok(studentService.getStudents());
+        return ResponseEntity.ok(studentService.getAllDto());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StudentDto> getStudent(@PathVariable("id") Long id) {
+    public ResponseEntity<StudentDto> get(@PathVariable Long id) {
         log.info("Getting student with id: {}", id);
-        return ResponseEntity.ok(studentService.getStudent(id));
+        return ResponseEntity.ok(studentService.getDto(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<EntityResponse> update(@Valid @RequestBody StudentDto studentDto) {
+        log.info("Updating student with id: {}", studentDto.id());
+        return ResponseEntity.ok(studentService.update(studentDto));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         log.info("Deleting student with id: {}", id);
-        studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
+        studentService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<EntityResponse> updateStudent(@PathVariable("id") @NotNull Long id, @Valid @RequestBody StudentDto studentDto) {
-        log.info("Updating student with id: {}", id);
-        return ResponseEntity.ok(studentService.updateStudent(id, studentDto));
-    }
-
 }

@@ -1,23 +1,23 @@
 package com.transkript.reportcard.business.mapper;
 
-
 import com.transkript.reportcard.api.dto.SubjectDto;
 import com.transkript.reportcard.data.entity.Subject;
-import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface SubjectMapper {
+    @Mapping(source = "sectionId", target = "section.id")
+    Subject subjectDtoToSubject(SubjectDto subjectDto);
 
-    @Mappings({@Mapping(target = "sectionId", expression = "java(subject.getSection().getId())")})
-    SubjectDto mapSubjectToDto(Subject subject);
+    @Mapping(source = "section.id", target = "sectionId")
+    SubjectDto subjectToSubjectDto(Subject subject);
 
-    @Mappings({
-            @Mapping(target = "section", ignore = true),
-    })
-    @InheritInverseConfiguration
-    Subject mapDtoToSubject(SubjectDto subjectDto);
-
+    @Mapping(source = "sectionId", target = "section.id")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Subject updateSubjectFromSubjectDto(SubjectDto subjectDto, @MappingTarget Subject subject);
 }

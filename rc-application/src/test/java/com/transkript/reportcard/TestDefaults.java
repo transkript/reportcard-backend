@@ -12,6 +12,7 @@ import com.transkript.reportcard.data.entity.Term;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class TestDefaults {
     public static final SequenceDto SEQUENCE_DTO = new SequenceDto(2L, "Second", 1L);
@@ -19,13 +20,11 @@ public class TestDefaults {
      * TODO Add actual object in place of all single relations
      */
     public static Subject SUBJECT = Subject.builder().id(1L).name("Math").code("MATHCODE").section(null).build();
-    public static SubjectDto SUBJECT_DTO = SubjectDto.builder().id(1L).name("Math DTO").code("MATHCODEDTO").build();
+    public static SubjectDto SUBJECT_DTO = new SubjectDto(1L, "Math Dto", 3, "MAT", 2L);
 
     public static SubjectRegistration SUBJECT_REGISTRATION = SubjectRegistration.builder()
-            .id(1L)
-            .createdAt(LocalDateTime.now()).subject(SUBJECT).grades(List.of()).build();
-    public static SubjectRegistrationDto SUBJECT_REGISTRATION_DTO = SubjectRegistrationDto.builder()
-            .createdAt(LocalDateTime.now()).subjectId(1L).build();
+            .id( 2L).createdAt(LocalDateTime.now()).subject(SUBJECT).grades(Set.of()).build();
+    public static SubjectRegistrationDto SUBJECT_REGISTRATION_DTO = null;
 
     public static Section SECTION = null;
     public static SectionDto SECTION_DTO = null;

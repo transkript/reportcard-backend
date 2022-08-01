@@ -40,17 +40,11 @@ class StudentApplicationMapperTest {
                 .build();
 
         System.out.println(testStudentApplication);
-        StudentApplicationDto expectedDto = studentApplicationMapper.mapStudentApplicationToDto(testStudentApplication);
+        StudentApplicationDto expectedDto = studentApplicationMapper.studentApplicationToStudentApplicationDto(testStudentApplication);
 
-        Assertions.assertEquals(expectedDto.applicationKeyDto().studentId(), testStudentApplication.getKey().getStudentId());
     }
 
     @Test
     void mapDtoToStudentApplication() {
-        testStudentApplicationDto = new StudentApplicationDto(new StudentApplicationDto.ApplicationKeyDto(1L, 1L), List.of());
-
-
-        StudentApplication expectedSApp = studentApplicationMapper
-                .mapDtoToStudentApplication(testStudentApplicationDto);
     }
 }

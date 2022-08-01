@@ -9,8 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -23,18 +25,19 @@ import javax.persistence.MapsId;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "grade")
 public class Grade {
     @EmbeddedId
-    private GradeKey gradeKey;
+    private GradeKey key;
 
     @Column(nullable = false, name = "grade_score")
     @Builder.Default
@@ -49,10 +52,10 @@ public class Grade {
     @JoinColumn(name = "sequence_id", nullable = false)
     private Sequence sequence;
 
-    @MapsId("registrationId")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "subject_registration_ID", nullable = false)
-    private SubjectRegistration subjectRegistration;
+    @JoinColumn(name = "subject_registration_id", nullable = false)
+    private SubjectRegistration registration;
+
 
     @PrePersist
     @PreUpdate
@@ -67,5 +70,18 @@ public class Grade {
             score = null;
             description = GradeDesc.NOT_GRADED;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Grade grade = (Grade) o;
+        return key != null && Objects.equals(key, grade.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
     }
 }

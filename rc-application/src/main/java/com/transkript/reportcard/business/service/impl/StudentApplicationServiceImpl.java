@@ -6,7 +6,7 @@ import com.transkript.reportcard.api.dto.request.StudentApplicationRequest;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
 import com.transkript.reportcard.business.mapper.StudentApplicationMapper;
-import com.transkript.reportcard.business.mapper.SubjectRegistrationMapper;
+import com.transkript.reportcard.business.mapper.StudentApplicationTrialMapper;
 import com.transkript.reportcard.business.service.i.AcademicYearService;
 import com.transkript.reportcard.business.service.i.ClassLevelSubService;
 import com.transkript.reportcard.business.service.i.StudentApplicationService;
@@ -28,9 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -40,14 +40,14 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     private final StudentApplicationRepository studentApplicationRepository;
     private final StudentApplicationTrialRepository studentApplicationTrialRepository;
     private final StudentApplicationMapper studentApplicationMapper;
+    private final StudentApplicationTrialMapper studentApplicationTrialMapper;
     private final StudentService studentService;
     private final AcademicYearService academicYearService;
     private final ClassLevelSubService classLevelSubService;
-    private final SubjectRegistrationMapper subjectRegistrationMapper;
     private final String entityName = EntityName.STUDENT_APPLICATION;
 
     @Override
-    public StudentApplication getAsEntity(@NotNull ApplicationKey applicationKey) {
+    public StudentApplication getEntity(@NotNull ApplicationKey applicationKey) {
         return studentApplicationRepository.findById(applicationKey)
                 .orElseThrow(() -> new EntityException.NotFound("student application", applicationKey.getStudentId(), applicationKey.getClassSubId()));
     }
@@ -58,7 +58,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
 
         AcademicYear academicYear = academicYearService.getEntity(request.yearId());
         Student student = studentService.getEntity(request.studentId());
-        ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classSubId());
+        ClassLevelSub classLevelSub = classLevelSubService.getEntity(request.classSubId());
 
         StudentApplicationTrial sat = new StudentApplicationTrial();
         {
@@ -79,11 +79,13 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         }
         {
             if (studentApplicationRepository.existsById(applicationKey)) {
-                sat.setRepeating(true);
                 studentApplication = studentApplicationRepository.findById(applicationKey).orElse(studentApplication);
+                sat.setOrder(studentApplication.getStudentApplicationTrials().size() + 1);
+                sat.setRepeating(true);
             } else {
                 studentApplication.setKey(applicationKey);
                 studentApplication = studentApplicationRepository.save(studentApplication);
+                sat.setOrder(1);
             }
             sat.setStudentApplication(studentApplication);
             studentApplicationTrialRepository.save(sat);
@@ -98,7 +100,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     public List<StudentApplicationDto> getAllAsDto() {
         return studentApplicationRepository.findAll()
                 .stream()
-                .map(studentApplicationMapper::mapStudentApplicationToDto)
+                .map(studentApplicationMapper::studentApplicationToStudentApplicationDto)
                 .collect(Collectors.toList());
     }
 
@@ -107,15 +109,14 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         if (request.classSubId() < 0) {
             return getAllAsResponseByYear(request.yearId());
         } else {
-            ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classSubId());
-            return getAllAsResponseByYear(request.yearId()).stream()
-                    .filter((sar) -> Objects.equals(sar.application().applicationKeyDto().classSubId(), classLevelSub.getId())).toList();
+            ClassLevelSub classLevelSub = classLevelSubService.getEntity(request.classSubId());
+            return new ArrayList<>();
         }
     }
 
     @Override
     public StudentApplicationResponse getAsResponse(StudentApplicationRequest request) {
-        StudentApplication application = getAsEntity(new ApplicationKey(request.studentId(), request.classSubId()));
+        StudentApplication application = getEntity(new ApplicationKey(request.studentId(), request.classSubId()));
         ClassLevelSub classLevelSub = application.getClassLevelSub();
         AcademicYear academicYear = academicYearService.getEntity(request.yearId());
         var sat = studentApplicationTrialRepository.findByAcademicYearAndStudentApplication(
@@ -124,8 +125,8 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
 
         return new StudentApplicationResponse(
                 classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),
-                studentService.getStudent(request.studentId()),
-                studentApplicationMapper.mapStudentApplicationToDto(application),
+                studentService.getDto(request.studentId()),
+                studentApplicationMapper.studentApplicationToStudentApplicationDto(application),
                 application.getStudentApplicationTrials().stream()
                         .filter(s -> sat.getAcademicYear().getId().equals(sat.getId())).toList()
         );
@@ -133,7 +134,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
 
     @Override
     public StudentApplicationDto getDto(StudentApplicationDto.ApplicationKeyDto applicationKeyDto) {
-        return studentApplicationMapper.mapStudentApplicationToDto(getAsEntity(
+        return studentApplicationMapper.studentApplicationToStudentApplicationDto(getEntity(
                 new ApplicationKey(applicationKeyDto.studentId(), applicationKeyDto.classSubId()))
         );
     }
@@ -146,14 +147,14 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
 
     @NotNull
     @Override
-    public List<StudentApplicationResponse> getAllAsResponseByYear(long yearId) {
+    public List<StudentApplicationResponse> getAllAsResponseByYear(Long yearId) {
         AcademicYear year = academicYearService.getEntity(yearId);
         return studentApplicationTrialRepository.findAllByAcademicYear(year).stream()
                 .map((sat) -> {
                     StudentApplication application = sat.getStudentApplication();
                     ClassLevelSub classLevelSub = application.getClassLevelSub();
-                    StudentDto studentDto = studentService.getStudent(application.getStudent().getId());
-                    StudentApplicationDto applicationDto = studentApplicationMapper.mapStudentApplicationToDto(application);
+                    StudentDto studentDto = studentService.getDto(application.getStudent().getId());
+                    StudentApplicationDto applicationDto = studentApplicationMapper.studentApplicationToStudentApplicationDto(application);
 
                     return new StudentApplicationResponse(
                             classLevelSub.getClassLevel().getName().concat(" ").concat(classLevelSub.getName()),

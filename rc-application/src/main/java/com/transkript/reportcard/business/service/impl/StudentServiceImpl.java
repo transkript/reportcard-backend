@@ -5,6 +5,7 @@ import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.business.mapper.StudentMapper;
 import com.transkript.reportcard.business.service.i.SchoolService;
 import com.transkript.reportcard.business.service.i.StudentService;
+import com.transkript.reportcard.business.util.SchoolUtil;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.School;
@@ -40,25 +41,24 @@ public class StudentServiceImpl implements StudentService {
             student.setDob(LocalDateTime.now());
         }
         student = studentRepository.save(student);
-
-
+        student.setRegNum(SchoolUtil.generateRegNo(student.getId(), school.getName()));
         return new EntityResponse(student.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
-    public List<StudentDto> getStudents() {
+    public List<StudentDto> getAllDto() {
         return studentRepository.findAll().stream()
                 .map(studentMapper::mapStudentToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public StudentDto getStudent(Long id) {
+    public StudentDto getDto(Long id) {
         return studentMapper.mapStudentToDto(getEntity(id));
     }
 
     @Override
-    public void deleteStudent(Long id) {
+    public void delete(Long id) {
         studentRepository.deleteById(id);
     }
 
@@ -68,9 +68,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public EntityResponse updateStudent(Long id, StudentDto studentDto) {
+    public EntityResponse update(StudentDto studentDto) {
         Student student = studentMapper.mapDtoToStudent(studentDto);
-        Student existingStudent = this.getEntity(id);
+        Student existingStudent = this.getEntity(studentDto.id());
 
         {
             assert existingStudent != null;

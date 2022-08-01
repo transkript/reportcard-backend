@@ -33,7 +33,7 @@ class SubjectRegistrationMapperTest {
     void mapDtoToSubjectRegistration() {
         // TODO load from TestDefaults
         SubjectRegistrationDto actualSubjectRegistrationDto = TestDefaults.SUBJECT_REGISTRATION_DTO;
-        SubjectRegistration expectedSubjectRegistration = this.subjectRegistrationMapper.mapDtoToSubjectRegistration(actualSubjectRegistrationDto);
+        SubjectRegistration expectedSubjectRegistration = this.subjectRegistrationMapper.subjectRegistrationDtoToSubjectRegistration(actualSubjectRegistrationDto);
 
 
     }

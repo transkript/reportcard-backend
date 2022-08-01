@@ -46,7 +46,7 @@ public class RcServiceImpl implements RcService {
         StudentApplication application = studentApplicationTrial.getStudentApplication();
         ClassLevelSub classLevelSub = application.getClassLevelSub();
 
-        Term term = termService.getTermEntity(termId);
+        Term term = termService.getEntity(termId);
 
         ReportCard reportCard = getReportCardModel(studentApplicationTrial, term, classLevelSub, reportCardRequest);
         List<ReportCard> classReportCards = getClassReportCardModels(term, classLevelSub, reportCardRequest);
@@ -79,16 +79,16 @@ public class RcServiceImpl implements RcService {
             Grade openGrade, closeGrade;
             {
                 try {
-                    openGrade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(openSeq.getId()).registrationId(subjectRegistration.getId()).build());
+                    openGrade = gradeService.getEntity(GradeKey.builder().sequenceId(openSeq.getId()).registrationId(subjectRegistration.getId()).build());
                 } catch (EntityException.NotFound e) {
                     log.info("Opening grade not found for sequence {} and registration {}", openSeq.getId(), subjectRegistration.getId());
-                    openGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(openSeq).subjectRegistration(subjectRegistration).build();
+                    openGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(openSeq).registration(subjectRegistration).build();
                 }
                 try {
-                    closeGrade = gradeService.getGradeEntity(GradeKey.builder().sequenceId(closeSeq.getId()).registrationId(subjectRegistration.getId()).build());
+                    closeGrade = gradeService.getEntity(GradeKey.builder().sequenceId(closeSeq.getId()).registrationId(subjectRegistration.getId()).build());
                 } catch (EntityException.NotFound e) {
                     log.info("Closing grade not found for sequence {} and registration {}", closeSeq.getId(), subjectRegistration.getId());
-                    closeGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(closeSeq).subjectRegistration(subjectRegistration).build();
+                    closeGrade = Grade.builder().score(0F).description(GradeDesc.NOT_GRADED).sequence(closeSeq).registration(subjectRegistration).build();
                 }
             }
             subjectGrades.put(subjectRegistration.getSubject(), new Grade[]{openGrade, closeGrade});

@@ -7,7 +7,7 @@ public class ResponseMessage {
         }
 
         public static String updated(String entity) {
-            return String.format("Successfully created %s entity", entity);
+            return String.format("Successfully updated %s entity", entity);
         }
     }
 }

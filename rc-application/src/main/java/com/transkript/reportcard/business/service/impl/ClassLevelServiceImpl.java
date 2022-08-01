@@ -34,7 +34,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     private final SectionService sectionService;
 
     @Override
-    public EntityResponse addClassLevel(ClassLevelDto classLevelDto) {
+    public EntityResponse create(ClassLevelDto classLevelDto) {
 
 
         Optional<ClassLevel> optionalClassLevel = classLevelRepository.findByName(classLevelDto.getName());
@@ -56,34 +56,34 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     }
 
     @Override
-    public List<ClassLevelDto> getClassLevels() {
+    public List<ClassLevelDto> getAllDtos() {
         return classLevelRepository.findAll().stream()
                 .map(classLevelMapper::mapClassLevelToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ClassLevelDto> getClassLevelsBySection(Long sectionId) {
-        Section section = sectionService.getSectionEntity(sectionId);
+    public List<ClassLevelDto> getAllDtosBySection(Long sectionId) {
+        Section section = sectionService.getEntity(sectionId);
         return classLevelRepository.findAllBySection(section).stream().map(classLevelMapper::mapClassLevelToDto).toList();
     }
 
     @Override
-    public ClassLevelDto getClassLevel(Long id) {
-        return classLevelMapper.mapClassLevelToDto(getClassLevelEntity(id));
+    public ClassLevelDto getDto(Long id) {
+        return classLevelMapper.mapClassLevelToDto(getEntity(id));
     }
 
     @Override
-    public ClassLevel getClassLevelEntity(Long id) {
+    public ClassLevel getEntity(Long id) {
         return classLevelRepository.findById(id).orElseThrow(() -> {
             throw new EntityException.NotFound("class level", id);
         });
     }
 
     @Override
-    public EntityResponse updateClassLevel(Long id, ClassLevelDto classLevelDto) {
-        ClassLevel classLevel = getClassLevelEntity(id);
-        Section existingSection = sectionService.getSectionEntity(classLevelDto.getId());
+    public EntityResponse update(ClassLevelDto classLevelDto) {
+        ClassLevel classLevel = getEntity(classLevelDto.getId());
+        Section existingSection = sectionService.getEntity(classLevelDto.getId());
 
         if (!Objects.equals(classLevelDto.getName(), classLevel.getName())) {
             if (classLevelRepository.findByName(classLevelDto.getName()).isPresent()) {
@@ -92,7 +92,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
             classLevel.setName(classLevelDto.getName());
         }
         if (!Objects.equals(classLevelDto.getSectionId(), existingSection.getId())) {
-            Section section = sectionService.getSectionEntity(classLevelDto.getSectionId());
+            Section section = sectionService.getEntity(classLevelDto.getSectionId());
             classLevel.setSection(section);
         }
         classLevel = classLevelRepository.save(classLevel);
@@ -101,7 +101,7 @@ public class ClassLevelServiceImpl implements ClassLevelService {
     }
 
     @Override
-    public void deleteClassLevel(Long id) {
+    public void delete(Long id) {
         if (id != null && classLevelRepository.existsById(id)) {
             classLevelRepository.deleteById(id);
             return;

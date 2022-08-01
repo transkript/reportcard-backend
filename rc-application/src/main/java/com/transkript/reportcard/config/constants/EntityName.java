@@ -14,4 +14,5 @@ public class EntityName {
     public static final String TERM = "term";
     public static final String SEQUENCE = "sequence";
     public static final String USER = "user";
+    public static final String SECTION = "section";
 }

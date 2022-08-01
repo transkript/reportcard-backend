@@ -1,10 +1,12 @@
 package com.transkript.reportcard.api.controller;
 
 import com.transkript.reportcard.api.dto.StudentApplicationDto;
+import com.transkript.reportcard.api.dto.StudentApplicationTrialDto;
 import com.transkript.reportcard.api.dto.request.StudentApplicationRequest;
 import com.transkript.reportcard.api.dto.response.EntityResponse;
 import com.transkript.reportcard.api.dto.response.StudentApplicationResponse;
 import com.transkript.reportcard.business.service.i.StudentApplicationService;
+import com.transkript.reportcard.business.service.i.StudentApplicationTrialService;
 import com.transkript.reportcard.exception.ReportCardException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ import java.util.List;
 @RequestMapping(value = "/api/student_application")
 public class StudentApplicationController {
     private final StudentApplicationService studentApplicationService;
+    private final StudentApplicationTrialService studentApplicationTrialService;
 
     @PostMapping(value = "")
     public ResponseEntity<EntityResponse> create(@Valid @RequestBody StudentApplicationRequest applicationRequest) {
@@ -42,11 +45,17 @@ public class StudentApplicationController {
         return ResponseEntity.ok(studentApplicationService.getAllAsDto());
     }
 
-    @GetMapping(value = "/one")
-    public ResponseEntity<StudentApplicationDto> read(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long classId) {
-        var request = new StudentApplicationDto.ApplicationKeyDto(studentId, classId);
-        log.info("Getting student application by request {}", request);
-        return ResponseEntity.ok(studentApplicationService.getDto(request));
+    @GetMapping(value = "/sat")
+    public ResponseEntity<List<StudentApplicationTrialDto>> getTrialsByYearAndClass(@RequestParam @NotNull Long classSubId, @RequestParam @NotNull Long yearId) {
+        return ResponseEntity.ok(studentApplicationTrialService.getAllTrialsByYearAndClass(yearId, classSubId));
+    }
+
+    @GetMapping(value = "/key")
+    public ResponseEntity<StudentApplicationDto> get(
+            @RequestBody StudentApplicationDto.ApplicationKeyDto keyDto
+    ) {
+        log.info("Getting student application by request {}", keyDto);
+        return ResponseEntity.ok(studentApplicationService.getDto(keyDto));
     }
 
     @GetMapping(value = "one_full")
@@ -64,18 +73,17 @@ public class StudentApplicationController {
     }
 
     @GetMapping(value = "/all_full")
-    public ResponseEntity<List<StudentApplicationResponse>> readAllFull(@RequestParam @NotNull Long classId, @RequestParam @NotNull Long yearId) {
+    public ResponseEntity<List<StudentApplicationResponse>> getAllByRequest(@RequestParam @NotNull Long classId, @RequestParam @NotNull Long yearId) {
         StudentApplicationRequest request = new StudentApplicationRequest(classId, yearId, null);
         log.info("Getting student applications by request: {}", request);
         return ResponseEntity.ok(studentApplicationService.getAllAsResponses(request));
     }
 
     @DeleteMapping(value = "")
-    public ResponseEntity<Void> delete(@RequestParam @NotNull Long studentId, @RequestParam @NotNull Long classId) {
-        var applicationKeyDto = new StudentApplicationDto.ApplicationKeyDto(studentId, classId);
-        log.info("Deleting student application by request {}", applicationKeyDto);
-        studentApplicationService.delete(applicationKeyDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> delete(@RequestBody StudentApplicationDto.ApplicationKeyDto keyDto) {
+        log.info("Deleting student application by request {}", keyDto);
+        studentApplicationService.delete(keyDto);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "")

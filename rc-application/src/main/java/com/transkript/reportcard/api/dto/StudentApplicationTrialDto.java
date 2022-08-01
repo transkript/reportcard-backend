@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 public record StudentApplicationTrialDto(
         Long id,
         Integer order,
-        @JsonProperty(value = "repeating") Boolean repeating,
+        Boolean repeating,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        @JsonProperty(value = "created_at") LocalDateTime createdAt,
+        LocalDateTime createdAt,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        @JsonProperty(value = "updated_at") LocalDateTime updatedAt,
-        @JsonProperty(value = "academicYearId") Long academicYearId,
-        @JsonProperty(value = "num_of_subjects") Integer numberOfSubjects,
-        @JsonProperty(value = "application_key") StudentApplicationDto.ApplicationKeyDto applicationKeyDto
+        LocalDateTime updatedAt,
+        Long academicYearId,
+        Integer numberOfSubjects,
+        StudentApplicationDto.ApplicationKeyDto applicationKey
 ) implements Serializable {
 
 }

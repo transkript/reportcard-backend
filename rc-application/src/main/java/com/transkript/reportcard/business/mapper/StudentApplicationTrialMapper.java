@@ -16,7 +16,7 @@ public interface StudentApplicationTrialMapper {
     StudentApplicationTrial studentApplicationTrialDtoToStudentApplicationTrial(StudentApplicationTrialDto studentApplicationTrialDto);
 
     @Mapping(source = "academicYear.id", target = "academicYearId")
-    @Mapping(source = "studentApplication.key", target = "applicationKeyDto")
+    @Mapping(source = "studentApplication.key", target = "applicationKey")
     @Mapping(target = "numberOfSubjects", expression = "java(studentApplicationTrial.getSubjectRegistrations().size())")
     StudentApplicationTrialDto studentApplicationTrialToStudentApplicationTrialDto(StudentApplicationTrial studentApplicationTrial);
 

@@ -1,30 +1,19 @@
 package com.transkript.reportcard.business.mapper;
 
 import com.transkript.reportcard.api.dto.StudentApplicationDto;
-import com.transkript.reportcard.data.entity.composite.ApplicationKey;
 import com.transkript.reportcard.data.entity.relation.StudentApplication;
-import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", implementationPackage = "<PACKAGE_NAME>.impl")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface StudentApplicationMapper {
-    @Mappings({
-            @Mapping(target = "applicationKeyDto", expression = "java(mapApplicationKey(application.getKey()))"),
-    })
-    StudentApplicationDto mapStudentApplicationToDto(StudentApplication application);
+    StudentApplication studentApplicationDtoToStudentApplication(StudentApplicationDto studentApplicationDto);
 
-    default StudentApplicationDto.ApplicationKeyDto mapApplicationKey(ApplicationKey applicationKey) {
-        return new StudentApplicationDto.ApplicationKeyDto(applicationKey.getStudentId(), applicationKey.getClassSubId());
-    }
+    StudentApplicationDto studentApplicationToStudentApplicationDto(StudentApplication studentApplication);
 
-    @Mappings({
-            @Mapping(target = "key", ignore = true),
-            @Mapping(target = "student", ignore = true),
-            @Mapping(target = "classLevelSub", ignore = true),
-            @Mapping(target = "studentApplicationTrials", ignore = true),
-    })
-    @InheritInverseConfiguration
-    StudentApplication mapDtoToStudentApplication(StudentApplicationDto studentapplicationDto);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    StudentApplication updateStudentApplicationFromStudentApplicationDto(StudentApplicationDto studentApplicationDto, @MappingTarget StudentApplication studentApplication);
 }
