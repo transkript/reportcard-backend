@@ -9,7 +9,8 @@ import com.transkript.reportcard.business.service.i.SubjectService;
 import com.transkript.reportcard.config.constants.EntityName;
 import com.transkript.reportcard.config.constants.ResponseMessage;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
 import com.transkript.reportcard.data.repository.SubjectRegistrationRepository;
 import com.transkript.reportcard.exception.EntityException;
@@ -32,28 +33,28 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     private final SubjectService subjectService;
     private final StudentApplicationTrialService studentApplicationTrialService;
 
-
     @NotNull
     @Override
     public EntityResponse create(@NotNull SubjectRegistrationDto subjectRegistrationDto) {
-        SubjectRegistration subjectRegistration = subjectRegistrationMapper.mapDtoToSubjectRegistration(subjectRegistrationDto);
-        subjectRegistration.setCreatedAt(LocalDateTime.now());
-        subjectRegistration.setUpdatedAt(LocalDateTime.now());
-        subjectRegistration.setId(null);
+        SubjectRegistrationKey key = new SubjectRegistrationKey(
+                subjectRegistrationDto.key().subjectId(),
+                subjectRegistrationDto.key().satId()
+        );
 
         StudentApplicationTrial sat = studentApplicationTrialService.getEntity(subjectRegistrationDto.satId());
-        Subject subject = subjectService.getSubjectEntity(subjectRegistrationDto.subjectId());
+        Subject subject = subjectService.getEntity(subjectRegistrationDto.subjectId());
 
-        Optional<SubjectRegistration> srOptional = subjectRegistrationRepository.findByStudentApplicationTrialAndSubject(sat, subject);
+        Optional<SubjectRegistration> srOptional = subjectRegistrationRepository.findById(key);
         if (srOptional.isPresent()) {
-            throw new EntityException.AlreadyExists(entityName, srOptional.get().getId());
+            throw new EntityException.AlreadyExists(entityName, srOptional.get().getKey());
         }
+        SubjectRegistration subjectRegistration = subjectRegistrationRepository.save(
+                SubjectRegistration.builder()
+                        .studentApplicationTrial(sat).subject(subject).key(key)
+                        .createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).build()
+        );
 
-        subjectRegistration.setStudentApplicationTrial(sat);
-        subjectRegistration.setSubject(subject);
-
-        return new EntityResponse(subject.getId(), ResponseMessage.SUCCESS.created(entityName), true);
-
+        return new EntityResponse(subjectRegistration.getKey(), ResponseMessage.SUCCESS.created(entityName), true);
     }
 
     @NotNull
@@ -64,44 +65,31 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
 
     @NotNull
     @Override
-    public List<SubjectRegistrationDto> getDtoList(long satId) {
+    public List<SubjectRegistrationDto> getAllDtoBySAT(Long satId) {
         // TODO get by a particular student, year, classSub
-        return getEntitiesByApplicationTrial(satId)
-                .stream().map(subjectRegistrationMapper::mapSubjectRegistrationToDto).collect(Collectors.toList());
+        StudentApplicationTrial sat = studentApplicationTrialService.getEntity(satId);
+        return subjectRegistrationRepository.findAllByStudentApplicationTrial(sat)
+                .stream().map(subjectRegistrationMapper::subjectRegistrationToSubjectRegistrationDto).toList();
     }
 
     @Override
-    public SubjectRegistrationDto getDto(long registrationId) {
-        return subjectRegistrationMapper.mapSubjectRegistrationToDto(getEntity(registrationId));
+    public SubjectRegistrationDto getDto(SubjectRegistrationDto.SubjectRegistrationKeyDto keyDto) {
+        SubjectRegistrationKey key = new SubjectRegistrationKey(keyDto.subjectId(), keyDto.satId());
+        return subjectRegistrationMapper.subjectRegistrationToSubjectRegistrationDto(getEntity(key));
     }
 
     @Override
     @Transactional
-    public void delete(long registrationId) {
-        subjectRegistrationRepository.deleteById(registrationId);
+    public void delete(SubjectRegistrationDto.SubjectRegistrationKeyDto keyDto) {
+        SubjectRegistrationKey key = new SubjectRegistrationKey(keyDto.subjectId(), keyDto.satId());
+        subjectRegistrationRepository.deleteById(key);
     }
 
     @NotNull
     @Override
     @Transactional(readOnly = true)
-    public SubjectRegistration getEntity(long registrationId) {
-        return subjectRegistrationRepository.findById(registrationId)
-                .orElseThrow(() -> new EntityException.NotFound("subject registration", registrationId));
-    }
-
-    @NotNull
-    @Override
-    public SubjectRegistration getEntity(long satId, long subjectId) {
-        StudentApplicationTrial trial = studentApplicationTrialService.getEntity(satId);
-        Subject subject = subjectService.getSubjectEntity(subjectId);
-        return subjectRegistrationRepository.findByStudentApplicationTrialAndSubject(trial, subject)
-                .orElseThrow(() -> new EntityException.NotFound("subject registration", satId, subjectId));
-    }
-
-    @NotNull
-    @Transactional(readOnly = true)
-    public List<SubjectRegistration> getEntitiesByApplicationTrial(long satId) {
-        StudentApplicationTrial trial = studentApplicationTrialService.getEntity(satId);
-        return subjectRegistrationRepository.findAllByStudentApplicationTrial(trial);
+    public SubjectRegistration getEntity(SubjectRegistrationKey key) {
+        return subjectRegistrationRepository.findById(key)
+                .orElseThrow(() -> new EntityException.NotFound("subject registration", key));
     }
 }

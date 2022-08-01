@@ -31,23 +31,22 @@ public class SubjectServiceImpl implements SubjectService {
     private final SectionService sectionService;
     private final String entityName = EntityName.SUBJECT;
 
-    @Override
-    public List<SubjectDto> getSubjects() {
+    public List<SubjectDto> getAllDto() {
 
         return subjectRepository.findAll().stream()
-                .map(subjectMapper::mapSubjectToDto)
+                .map(subjectMapper::subjectToSubjectDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public SubjectDto getSubject(Long id) {
-        return subjectMapper.mapSubjectToDto(getSubjectEntity(id));
+    public SubjectDto getDto(Long id) {
+        return subjectMapper.subjectToSubjectDto(getEntity(id));
     }
 
     @Override
-    public EntityResponse addSubject(SubjectDto subjectDto) {
-        Subject subject = subjectMapper.mapDtoToSubject(subjectDto);
-        Section section = sectionService.getSectionEntity(subjectDto.getSectionId());
+    public EntityResponse create(SubjectDto subjectDto) {
+        Subject subject = subjectMapper.subjectDtoToSubject(subjectDto);
+        Section section = sectionService.getEntity(subjectDto.sectionId());
         subject.setId(null);
         subject.setSection(section);
 
@@ -56,40 +55,28 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public EntityResponse updateSubject(Long id, SubjectDto subjectDto) {
-        if (id != null && subjectRepository.existsById(id) && id.equals(subjectDto.getId())) {
-            Subject subject = subjectRepository.getById(id);
-            if (subjectDto.getName() != null & !Objects.equals(subjectDto.getName(), subject.getName())) {
-                subject.setName(subjectDto.getName());
-            }
-            if (subjectDto.getCode() != null & !Objects.equals(subjectDto.getCode(), subject.getCode())) {
-                subject.setCode(subjectDto.getCode());
-            }
-            if (subjectDto.getCoefficient() != null && !Objects.equals(subjectDto.getCoefficient(), subject.getCoefficient())) {
-                subject.setCoefficient(subjectDto.getCoefficient());
-            }
-            if (subjectDto.getSectionId() != null && !Objects.equals(subjectDto.getSectionId(), subject.getSection().getId())) {
-                Section section = sectionService.getSectionEntity(subjectDto.getSectionId());
-                subject.setSection(section);
-            }
-            return new EntityResponse(subject.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
+    public EntityResponse update(SubjectDto subjectDto) {
+        Subject subject = getEntity(subjectDto.id());
+        subject.setName(subjectDto.name());
+        subject.setCode(subjectDto.code());
+        subject.setCoefficient(subjectDto.coefficient());
+        if (!Objects.equals(subjectDto.sectionId(), subject.getSection().getId())) {
+            Section section = sectionService.getEntity(subjectDto.sectionId());
+            subject.setSection(section);
         }
-        throw new EntityException.NotFound("subject");
+        subject = subjectRepository.save(subject);
+        return new EntityResponse(subject.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
-    public String deleteSubject(Long id) {
-        if (id != null && subjectRepository.existsById(id)) {
-            subjectRepository.deleteById(id);
-            return "Subject with ID: " + id + "Successfully Deleted";
-        }
-        throw new EntityException.NotFound("subject");
+    public void delete(Long id) {
+        subjectRepository.deleteById(id);
     }
 
     @Override
-    public Subject getSubjectEntity(Long subjectId) {
-        return subjectRepository.findById(subjectId).orElseThrow(
-                () -> new EntityException.NotFound("subject", subjectId)
+    public Subject getEntity(Long id) {
+        return subjectRepository.findById(id).orElseThrow(
+                () -> new EntityException.NotFound("subject", id)
         );
     }
 }

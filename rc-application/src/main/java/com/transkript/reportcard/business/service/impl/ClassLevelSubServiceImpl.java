@@ -30,8 +30,8 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     ClassLevelService classLevelService;
 
     @Override
-    public EntityResponse addClassLevelSub(ClassLevelSubDto classLevelSubDto) {
-        ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
+    public EntityResponse create(ClassLevelSubDto classLevelSubDto) {
+        ClassLevel classLevel = classLevelService.getEntity(classLevelSubDto.getClassLevelId());
 
         if (classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
             throw new EntityException.AlreadyExists(
@@ -49,28 +49,28 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     }
 
     @Override
-    public List<ClassLevelSubDto> getClassLevelSubs() {
+    public List<ClassLevelSubDto> getAllDto() {
         return classLevelSubRepository.findAll().stream()
                 .map(classLevelSub -> getClassLevelSubMapper().mapClassLevelSubToDto(classLevelSub))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ClassLevelSubDto> getClassLevelSubsByClassLevel(Long levelId) {
-        ClassLevel classLevel = classLevelService.getClassLevelEntity(levelId);
+    public List<ClassLevelSubDto> getAllDtoByClassLevel(Long levelId) {
+        ClassLevel classLevel = classLevelService.getEntity(levelId);
         return classLevelSubRepository.findAllByClassLevel(classLevel).stream()
                 .map(classLevelSubMapper::mapClassLevelSubToDto).toList();
     }
 
     @Override
-    public ClassLevelSubDto getClassLevelSub(Long id) {
-        return classLevelSubMapper.mapClassLevelSubToDto(getClassLevelSubEntity(id));
+    public ClassLevelSubDto getDto(Long id) {
+        return classLevelSubMapper.mapClassLevelSubToDto(getEntity(id));
     }
 
     @Override
-    public EntityResponse updateClassLevelSub(Long id, ClassLevelSubDto classLevelSubDto) {
-        if (id != null && classLevelSubRepository.existsById(id) && id.equals(classLevelSubDto.getId())) {
-            ClassLevel classLevel = classLevelService.getClassLevelEntity(classLevelSubDto.getClassLevelId());
+    public EntityResponse update(ClassLevelSubDto classLevelSubDto) {
+        if (classLevelSubRepository.existsById(classLevelSubDto.getId())) {
+            ClassLevel classLevel = classLevelService.getEntity(classLevelSubDto.getClassLevelId());
 
             if (classLevelSubRepository.findByNameAndClassLevel(classLevelSubDto.getName(), classLevel).isPresent()) {
                 throw new EntityException.AlreadyExists(
@@ -80,16 +80,16 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
             }
 
             ClassLevelSub classLevelSub = classLevelSubMapper.mapDtoToClassLevelSub(classLevelSubDto);
-            classLevelSub.setId(id);
+            classLevelSub.setId(classLevelSubDto.getId());
             classLevelSub.setClassLevel(classLevel);
             classLevelSubRepository.save(classLevelSub);
             return new EntityResponse(classLevelSub.getId(), ResponseMessage.SUCCESS.created(entityName), true);
         }
-        throw new EntityException.NotFound("class level" + id);
+        throw new EntityException.NotFound("class level" + classLevelSubDto.getId());
     }
 
     @Override
-    public void deleteClassLevelSub(Long id) {
+    public void delete(Long id) {
         if (id != null && classLevelSubRepository.existsById(id)) {
             classLevelSubRepository.deleteById(id);
             return;
@@ -98,7 +98,7 @@ public class ClassLevelSubServiceImpl implements ClassLevelSubService {
     }
 
     @Override
-    public ClassLevelSub getClassLevelSubEntity(Long id) {
+    public ClassLevelSub getEntity(Long id) {
         return classLevelSubRepository.findById(id).orElseThrow(() -> {
             throw new EntityException.NotFound("class level" + id);
         });

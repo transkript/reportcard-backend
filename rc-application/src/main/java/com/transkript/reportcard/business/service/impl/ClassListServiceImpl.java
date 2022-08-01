@@ -1,5 +1,6 @@
 package com.transkript.reportcard.business.service.impl;
 
+import com.transkript.reportcard.api.dto.SubjectRegistrationDto;
 import com.transkript.reportcard.api.dto.request.ClassListRequest;
 import com.transkript.reportcard.api.dto.response.ClassListResponse;
 import com.transkript.reportcard.api.dto.response.StudentGrade;
@@ -19,7 +20,8 @@ import com.transkript.reportcard.data.entity.ClassLevel;
 import com.transkript.reportcard.data.entity.ClassLevelSub;
 import com.transkript.reportcard.data.entity.Sequence;
 import com.transkript.reportcard.data.entity.Subject;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.composite.SubjectRegistrationKey;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
 import com.transkript.reportcard.data.entity.relation.StudentApplicationTrial;
@@ -47,9 +49,9 @@ public class ClassListServiceImpl implements ClassListService {
     @Override
     public ClassListResponse getClassList(ClassListRequest request) {
         AcademicYear academicYear = academicYearService.getEntity(request.academicYearId());
-        ClassLevelSub classLevelSub = classLevelSubService.getClassLevelSubEntity(request.classId());
+        ClassLevelSub classLevelSub = classLevelSubService.getEntity(request.classId());
         ClassLevel classLevel = classLevelSub.getClassLevel();
-        Subject subject = subjectService.getSubjectEntity(request.subjectId());
+        Subject subject = subjectService.getEntity(request.subjectId());
         Sequence sequence = sequenceService.getEntity(request.sequenceId());
 
 
@@ -60,13 +62,15 @@ public class ClassListServiceImpl implements ClassListService {
 
         List<StudentGrade> studentGrades = new ArrayList<>();
         sats.forEach(sat -> {
-            SubjectRegistration subjectRegistration = subjectRegistrationService.getEntity(sat.getId(), subject.getId());
+            SubjectRegistration subjectRegistration = subjectRegistrationService.getEntity(
+                    new SubjectRegistrationKey(subject.getId(), sat.getId())
+            );
 
             if (subjectRegistration.getGrades().stream().noneMatch(grade -> grade.getSequence().equals(sequence))) {
                 studentGrades.add(new StudentGrade(
                         studentMapper.mapStudentToDto(subjectRegistration.getStudentApplicationTrial().getStudentApplication().getStudent()),
-                        gradeMapper.mapGradeToDto(
-                                Grade.builder().gradeKey(GradeKey.builder().sequenceId(sequence.getId()).registrationId(subjectRegistration.getId()).build())
+                        gradeMapper.gradeToGradeDto(
+                                Grade.builder().key(GradeKey.builder().sequenceId(sequence.getId()).registrationKey(subjectRegistration.getKey()).build())
                                         .score(null).description(GradeDesc.NOT_GRADED).subjectRegistration(subjectRegistration).sequence(sequence).build()
                         )
                 ));
@@ -74,7 +78,7 @@ public class ClassListServiceImpl implements ClassListService {
                 subjectRegistration.getGrades().stream().filter(grade -> grade.getSequence().equals(sequence)).forEach(
                         grade -> studentGrades.add(new StudentGrade(
                                 studentMapper.mapStudentToDto(subjectRegistration.getStudentApplicationTrial().getStudentApplication().getStudent()),
-                                gradeMapper.mapGradeToDto(grade)
+                                gradeMapper.gradeToGradeDto(grade)
                         ))
                 );
             }
@@ -83,7 +87,7 @@ public class ClassListServiceImpl implements ClassListService {
         return new ClassListResponse(
                 String.format("%s %s", classLevel.getName(), classLevelSub.getName()),
                 sequence.getName(),
-                subjectMapper.mapSubjectToDto(subject),
+                subjectMapper.subjectToSubjectDto(subject),
                 classLevelSubMapper.mapClassLevelSubToDto(classLevelSub),
                 studentGrades
         );

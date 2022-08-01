@@ -48,7 +48,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public List<SchoolDto> getSchools() {
+    public List<SchoolDto> getAllDto() {
         return schoolRepository.findAll().stream()
                 .map(schoolMapper::mapSchoolToDto)
                 .collect(Collectors.toList());
@@ -60,28 +60,19 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public EntityResponse update(Long id, SchoolDto schoolDto) {
-        if (id != null && schoolRepository.existsById(id)) {
-            School school = schoolMapper.mapDtoToSchool(schoolDto);
-            school.setId(id);
-            AcademicYear year = academicYearService.getEntity(schoolDto.currentYearId());
-            Sequence sequence = sequenceService.getEntity(schoolDto.currentSequenceId());
-            school.setCurrentYear(year);
-            school.setCurrentSequence(sequence);
-            assert sequence != null;
-            school.setCurrentTerm(sequence.getTerm().getName());
-            schoolRepository.save(school);
-            return new EntityResponse(school.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
-        }
-        throw new EntityException.NotFound("school", schoolDto.id());
+    public EntityResponse update(SchoolDto schoolDto) {
+        School school = getEntity(schoolDto.id());
+        AcademicYear year = academicYearService.getEntity(schoolDto.currYearId());
+        Sequence sequence = sequenceService.getEntity(schoolDto.currSeqId());
+        school.setCurrentYear(year);
+        school.setCurrentSequence(sequence);
+        school.setCurrentTerm(sequence.getTerm().getName());
+        school = schoolRepository.save(school);
+        return new EntityResponse(school.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
-    public String delete(Long id) {
-        if (id != null && schoolRepository.existsById(id)) {
-            schoolRepository.deleteById(id);
-            return "School with ID: " + id + "successfully deleted";
-        }
-        throw new EntityException.NotFound("school");
+    public void delete(Long id) {
+        schoolRepository.deleteById(id);
     }
 }

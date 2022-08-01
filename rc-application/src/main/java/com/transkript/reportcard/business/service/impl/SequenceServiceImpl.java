@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -35,13 +34,13 @@ public class SequenceServiceImpl implements SequenceService {
     public EntityResponse create(SequenceDto sequenceDto) {
         Sequence sequence = sequenceMapper.mapDtoToSequence(sequenceDto);
         sequence.setId(null);
-        sequence.setTerm(termService.getTermEntity(sequenceDto.termId()));
+        sequence.setTerm(termService.getEntity(sequenceDto.termId()));
         sequence = sequenceRepository.save(sequence);
         return new EntityResponse(sequence.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
-    public List<SequenceDto> getSequences() {
+    public List<SequenceDto> getAllDto() {
         return sequenceRepository.findAll().stream()
                 .map(sequenceMapper::mapSequenceToDto)
                 .collect(Collectors.toList());
@@ -59,30 +58,17 @@ public class SequenceServiceImpl implements SequenceService {
     }
 
     @Override
-    public EntityResponse update(Long id, SequenceDto sequenceDto) {
-        if (id != null && id.equals(sequenceDto.id()) && sequenceRepository.existsById(id)) {
-            Sequence sequence = sequenceRepository.getById(id);
-            {
-                if (!Objects.equals(sequence.getName(), sequenceDto.name())) {
-                    sequence.setName(sequenceDto.name());
-                }
-                if (!Objects.equals(sequence.getTerm().getId(), sequenceDto.termId())) {
-                    sequence.setTerm(termService.getTermEntity(sequenceDto.termId()));
-                }
-            }
-            sequence = sequenceRepository.save(sequence);
-            return new EntityResponse(sequence.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
-        }
-        throw new EntityException.NotFound("Sequence with id: " + id);
+    public EntityResponse update(SequenceDto sequenceDto) {
+        Sequence sequence = getEntity(sequenceDto.id());
+        sequence.setName(sequenceDto.name());
+        sequence.setTerm(termService.getEntity(sequenceDto.termId()));
+        sequence = sequenceRepository.save(sequence);
+        return new EntityResponse(sequence.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
-    public String delete(Long id) {
-        if (id != null && sequenceRepository.existsById(id)) {
-            sequenceRepository.deleteById(id);
-            return "Successfully deleted Sequence with id: " + id;
-        }
-        throw new EntityException.NotFound("Sequence with id " + id);
+    public void delete(Long id) {
+        sequenceRepository.deleteById(id);
     }
 
     @NotNull

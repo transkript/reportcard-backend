@@ -29,7 +29,7 @@ public class TermServiceImpl implements TermService {
     private final String entityName = EntityName.TERM;
 
     @Override
-    public EntityResponse addTerm(TermDto termDto) {
+    public EntityResponse create(TermDto termDto) {
         Term term = termMapper.mapDtoToTerm(termDto);
         term.setId(null);
         term = termRepository.save(term);
@@ -37,40 +37,30 @@ public class TermServiceImpl implements TermService {
     }
 
     @Override
-    public List<TermDto> getTerms() {
+    public List<TermDto> getAllDto() {
         return termRepository.findAll().stream().map(termMapper::mapTermToDto).collect(Collectors.toList());
     }
 
     @Override
-    public TermDto getTerm(Long id) {
-        return termMapper.mapTermToDto(getTermEntity(id));
+    public TermDto getDto(Long id) {
+        return termMapper.mapTermToDto(getEntity(id));
     }
 
     @Override
-    public Term getTermEntity(Long id) {
+    public Term getEntity(Long id) {
         return termRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("term", id));
     }
 
     @Override
-    public EntityResponse updateTerm(Long id, TermDto termDto) {
-        if (id != null && id.equals(termDto.id()) && termRepository.existsById(id)) {
-            Term term = termRepository.findById(id).orElseThrow(() -> new EntityException.NotFound("term", id));
-
-            if (!Objects.equals(term.getName(), termDto.name())) {
-                term.setName(termDto.name());
-            }
-            term = termRepository.save(term);
-            return new EntityResponse(term.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
-        }
-        throw new EntityException.NotFound("term" + id);
+    public EntityResponse update(TermDto termDto) {
+        Term term = getEntity(termDto.id());
+        term.setName(termDto.name());
+        term = termRepository.save(term);
+        return new EntityResponse(term.getId(), ResponseMessage.SUCCESS.updated(entityName), true);
     }
 
     @Override
-    public String deleteTerm(Long id) {
-        if (id != null && termRepository.existsById(id)) {
-            termRepository.deleteById(id);
-            return "Successfully deleted term with id: " + id;
-        }
-        throw new EntityException.NotFound("Term with id: " + id);
+    public void delete(Long id) {
+        termRepository.deleteById(id);
     }
 }
