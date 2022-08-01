@@ -2,7 +2,6 @@ package com.transkript.reportcard.data.entity.relation;
 
 
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.enums.GradeDesc;
 import lombok.AllArgsConstructor;
@@ -18,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.PrePersist;
@@ -34,7 +34,7 @@ import javax.persistence.Table;
 @Table(name = "grade")
 public class Grade {
     @EmbeddedId
-    private GradeKey gradeKey;
+    private GradeKey key;
 
     @Column(nullable = false, name = "grade_score")
     @Builder.Default
@@ -49,9 +49,12 @@ public class Grade {
     @JoinColumn(name = "sequence_id", nullable = false)
     private Sequence sequence;
 
-    @MapsId("registrationId")
+    @MapsId("registrationKey")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "subject_registration_ID", nullable = false)
+    @JoinColumns({
+            @JoinColumn(name = "SUBJECT_REGISTRATION_SUBJECTID", referencedColumnName = "SUBJECTID", nullable = false),
+            @JoinColumn(name = "SUBJECT_REGISTRATION_SATID", referencedColumnName = "SATID", nullable = false)
+    })
     private SubjectRegistration subjectRegistration;
 
     @PrePersist

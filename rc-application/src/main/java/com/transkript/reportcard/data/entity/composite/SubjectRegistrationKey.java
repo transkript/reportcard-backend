@@ -6,14 +6,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Embeddable;
+import java.io.Serial;
 import java.io.Serializable;
 
-@Setter
 @Getter
+@Setter
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationKey implements Serializable {
-    private Long studentId;
-    private Long classSubId;
+public class SubjectRegistrationKey implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7726739515805667721L;
+    private Long subjectId;
+    private Long satId;
 }

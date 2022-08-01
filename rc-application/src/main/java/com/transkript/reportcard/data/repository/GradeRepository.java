@@ -2,7 +2,7 @@ package com.transkript.reportcard.data.repository;
 
 
 import com.transkript.reportcard.data.entity.Sequence;
-import com.transkript.reportcard.data.entity.SubjectRegistration;
+import com.transkript.reportcard.data.entity.relation.SubjectRegistration;
 import com.transkript.reportcard.data.entity.composite.GradeKey;
 import com.transkript.reportcard.data.entity.relation.Grade;
 import org.springframework.data.jpa.repository.JpaRepository;

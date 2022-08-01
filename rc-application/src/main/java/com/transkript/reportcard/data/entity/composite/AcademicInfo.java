@@ -17,9 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Embeddable
 public class AcademicInfo {
-    @Column(name = "start_date")
     private LocalDateTime startDate;
-
-    @Column(name = "end_date")
     private LocalDateTime endDate;
 }
